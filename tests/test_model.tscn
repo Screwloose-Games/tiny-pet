@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://crs6mygkwyid4"]
+
+[ext_resource type="Texture2D" uid="uid://dctluoqgs78kq" path="res://tests/base_color.png" id="1_0ncnl"]
+[ext_resource type="Texture2D" uid="uid://b6gscfbe0lkb7" path="res://tests/ORM.png" id="2_xfp7w"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ylmy1"]
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_jddrm"]
+albedo_texture = ExtResource("1_0ncnl")
+orm_texture = ExtResource("2_xfp7w")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_ylmy1")
+surface_material_override/0 = SubResource("ORMMaterial3D_jddrm")

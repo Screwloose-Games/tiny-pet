@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwihlptnxobfw"]
+
+[ext_resource type="Script" uid="uid://nkdumuhqc4kn" path="res://tests/test_dynamic_exports.gd" id="1_e2cmo"]
+
+[node name="TestDynamicExports" type="Node3D"]
+script = ExtResource("1_e2cmo")
+node_name = "QuestManager"
+signal_name = "quest_started"
+expected_args = Dictionary[String, Variant]({
+"id": null
+})

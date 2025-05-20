@@ -1,0 +1,146 @@
+[gd_scene load_steps=17 format=3 uid="uid://bd2umttirdhh8"]
+
+[ext_resource type="Script" uid="uid://cbp7u20p834bb" path="res://tiny_creature_game.gd" id="1_7crt5"]
+[ext_resource type="PackedScene" uid="uid://cqnrknitmrym6" path="res://assets/3d/creature/base_basic_pbr.tscn" id="1_tvsie"]
+[ext_resource type="Script" uid="uid://s0dwxj5gim5a" path="res://camtarget_marker_3d.gd" id="2_ljxe0"]
+[ext_resource type="Shader" uid="uid://cvx4u6361cydg" path="res://wood.gdshader" id="3_032ar"]
+[ext_resource type="Shader" uid="uid://ck061bafdwf06" path="res://glass_02.gdshader" id="3_ljxe0"]
+[ext_resource type="Texture2D" uid="uid://lhr8alggdn24" path="res://poo_eyes.png" id="5_o3ecr"]
+
+[sub_resource type="Environment" id="Environment_032ar"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_okrti"]
+albedo_color = Color(0.313764, 0.118919, 0.0653052, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_032ar"]
+render_priority = 0
+shader = ExtResource("3_ljxe0")
+shader_parameter/albedo = Color(1, 1, 1, 0)
+shader_parameter/roughness = 0.15
+shader_parameter/normal_strength = 1.0
+shader_parameter/edge_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ljxe0"]
+render_priority = 0
+shader = ExtResource("3_032ar")
+shader_parameter/light_color = Color(0.952941, 0.858824, 0.74902, 1)
+shader_parameter/dark_color = Color(0.74902, 0.619608, 0.490196, 1)
+shader_parameter/ring_scale = 4.4
+shader_parameter/wave_scale = 8.454
+shader_parameter/random_scale = 4.6
+shader_parameter/noise_scale = 0.03
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7crt5"]
+albedo_color = Color(0.404677, 0.254471, 0.0781797, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_okrti"]
+material = SubResource("StandardMaterial3D_7crt5")
+radius = 0.02
+height = 0.02
+
+[sub_resource type="SphereMesh" id="SphereMesh_gdnoh"]
+material = SubResource("StandardMaterial3D_7crt5")
+radius = 0.03
+height = 0.02
+
+[sub_resource type="SphereMesh" id="SphereMesh_c8oum"]
+material = SubResource("StandardMaterial3D_7crt5")
+radius = 0.025
+height = 0.02
+
+[sub_resource type="SphereMesh" id="SphereMesh_hsdal"]
+material = SubResource("StandardMaterial3D_7crt5")
+radius = 0.02
+height = 0.02
+
+[sub_resource type="SphereMesh" id="SphereMesh_1j56i"]
+material = SubResource("StandardMaterial3D_7crt5")
+radius = 0.01
+height = 0.02
+
+[node name="TinyCreatureGame" type="Node3D"]
+script = ExtResource("1_7crt5")
+
+[node name="base_basic_pbr" parent="." instance=ExtResource("1_tvsie")]
+transform = Transform3D(0.88689, 0, -0.461981, 0, 1, 0, 0.461981, 0, 0.88689, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_032ar")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0966622, 0.995317, 0, -0.995317, 0.0966622, 0, 1.95485, 0)
+
+[node name="CamtargetMarker3D" type="Marker3D" parent="."]
+script = ExtResource("2_ljxe0")
+
+[node name="Camera3D" type="Camera3D" parent="CamtargetMarker3D"]
+transform = Transform3D(-0.0811555, 0.385372, -0.919186, 8.3142e-09, 0.922228, 0.386647, 0.996702, 0.0313785, -0.0748439, -0.360485, 0.137324, 0.0803764)
+
+[node name="Dirt" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0112305, -0.0479817, 0)
+size = Vector3(0.465, 0.1, 0.86)
+material = SubResource("StandardMaterial3D_okrti")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0112305, 0.152393, 0)
+size = Vector3(0.517334, 0.474159, 0.896484)
+material = SubResource("ShaderMaterial_032ar")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0218864, 0)
+operation = 2
+size = Vector3(0.464844, 0.474159, 0.860352)
+material = SubResource("ShaderMaterial_032ar")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.179932, -0.112732, 0.167725)
+size = Vector3(1.97998, 0.0496826, 2.37646)
+material = SubResource("ShaderMaterial_ljxe0")
+
+[node name="InteractionsCanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="FoodStack" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FoodStack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.152885)
+mesh = SubResource("SphereMesh_okrti")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="FoodStack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0133096, 0.152885)
+mesh = SubResource("SphereMesh_okrti")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="FoodStack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0250117, 0.152885)
+mesh = SubResource("SphereMesh_okrti")
+skeleton = NodePath("../..")
+
+[node name="Poop" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.119654, -7.45058e-09, 0.331256)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Poop"]
+mesh = SubResource("SphereMesh_gdnoh")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Poop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0133096, 0)
+mesh = SubResource("SphereMesh_c8oum")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Poop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0250117, 0)
+mesh = SubResource("SphereMesh_hsdal")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Poop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0348487, 0)
+mesh = SubResource("SphereMesh_1j56i")
+skeleton = NodePath("../..")
+
+[node name="PooFace" type="Sprite3D" parent="Poop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00668918, 0)
+pixel_size = 0.0003
+billboard = 1
+no_depth_test = true
+texture = ExtResource("5_o3ecr")

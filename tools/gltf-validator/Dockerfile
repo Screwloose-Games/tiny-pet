@@ -32,6 +32,8 @@ WORKDIR /app
 # Copy the render script and any local modules
 COPY validate_gltf.py /app/
 COPY spec_image_tools.py /app/
+COPY entrypoint.sh /app/
+RUN chmod +x /app/entrypoint.sh
 
-# Set the entrypoint
-ENTRYPOINT ["python", "/app/validate_gltf.py"]
+# Set the entrypoint to the script that starts Xvfb and then runs the validator
+ENTRYPOINT ["/app/entrypoint.sh"]

@@ -7,6 +7,11 @@ on:
       - '**/*.glb'
       - '**/*.spec.yaml'
 
+# Add permissions block
+permissions:
+  pull-requests: write  # Required to create/update comments
+  contents: read       # Required to read repository contents
+
 jobs:
   validate:
     runs-on: ubuntu-latest

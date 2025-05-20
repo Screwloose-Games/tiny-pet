@@ -69,6 +69,24 @@ environment = SubResource("Environment_032ar")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.0966622, 0.995317, 0, -0.995317, 0.0966622, 0, 1.95485, 0)
+light_energy = 0.848
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.46153, 0.275475, -0.824354)
+light_energy = 0.847
+light_indirect_energy = 2.524
+
+[node name="OmniLight3D" type="OmniLight3D" parent="OmniLight3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.16485, 0.392534, 2.17239)
+light_energy = 0.391
+light_indirect_energy = 3.438
+light_volumetric_fog_energy = 1.13
+
+[node name="OmniLight3D" type="OmniLight3D" parent="OmniLight3D/OmniLight3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.71675, -0.319414, -2.75599)
+light_energy = 0.238
+light_indirect_energy = 1.8
+light_volumetric_fog_energy = 1.13
 
 [node name="CamtargetMarker3D" type="Marker3D" parent="."]
 script = ExtResource("2_ljxe0")

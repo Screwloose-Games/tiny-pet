@@ -25,11 +25,11 @@ RUN pip install --no-cache-dir \
   pyyaml
 
 # Create app directory
-WORKDIR /workspace
+WORKDIR /app
 
 # Copy the render script and any local modules
-COPY validate_gltf.py .
-COPY spec_image_tools.py .
+COPY validate_gltf.py /app/
+COPY spec_image_tools.py /app/
 
 # Set the entrypoint
-ENTRYPOINT ["python", "validate_gltf.py"]
+ENTRYPOINT ["python", "/app/validate_gltf.py"]

@@ -56,11 +56,11 @@ jobs:
               file_output_dir="validation_output/$(basename "$gltf_file" .gltf)"
               mkdir -p "$file_output_dir"
               
-              # Run the validator
+              # Run the validator with absolute paths
               docker run --rm \
                 -v "$PWD:/workspace" \
                 -w /workspace \
-                gltf-validator validation_output "$gltf_file"
+                gltf-validator "/workspace/validation_output" "/workspace/$gltf_file"
             done < gltf_files.txt
             
             # Move cache

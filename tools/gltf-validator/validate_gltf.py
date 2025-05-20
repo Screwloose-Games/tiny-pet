@@ -559,6 +559,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
 
         # Render and save views
         print(f"Rendering and saving views for {gltf_file}")
+        print(f"Output directory: {file_output_dir}")
         render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, 
                            os.path.join(file_output_dir, "top.png"), model_facing_direction="down")
         render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, 

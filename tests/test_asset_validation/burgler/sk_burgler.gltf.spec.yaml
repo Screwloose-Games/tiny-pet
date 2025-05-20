@@ -1,0 +1,30 @@
+height: 1.8            # meters
+width: 0.6             # meters
+depth: 0.4             # meters
+up_direction: +Y   # Up direction in model space +Y
+facing_direction: +Z   # Forward direction in model space +Z
+poly_count_budget: 15000   # Maximum allowed polygons
+root_node_name: "Burgler"
+collision_expected: true # A node marked as collision expected.
+navigation_expected: true # A node marked as navigation expected.
+min_material_count: 1      # Minimum number of materials
+textures_expected:
+  - name: "BaseColor" # {gltf_filename}_BaseColor.png
+    type: "diffuse"
+    expected: true
+  - name: "ORM" # {gltf_filename}_ORM.png
+    type: "orm"
+    expected: true
+animations_expected:
+  - name: "Idle"
+    loop: true
+    description: "Standing idle, fidgeting."
+  - name: "Run"
+    loop: true
+    description: "Running in place, full sprint."
+  - name: "Jump"
+    loop: false
+    description: "Jump with full extension."
+  - name: "modelAction"
+    loop: false
+    description: "Some model Action"

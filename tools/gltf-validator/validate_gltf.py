@@ -552,11 +552,13 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
             poly_count=poly_count
         )
 
+        print(f"Evaluating model against spec for {gltf_file}")
         # Create output directory for this file
         file_output_dir = os.path.join(output_dir, os.path.splitext(os.path.basename(gltf_file))[0])
         os.makedirs(file_output_dir, exist_ok=True)
 
         # Render and save views
+        print(f"Rendering and saving views for {gltf_file}")
         render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, 
                            os.path.join(file_output_dir, "top.png"), model_facing_direction="down")
         render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, 
@@ -572,6 +574,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                            os.path.join(file_output_dir, "right_wireframe.png"), wireframe_render_flags, "right")
 
         # Create markdown report
+        print(f"Creating markdown report for {gltf_file}")
         report = create_markdown_report(
             poly_count=get_poly_count(scene),
             width=scene_bounds_size[0],

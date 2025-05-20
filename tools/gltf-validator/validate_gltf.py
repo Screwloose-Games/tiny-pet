@@ -661,6 +661,8 @@ if __name__ == "__main__":
     
     output_dir = sys.argv[1]
     gltf_files = sys.argv[2:]
+    print(f"Output directory: {output_dir}")
+    print(f"GLTF files: {gltf_files}")
     
     if not gltf_files:
         print("No GLTF files provided")

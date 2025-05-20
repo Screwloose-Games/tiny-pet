@@ -115,17 +115,20 @@ def generate_orthographic_image(scene: trimesh.Scene, camera: pyrender.Orthograp
     No grid is drawn.
     """
     pyrender_scene = pyrender.Scene.from_trimesh_scene(scene)
+    print("Rendering scene")
     pyrender_scene.bg_color = [0, 0, 0, 0]
 
     pyrender_scene.add(camera, pose=camera_pose)
     light = pyrender.DirectionalLight(color=np.ones(3), intensity=2.0)
     pyrender_scene.add(light, pose=camera_pose)
 
-    
+    print("preparing renderer")
     r = pyrender.OffscreenRenderer(viewport_width=image_width, viewport_height=image_height)
+    print("Rendering image")
     color, _ = r.render(pyrender_scene, flags=render_flags)
-
+    print("Generating image from data")
     model_img = Image.fromarray(color, mode="RGBA")
+    print("Image generated")
     return model_img
 
 def generate_grid_image(height: int = 1024, width: int = 1024, largest_dist:  float = 2.0) -> Image:

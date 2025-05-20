@@ -100,9 +100,10 @@ jobs:
             if (fs.existsSync(resultsDir)) {
               const files = fs.readdirSync(resultsDir);
               for (const file of files) {
-                if (file.endsWith('.json')) {
-                  const content = JSON.parse(fs.readFileSync(path.join(resultsDir, file), 'utf8'));
-                  results[file.replace('.json', '')] = content;
+                console.log(`Processing file: ${file}`);
+                if (file.endsWith('.md')) {
+                  const content = fs.readFileSync(path.join(resultsDir, file), 'utf8');
+                  results[file.replace('.md', '')] = content;
                 }
               }
             }

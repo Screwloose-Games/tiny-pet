@@ -590,6 +590,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
 
         return {
             "file": gltf_file,
+            "report": report,
             "results": results,
             "report_path": os.path.join(file_output_dir, "report.md"),
             "images_dir": file_output_dir,
@@ -609,6 +610,10 @@ def create_github_comment(results: list[dict]) -> str:
     comment = "## GLTF Validation Results\n\n"
     
     for result in results:
+        report = result.get("report", None)
+        if report:
+            comment += f"### Report:\n"
+            comment += f"{report}\n\n"
         if not result["success"]:
             comment += f"### ❌ {os.path.basename(result['file'])}\n"
             comment += f"Error: {result['error']}\n\n"

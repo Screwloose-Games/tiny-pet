@@ -1,0 +1,80 @@
+name: Create Sound File for Music Score
+description: Template for creating a new sound effect file for the game.
+title: "Create Sound File for Score for..."
+labels: [music, audio]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Provide a description of the Music to be created.
+      placeholder: "Enter the Music description..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Provide the context where this music will be used.
+      placeholder: "Enter the context for the music..."
+    validations:
+      required: true
+
+  - type: input
+    id: duration
+    attributes:
+      label: Sound duration
+      description: Provide the approximate duration the sound should be
+      placeholder: "Enter how long the sound should be.."
+      value: "Example: Approximately 5 seconds / 2 bars"
+    validations:
+      required: true
+
+  - type: input
+    id: file_path
+    attributes:
+      label: Save File Path
+      description: Provide the full filepath where the file should be saved.
+      placeholder: "Enter the full file path..."
+      value: "res://common/audio/music/aud_{{underscore_separated_file_name}}-loop.ogg"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Acceptance Criteria:
+
+        - [ ] The peak level is normalized to -1 dBFS.
+        - [ ] The file is saved in `.ogg` file format.
+        - [ ] The file has a sample rate of 44,100 Hz.
+        - [ ] The file is located at the specified filepath: `res://common/audio/music/aud_{{file_name}}-loop.ogg`.
+        - [ ] The file name contains the prefix "aud_", is all lowercase, and is underscore separated, i.e. "aud_name-loop.ogg"
+        - [ ] The filename ends in `-loop`
+        - [ ] The file has been imported in godot (Godot opened) and has the accompanying `.import` file.
+        - [ ] A pull request (PR) is created with the changes including the .ogg file and the .import file.
+
+        [Pull Request Guide: Github]("https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request")
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      id: subtasks
+      label: Subtasks
+      value: |
+        - [ ] The peak level is normalized to -1 dBFS.
+        - [ ] The file is saved in `.ogg` file format.
+        - [ ] The file has a sample rate of 44,100 Hz.
+        - [ ] The file is located at the specified filepath: `res://common/audio/music/aud_{{file_name}}-loop.ogg`.
+        - [ ] The filename ends in `-loop`
+        - [ ] The file name contains the prefix "aud_", is all lowercase, and is underscore separated, i.e. "aud_name-loop.ogg"
+        - [ ] The file has been imported in godot (Godot opened) and has the accompanying `.import` file.
+        - [ ] A pull request (PR) is created with the changes including the .ogg file and the .import file.
+
+        [Pull Request Guide: Github]("https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request")
+        
+        ## Blocking
+        - Music Implementation tasks (Making the music play in-game)
+        - Music leveling / mixing tasks (Making the crossfaade/blend and layer)

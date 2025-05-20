@@ -55,10 +55,15 @@ jobs:
       - name: Create output directory
         run: mkdir -p gltf-validation-results
 
+      - name: Install Xvfb and dependencies
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+
       - name: Run GLTF validator
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           if [ -s gltf_files.txt ]; then
+            Xvfb :99 &  # Start Xvfb in the background
             while IFS= read -r gltf_file; do
               if [ -f "$gltf_file" ]; then
                 echo "Processing $gltf_file"

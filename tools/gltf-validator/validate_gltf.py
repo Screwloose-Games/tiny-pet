@@ -480,6 +480,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
     try:
         # First check if the file exists
         if not os.path.exists(gltf_file):
+            print(f"File not found: {gltf_file}")
             return {
                 "file": gltf_file,
                 "error": f"File not found: {gltf_file}",
@@ -488,6 +489,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
 
         # Check if the file is a GLTF file
         if not gltf_file.lower().endswith(('.gltf', '.glb')):
+            print(f"Not a GLTF file: {gltf_file}")
             return {
                 "file": gltf_file,
                 "error": f"Not a GLTF file: {gltf_file}",
@@ -516,6 +518,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                         missing_resources.append(f"Buffer: {buffer.uri}")
 
         if missing_resources:
+            print(f"Missing resources:\n" + "\n".join(f"- {r}" for r in missing_resources))
             return {
                 "file": gltf_file,
                 "error": f"Missing resources:\n" + "\n".join(f"- {r}" for r in missing_resources),
@@ -525,6 +528,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
         try:
             scene = load_gltf_with_trimesh(gltf_file)
         except Exception as e:
+            print(f"Failed to load GLTF file: {str(e)}")
             return {
                 "file": gltf_file,
                 "error": f"Failed to load GLTF file: {str(e)}",
@@ -588,6 +592,8 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
         with open(os.path.join(file_output_dir, "report.md"), "w") as f:
             f.write(report)
 
+        print(f"Report saved to: {os.path.join(file_output_dir, 'report.md')}")
+
         return {
             "file": gltf_file,
             "report": report,
@@ -597,6 +603,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
             "success": True
         }
     except Exception as e:
+        print(f"Error processing file: {str(e)}")
         return {
             "file": gltf_file,
             "error": f"Error processing file: {str(e)}",

@@ -15,16 +15,6 @@ jobs:
         with:
           fetch-depth: 0  # Fetch all history for comparing changes
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install numpy pygltflib trimesh pyrender pillow pyyaml
-
       - name: Find changed GLTF files
         id: changed-files
         run: |
@@ -36,10 +26,45 @@ jobs:
           
           # Create output directory
           mkdir -p validation_output
-          
-          # Run validator on each file
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build and run Docker container
+        if: success()
+        run: |
           if [ -s gltf_files.txt ]; then
-            python tools/gltf-validator/validate_gltf.py validation_output $(cat gltf_files.txt)
+            # Build the Docker image
+            docker buildx build \
+              --cache-from=type=local,src=/tmp/.buildx-cache \
+              --cache-to=type=local,dest=/tmp/.buildx-cache-new \
+              -t gltf-validator \
+              tools/gltf-validator
+            
+            # Run the validator for each GLTF file
+            while IFS= read -r gltf_file; do
+              # Create a directory for this file's output
+              file_output_dir="validation_output/$(basename "$gltf_file" .gltf)"
+              mkdir -p "$file_output_dir"
+              
+              # Run the validator
+              docker run --rm \
+                -v "$PWD:/workspace" \
+                -w /workspace \
+                gltf-validator validation_output "$gltf_file"
+            done < gltf_files.txt
+            
+            # Move cache
+            rm -rf /tmp/.buildx-cache
+            mv /tmp/.buildx-cache-new /tmp/.buildx-cache
           else
             echo "No GLTF files changed"
             exit 0

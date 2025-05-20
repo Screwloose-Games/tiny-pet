@@ -25,7 +25,7 @@ RUN pip install --no-cache-dir \
   pyyaml
 
 # Create app directory
-WORKDIR /app
+WORKDIR /workspace
 
 # Copy the render script and any local modules
 COPY validate_gltf.py .

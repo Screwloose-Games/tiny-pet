@@ -417,8 +417,11 @@ def render_and_save_view(scene, camera, camera_pose, grid_img, output_path, rend
     """
     Renders a view of the scene with the given camera pose, overlays the grid, and saves the image.
     """
+    print(f"Generating image for {output_path}")
     model_img = generate_orthographic_image(scene, camera, camera_pose, render_flags)
+    print(f"Rendering image for {output_path}")
     final_img = Image.alpha_composite(grid_img, model_img)
+    print(f"Overlaying grid on image for {output_path}")
     draw = ImageDraw.Draw(final_img)
     if model_facing_direction:
         draw_facing_direction(draw, model_facing_direction)

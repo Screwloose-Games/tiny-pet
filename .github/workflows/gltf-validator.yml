@@ -43,7 +43,7 @@ jobs:
         with:
           context: ./tools/gltf-validator
           push: true
-          tags: ghcr.io/${{ github.repository }}/gltf-validator:latest
+          tags: ghcr.io/${{ github.repository_owner }}/gltf-validator:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -59,7 +59,7 @@ jobs:
               docker run --rm \
                 -v "$(pwd):/workspace" \
                 -w /workspace \
-                ghcr.io/${{ github.repository }}/gltf-validator:latest \
+                ghcr.io/${{ github.repository_owner }}/gltf-validator:latest \
                 python /app/validate_gltf.py "$gltf_file" "/workspace/gltf-validation-results"
             fi
           done < gltf_files.txt

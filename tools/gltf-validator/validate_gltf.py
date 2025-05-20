@@ -545,6 +545,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
         spec = read_spec_file(gltf_file + SPEC_EXTENSION)
         
         poly_count = get_poly_count(scene)
+        print(f"Evaluating model against spec for {gltf_file}")
         results = evaluate_model_against_spec(
             gltf=gltf,
             spec=spec,
@@ -552,7 +553,6 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
             poly_count=poly_count
         )
 
-        print(f"Evaluating model against spec for {gltf_file}")
         # Create output directory for this file
         file_output_dir = os.path.join(output_dir, os.path.splitext(os.path.basename(gltf_file))[0])
         os.makedirs(file_output_dir, exist_ok=True)

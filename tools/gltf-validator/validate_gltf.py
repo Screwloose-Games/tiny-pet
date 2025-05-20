@@ -422,6 +422,7 @@ def render_and_save_view(scene, camera, camera_pose, grid_img, output_path, rend
     draw = ImageDraw.Draw(final_img)
     if model_facing_direction:
         draw_facing_direction(draw, model_facing_direction)
+    print(f"Saving image to {output_path}")
     final_img.convert("RGB").save(output_path)
 
 def create_markdown_report(poly_count: int, width: float, depth: float, height: float, animations: list[str], textures: list[str], images: list[str], materials: list[str], bones: list[str], scale: float, facing_direction: str, front_image_path: str, top_image_path: str, side_image_path: str) -> str:

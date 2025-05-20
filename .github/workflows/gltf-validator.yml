@@ -38,6 +38,11 @@ jobs:
             **.gltf
             **.glb
 
+      - name: Save changed files list
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n' | grep -E '\.(gltf|glb)$' > gltf_files.txt
+
       - name: Build and cache Docker image
         uses: docker/build-push-action@v5
         with:
@@ -53,16 +58,20 @@ jobs:
       - name: Run GLTF validator
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          while IFS= read -r gltf_file; do
-            if [ -f "$gltf_file" ]; then
-              echo "Processing $gltf_file"
-              docker run --rm \
-                -v "$(pwd):/workspace" \
-                -w /workspace \
-                ghcr.io/screwloose-games/gltf-validator:latest \
-                python /app/validate_gltf.py "$gltf_file" "/workspace/gltf-validation-results"
-            fi
-          done < gltf_files.txt
+          if [ -s gltf_files.txt ]; then
+            while IFS= read -r gltf_file; do
+              if [ -f "$gltf_file" ]; then
+                echo "Processing $gltf_file"
+                docker run --rm \
+                  -v "$(pwd):/workspace" \
+                  -w /workspace \
+                  ghcr.io/screwloose-games/gltf-validator:latest \
+                  python /app/validate_gltf.py "$gltf_file" "/workspace/gltf-validation-results"
+              fi
+            done < gltf_files.txt
+          else
+            echo "No GLTF files to process"
+          fi
 
       - name: Upload validation results
         if: steps.changed-files.outputs.any_changed == 'true'

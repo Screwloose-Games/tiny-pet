@@ -478,8 +478,59 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
     Process a single GLTF file and return results.
     """
     try:
+        # First check if the file exists
+        if not os.path.exists(gltf_file):
+            return {
+                "file": gltf_file,
+                "error": f"File not found: {gltf_file}",
+                "success": False
+            }
+
+        # Check if the file is a GLTF file
+        if not gltf_file.lower().endswith(('.gltf', '.glb')):
+            return {
+                "file": gltf_file,
+                "error": f"Not a GLTF file: {gltf_file}",
+                "success": False
+            }
+
+        # Check for missing resources
         gltf: GLTF2 = GLTF2().load(gltf_file)
-        scene = load_gltf_with_trimesh(gltf_file)
+        base_dir = os.path.dirname(gltf_file)
+        missing_resources = []
+
+        # Check images
+        if gltf.images:
+            for image in gltf.images:
+                if hasattr(image, 'uri') and image.uri:
+                    image_path = os.path.join(base_dir, image.uri)
+                    if not os.path.exists(image_path):
+                        missing_resources.append(f"Image: {image.uri}")
+
+        # Check buffers
+        if gltf.buffers:
+            for buffer in gltf.buffers:
+                if hasattr(buffer, 'uri') and buffer.uri:
+                    buffer_path = os.path.join(base_dir, buffer.uri)
+                    if not os.path.exists(buffer_path):
+                        missing_resources.append(f"Buffer: {buffer.uri}")
+
+        if missing_resources:
+            return {
+                "file": gltf_file,
+                "error": f"Missing resources:\n" + "\n".join(f"- {r}" for r in missing_resources),
+                "success": False
+            }
+
+        try:
+            scene = load_gltf_with_trimesh(gltf_file)
+        except Exception as e:
+            return {
+                "file": gltf_file,
+                "error": f"Failed to load GLTF file: {str(e)}",
+                "success": False
+            }
+
         scene_bounds_size = scene.bounds[1] - scene.bounds[0]
         largest_dim = max(scene_bounds_size)
         camera = pyrender.OrthographicCamera(xmag=largest_dim / 2, ymag=largest_dim / 2)
@@ -547,7 +598,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
     except Exception as e:
         return {
             "file": gltf_file,
-            "error": str(e),
+            "error": f"Error processing file: {str(e)}",
             "success": False
         }
 

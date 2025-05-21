@@ -63,16 +63,13 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           if [ -s gltf_files.txt ]; then
-            while IFS= read -r gltf_file; do
-              if [ -f "$gltf_file" ]; then
-                echo "Processing $gltf_file"
-                docker run --rm \
-                  -v "$(pwd):/workspace" \
-                  -w /workspace \
-                  ghcr.io/screwloose-games/gltf-validator:latest \
-                  "/workspace/gltf-validation-results" "$gltf_file"
-              fi
-            done < gltf_files.txt
+            files=$(tr '\n' ' ' < gltf_files.txt)
+            echo "Processing files: $files"
+            docker run --rm \
+              -v "$(pwd):/workspace" \
+              -w /workspace \
+              ghcr.io/screwloose-games/gltf-validator:latest \
+              "/workspace/gltf-validation-results" $files
           else
             echo "No GLTF files to process"
           fi

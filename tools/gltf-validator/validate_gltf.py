@@ -470,9 +470,11 @@ def create_markdown_report(poly_count: int, width: float, depth: float, height: 
 
     report += f"""## Images
 
-![Front View](front.png)
-![Top View](top.png)
-![Right Side View](right.png)
+![Front View]({front_image_path})
+![Top View]({top_image_path})
+![Right Side View]({side_image_path})
+
+## Wireframe Images
 
 ![Front View](front_wireframe.png)
 ![Top View](top_wireframe.png)

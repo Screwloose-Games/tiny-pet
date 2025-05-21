@@ -11,10 +11,17 @@ if len(sys.argv) < 2:
     sys.exit(1)
 MARKDOWN_FILE = sys.argv[1]
 
+ASSETS_BRANCH_NAME = "assets"
+
 ASSETS_BRANCH_PATH = "assets-branch"
 ASSETS_FOLDER = os.path.join(ASSETS_BRANCH_PATH, "uploaded-assets")
 
 os.makedirs(ASSETS_FOLDER, exist_ok=True)
+
+def get_raw_url(repo, branch, branch_dir_path, filename):
+    # Construct the raw URL for the file in the GitHub repository
+    # Example raw URL: https://github.com/Screwloose-Games/tiny-pet/blob/assets/uploaded-assets/example_character_front_4404.png?raw=true
+    return f"https://github.com/{repo}/blob/{branch}/{branch_dir_path}/{filename}?raw=true"
 
 # Process markdown as before
 with open(MARKDOWN_FILE, "r", encoding="utf-8") as f:
@@ -40,7 +47,9 @@ for image_path in matches:
     print(f"Copying {image_path} to {target_path}")
     shutil.copy2(image_path, target_path)
 
-    raw_url = f"https://raw.githubusercontent.com/{repo}/assets/uploaded-assets/{filename}"
+    raw_url = get_raw_url(repo, ASSETS_BRANCH_NAME, ASSETS_FOLDER, filename)
+    print(f"Raw URL: {raw_url}")
+
     new_lines = new_lines.replace(image_path, raw_url)
 
 # Instead of writing to file, post or update GitHub comment

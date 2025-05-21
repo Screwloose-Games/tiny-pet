@@ -205,7 +205,14 @@ def list_images(gltf: GLTF2) -> list[str]:
         print("No images found.")
         return images
     for image in gltf.images:
-        images.append(image.uri)
+        if hasattr(image, 'uri') and image.uri:
+            images.append(image.uri)
+        elif hasattr(image, 'name') and image.name:
+            images.append(image.name)
+        elif hasattr(image, 'bufferView') and image.bufferView:
+            images.append(f"BufferView id: {image.bufferView}")
+        else:
+            images.append("Unknown image")
     return images
 
 def list_bones(gltf: GLTF2) -> list[str]:

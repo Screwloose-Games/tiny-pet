@@ -35,7 +35,7 @@ def draw_arrow_right(draw, img_width, img_height):
     color = 'red'
     draw_arrow(draw, start, end, color=color, width=img_width//100)
 
-def draw_text_facing(draw, img_width, img_height, direction):
+def draw_text_facing(draw: ImageDraw.ImageDraw, img_width, img_height, direction):
     center = (img_width // 2, img_height // 2)
     if direction == 'right':
         target = (img_width // 4, img_height // 2)
@@ -47,7 +47,7 @@ def draw_text_facing(draw, img_width, img_height, direction):
         return  # Only handle 'right' and 'down'
     text = "Facing Direction"
     text_position = (mid[0], mid[1] - img_height // 20)
-    draw.text(text_position, text, fill='red', font_size=img_width // 30)
+    draw.text(text_position, text, fill='red', font_size=img_width // 20)
 
 def draw_text_right(draw, img_width, img_height):
     draw_text_facing(draw, img_width, img_height, 'right')

@@ -544,11 +544,13 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                 "success": False
             }
 
-        scene_bounds_size = scene.bounds[1] - scene.bounds[0]
-        largest_dim = max(scene_bounds_size)
+        scene_bounds_size: np.ndarray[np.float64] = scene.bounds[1] - scene.bounds[0]
+        SCENE_BOUNDS_PADDING_PERCENTAGE = 0.1
+        padded_scene_bounds_size = scene_bounds_size * (1 + SCENE_BOUNDS_PADDING_PERCENTAGE)  # add some padding to the bounds in all directions
+
+        largest_dim = max(padded_scene_bounds_size)
         camera = pyrender.OrthographicCamera(xmag=largest_dim / 2, ymag=largest_dim / 2)
         grid_img = generate_grid_image(height=image_height, width=image_width, largest_dist=largest_dim)
-        color_render_flags = RenderFlags.RGBA
         wireframe_render_flags = RenderFlags.RGBA + RenderFlags.ALL_WIREFRAME
 
         spec = read_spec_file(gltf_file + SPEC_EXTENSION)

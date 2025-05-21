@@ -437,11 +437,11 @@ def create_markdown_report(poly_count: int, width: float, depth: float, height: 
     Creates a markdown report of the model.
     """
     report = f"""
-# Model Report
-## Model Statistics
+### Model Report
+#### Model Statistics
 - **Total Polygons**: {poly_count}
 
-## Size
+#### Size
 - **Width (X)**: {width:.4f}
 - **Depth (Y)**: {depth:.4f}
 - **Height (Z)**: {height:.4f}
@@ -467,7 +467,7 @@ def create_markdown_report(poly_count: int, width: float, depth: float, height: 
     if has_too_many_polys:
         report += f"\nThe model has a high polygon count. This may affect performance. Max recommended poly count: {recommended_poly_max}\n"
 
-    report += "## Images\n\n"
+    report += "#### Images\n\n"
 
     for image_name, image_path in rendered_images.items():
         report += f"![{image_name}]({image_path})"
@@ -643,14 +643,14 @@ def create_github_comment(results: list[dict]) -> str:
     for result in results:
         
         if not result["success"]:
-            comment += f"### ❌ {os.path.basename(result['file'])}\n"
+            comment += f"## ❌ {os.path.basename(result['file'])}\n"
             comment += f"Error: {result['error']}\n\n"
             continue
 
-        comment += f"### ✅ {os.path.basename(result['file'])}\n"
+        comment += f"## ✅ {os.path.basename(result['file'])}\n"
         
         # Add validation results
-        comment += "#### Validation Results:\n"
+        comment += "### Validation Results:\n"
         for key, value in result["validation_results"].items():
             status = "✅" if value == "OK" else "❌"
             comment += f"- {key}: {status} {value}\n"
@@ -662,7 +662,7 @@ def create_github_comment(results: list[dict]) -> str:
 
         report = result.get("report", None)
         if report:
-            comment += f"#### Model Report:\n{report}\n\n"
+            comment += f"### Model Report:\n{report}\n\n"
         
         # # Add images
         # comment += "\n#### Model Views:\n"

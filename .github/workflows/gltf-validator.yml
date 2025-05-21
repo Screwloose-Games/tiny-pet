@@ -84,42 +84,15 @@ jobs:
           name: gltf-validation-results
           path: gltf-validation-results/
           retention-days: 1
-        
-      - name: Process markdown and upload images
-        run: |
-          import os
-          import re
-          import shutil
-
-          MARKDOWN_FILE = "github_comment.md"
-          ASSETS_BRANCH_PATH = "assets-branch"
-          UPLOAD_DIR = os.path.join(ASSETS_BRANCH_PATH, "uploaded-assets")
-          os.makedirs(UPLOAD_DIR, exist_ok=True)
-
-          with open(MARKDOWN_FILE, "r", encoding="utf-8") as f:
-              content = f.read()
-
-          repo = os.getenv("GITHUB_REPOSITORY")
-          image_pattern = r'!\[(.*?)\]\((/workspace/.*?)\)'
-          matches = re.findall(image_pattern, content)
-
-          for alt_text, full_path in matches:
-              if not os.path.isfile(full_path):
-                  print(f"Missing image: {full_path}")
-                  continue
-
-              # Copy image to relative folder in upload dir
-              relative_path = os.path.relpath(full_path, "/workspace/gltf-validation-results/")
-              target_path = os.path.join(UPLOAD_DIR, relative_path)
-              os.makedirs(os.path.dirname(target_path), exist_ok=True)
-              shutil.copy2(full_path, target_path)
-
-              raw_url = f"https://raw.githubusercontent.com/{repo}/assets/uploaded-assets/{relative_path}"
-              content = content.replace(f"]({full_path})", f"]({raw_url})")
-
-          # Save updated markdown
-          with open(MARKDOWN_FILE, "w", encoding="utf-8") as f:
-              f.write(content)
+      
+      - name: Checkout assets branch
+        uses: actions/checkout@v3
+        with:
+          ref: assets
+          path: assets-branch
+      
+      - name: Run markdown processor
+        run: python .github/scripts/process_markdown.py
 
 
       - name: Create or update PR comment

@@ -24,11 +24,12 @@ image_pattern = r'!\[.*?\]\((.*?)\)'
 matches = re.findall(image_pattern, content)
 
 repo = os.getenv("GITHUB_REPOSITORY")
-new_lines = content
+new_lines: str = content
 
 for image_path in matches:
     print(f"Matched image path: {image_path}")
     if not os.path.isfile(image_path):
+        print(f"File not found: {image_path}")
         continue
     filename = os.path.basename(image_path)
     # add some logic to create random filename
@@ -36,10 +37,11 @@ for image_path in matches:
     filename = f"{fname}_{random.randint(1000, 9999)}{ext}"
 
     target_path = os.path.join(ASSETS_FOLDER, filename)
+    print(f"Copying {image_path} to {target_path}")
     shutil.copy2(image_path, target_path)
 
     raw_url = f"https://raw.githubusercontent.com/{repo}/assets/uploaded-assets/{filename}"
-    new_lines = new_lines.replace(f"]({image_path})", f"]({raw_url})")
+    new_lines = new_lines.replace(image_path, raw_url)
 
 # Instead of writing to file, post or update GitHub comment
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")

@@ -10,7 +10,7 @@ on:
 # Add permissions block
 permissions:
   pull-requests: write  # Required to create/update comments
-  contents: read       # Required to read repository contents
+  contents: write # write access to the repository contents
   packages: write
 
 jobs:
@@ -101,6 +101,7 @@ jobs:
       - name: Commit and push new images to `assets` branch
         run: |
           cd assets-branch
+          git status
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add uploaded-assets

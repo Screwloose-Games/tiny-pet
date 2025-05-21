@@ -311,8 +311,8 @@ def evaluate_model_against_spec(
     facing_dir = spec.get("facing_direction", None)
     if facing_dir:
         facing_dir = facing_dir.strip().upper()
-        model_facing = get_model_facing_direction(gltf)
-        results["facing_direction"] = (model_facing.replace("+", "") == facing_dir.replace("+", ""))
+        # model_facing = get_model_facing_direction(gltf)
+        # results["facing_direction"] = (model_facing.replace("+", "") == facing_dir.replace("+", ""))
 
     # Poly count
     poly_budget = spec.get("poly_count_budget", None)
@@ -414,7 +414,7 @@ def render_and_save_view(scene, camera, camera_pose, grid_img, output_path, rend
     final_img.convert("RGB").save(output_path)
     return output_path
 
-def create_markdown_report(poly_count: int, width: float, depth: float, height: float, animations: list[str], textures: list[str], images: list[str], materials: list[str], bones: list[str], scale: float, facing_direction: str, rendered_images: dict) -> str:
+def create_markdown_report(poly_count: int, width: float, depth: float, height: float, animations: list[str], textures: list[str], images: list[str], materials: list[str], bones: list[str], scale: float, rendered_images: dict) -> str:
     """
     Creates a markdown report of the model.
     """

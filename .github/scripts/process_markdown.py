@@ -2,7 +2,7 @@ import os
 import re
 import shutil
 
-MARKDOWN_FILE = "README.md"
+MARKDOWN_FILE = "github_comment.md"
 ASSETS_BRANCH_PATH = "assets-branch"
 ASSETS_FOLDER = os.path.join(ASSETS_BRANCH_PATH, "uploaded-assets")
 

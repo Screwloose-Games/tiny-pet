@@ -573,12 +573,12 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
         print(f"Output directory: {file_output_dir}")
 
         rendered_images = {
-            "front": render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, create_png_filename("front")),
-            "top": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename("top"), model_facing_direction="down"),
-            "right": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename("right"), model_facing_direction="right"),
-            "front_wireframe": render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, create_png_filename("front_wireframe"), render_flags=wireframe_render_flags),
-            "top_wireframe": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename("top_wireframe"), render_flags=wireframe_render_flags, model_facing_direction="down"),
-            "right_wireframe": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename("right_wireframe"), render_flags=wireframe_render_flags, model_facing_direction="right"),
+            "front": render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, create_png_filename(gltf_file, "front")),
+            "top": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename(gltf_file, "top"), model_facing_direction="down"),
+            "right": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename(gltf_file, "right"), model_facing_direction="right"),
+            "front_wireframe": render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, create_png_filename(gltf_file, "front_wireframe"), render_flags=wireframe_render_flags),
+            "top_wireframe": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename(gltf_file, "top_wireframe"), render_flags=wireframe_render_flags, model_facing_direction="down"),
+            "right_wireframe": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename(gltf_file, "right_wireframe"), render_flags=wireframe_render_flags, model_facing_direction="right"),
         }
         
         # Create markdown report

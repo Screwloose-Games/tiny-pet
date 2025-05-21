@@ -92,7 +92,7 @@ jobs:
           path: assets-branch
       
       - name: Run markdown processor
-        run: python .github/scripts/process_markdown.py
+        run: python .github/scripts/process_markdown.py "/workspace/gltf-validation-results/github_comment.md"
 
 
       - name: Create or update PR comment
@@ -102,6 +102,7 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
+            const resultsDir = 'workspace/gltf-validation-results';
             
             // Read the validation results
             const MARKDOWN_FILE = "github_comment.md"

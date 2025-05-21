@@ -1,8 +1,14 @@
 import os
 import re
 import shutil
+import sys
 
-MARKDOWN_FILE = "github_comment.md"
+# Expect the markdown file path as the first argument
+if len(sys.argv) < 2:
+    print("Usage: python process_markdown.py <markdown_file_path>")
+    sys.exit(1)
+MARKDOWN_FILE = sys.argv[1]
+
 ASSETS_BRANCH_PATH = "assets-branch"
 ASSETS_FOLDER = os.path.join(ASSETS_BRANCH_PATH, "uploaded-assets")
 

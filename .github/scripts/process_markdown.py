@@ -1,4 +1,5 @@
 import os
+import random
 import re
 import shutil
 import sys
@@ -30,6 +31,10 @@ for image_path in matches:
     if not os.path.isfile(image_path):
         continue
     filename = os.path.basename(image_path)
+    # add some logic to create random filename
+    fname, ext = os.path.splitext(filename)
+    filename = f"{fname}_{random.randint(1000, 9999)}{ext}"
+
     target_path = os.path.join(ASSETS_FOLDER, filename)
     shutil.copy2(image_path, target_path)
 

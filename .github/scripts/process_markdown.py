@@ -26,6 +26,7 @@ repo = os.getenv("GITHUB_REPOSITORY")
 new_lines = content
 
 for image_path in matches:
+    print(f"Matched image path: {image_path}")
     if not os.path.isfile(image_path):
         continue
     filename = os.path.basename(image_path)

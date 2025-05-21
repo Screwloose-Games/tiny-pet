@@ -193,7 +193,7 @@ def list_textures(gltf: GLTF2) -> list[str]:
         print("No textures found.")
         return textures
     for texture in gltf.textures:
-        textures.append(texture.sampler)
+        textures.append(texture.name)
     return textures
 
 def list_images(gltf: GLTF2) -> list[str]:
@@ -224,8 +224,9 @@ def list_bones(gltf: GLTF2) -> list[str]:
         print("No bones found.")
         return bones
     for skin in gltf.skins:
-        for joint in skin.joints:
-            bones.append(joint)
+        bones.append(skin.name)
+        # for joint in skin.joints:
+        #     bones.append(joint)
     return bones
 
 def list_materials(gltf: GLTF2) -> list[str]:
@@ -256,32 +257,6 @@ def get_gltf_scale(gltf: GLTF2) -> float:
         print("No scale found in the node.")
         return 1.0
     return node.scale[0]  # Assuming uniform scaling
-
-def get_model_facing_direction(gltf: GLTF2) -> str:
-    """
-    Returns the model facing direction.
-    """
-    if not gltf.scenes:
-        print("No scenes found.")
-        return "Unknown"
-    scene = gltf.scenes[gltf.scene]
-    if not scene.nodes:
-        print("No nodes found in the scene.")
-        return "Unknown"
-    node = gltf.nodes[scene.nodes[0]]
-    if not node.rotation:
-        print("No rotation found in the node.")
-        return "Unknown"
-    rotation = node.rotation
-    if rotation[0] == 0 and rotation[1] == 0 and rotation[2] == 0 and rotation[3] == 1:
-        return "Z+"
-    elif rotation[0] == 0 and rotation[1] == 1 and rotation[2] == 0 and rotation[3] == 0:
-        return "Y+"
-    elif rotation[0] == 1 and rotation[1] == 0 and rotation[2] == 0 and rotation[3] == 0:
-        return "X+"
-    else:
-        return "Unknown"
-
 
 def get_poly_count(scene: trimesh.Scene) -> int:
     """
@@ -458,9 +433,11 @@ def create_markdown_report(poly_count: int, width: float, depth: float, height: 
 - **Images**: {images}
 - **Materials**: {materials}
 - **Total Bones found**: {len(bones)}
-- **Facing Direction**: {facing_direction}
-
 """
+
+    if len(bones) > 0:
+        report += f"- **Bones**: {bones}\n"
+
     recommended_poly_max = 20000
     has_too_many_polys = poly_count > recommended_poly_max
     is_scaled = scale != 1.0
@@ -604,7 +581,6 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
             materials=list_materials(gltf),
             bones=list_bones(gltf),
             scale=get_gltf_scale(gltf),
-            facing_direction=get_model_facing_direction(gltf),
             rendered_images=rendered_images
         )
 

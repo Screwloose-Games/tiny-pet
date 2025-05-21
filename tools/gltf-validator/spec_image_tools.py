@@ -62,7 +62,8 @@ def draw_facing_direction(draw, direction: str):
         draw_arrow_right(draw, img_width, img_height)
         draw_text_right(draw, img_width, img_height)
     else:
-        raise ValueError("Direction must be either 'down' or 'right'")
+        pass
+        # Do nothing. It only makes sense to draw the facing direction for down and right.
 
 def main():
     width, height = 256, 256

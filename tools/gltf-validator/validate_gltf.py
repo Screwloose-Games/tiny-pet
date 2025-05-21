@@ -416,7 +416,7 @@ def evaluate_model_against_spec(
 
     return results
 
-def render_and_save_view(scene, camera, camera_pose, grid_img, output_path, render_flags=RenderFlags.RGBA, model_facing_direction: str = None):
+def render_and_save_view(scene, camera, camera_pose, grid_img, output_path, render_flags=RenderFlags.RGBA, model_facing_direction: str = None) -> str:
     """
     Renders a view of the scene with the given camera pose, overlays the grid, and saves the image.
     """
@@ -430,8 +430,9 @@ def render_and_save_view(scene, camera, camera_pose, grid_img, output_path, rend
         draw_facing_direction(draw, model_facing_direction)
     print(f"Saving image to {output_path}")
     final_img.convert("RGB").save(output_path)
+    return output_path
 
-def create_markdown_report(poly_count: int, width: float, depth: float, height: float, animations: list[str], textures: list[str], images: list[str], materials: list[str], bones: list[str], scale: float, facing_direction: str, front_image_path: str, top_image_path: str, side_image_path: str) -> str:
+def create_markdown_report(poly_count: int, width: float, depth: float, height: float, animations: list[str], textures: list[str], images: list[str], materials: list[str], bones: list[str], scale: float, facing_direction: str, rendered_images: dict) -> str:
     """
     Creates a markdown report of the model.
     """
@@ -468,19 +469,20 @@ def create_markdown_report(poly_count: int, width: float, depth: float, height: 
     if has_too_many_polys:
         report += f"\nThe model has a high polygon count. This may affect performance. Max recommended poly count: {recommended_poly_max}\n"
 
-    report += f"""## Images
+    report += "## Images\n\n"
 
-![Front View]({front_image_path})
-![Top View]({top_image_path})
-![Right Side View]({side_image_path})
+    for image_name, image_path in rendered_images.items():
+        report += f"![{image_name}]({image_path})\n"
 
-## Wireframe Images
-
-![Front View](front_wireframe.png)
-![Top View](top_wireframe.png)
-![Right Side View](right_wireframe.png)
-"""
     return report
+
+def create_png_filename(gltf_file: str, view: str) -> str:
+    """
+    Create a PNG filename based on the GLTF file name and view.
+    """
+    base_name = os.path.splitext(os.path.basename(gltf_file))[0]
+    return f"{base_name}_{view}.png"
+
 
 def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
     """
@@ -555,7 +557,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
         
         poly_count = get_poly_count(scene)
         print(f"Evaluating model against spec for {gltf_file}")
-        results = evaluate_model_against_spec(
+        validation_results = evaluate_model_against_spec(
             gltf=gltf,
             spec=spec,
             scene_bounds_size=scene_bounds_size,
@@ -569,20 +571,16 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
         # Render and save views
         print(f"Rendering and saving views for {gltf_file}")
         print(f"Output directory: {file_output_dir}")
-        render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "top.png"), model_facing_direction="down")
-        render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "front.png"))
-        render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "right.png"), model_facing_direction="right")
 
-        render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "top_wireframe.png"), wireframe_render_flags, "down")
-        render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "front_wireframe.png"), wireframe_render_flags)
-        render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "right_wireframe.png"), wireframe_render_flags, "right")
-
+        rendered_images = {
+            "front": render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, create_png_filename("front")),
+            "top": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename("top"), model_facing_direction="down"),
+            "right": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename("right"), model_facing_direction="right"),
+            "front_wireframe": render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, create_png_filename("front_wireframe"), render_flags=wireframe_render_flags),
+            "top_wireframe": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename("top_wireframe"), render_flags=wireframe_render_flags, model_facing_direction="down"),
+            "right_wireframe": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename("right_wireframe"), render_flags=wireframe_render_flags, model_facing_direction="right"),
+        }
+        
         # Create markdown report
         print(f"Creating markdown report for {gltf_file}")
         report = create_markdown_report(
@@ -597,22 +595,21 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
             bones=list_bones(gltf),
             scale=get_gltf_scale(gltf),
             facing_direction=get_model_facing_direction(gltf),
-            front_image_path=os.path.join(file_output_dir, "front.png"),
-            top_image_path=os.path.join(file_output_dir, "top.png"),
-            side_image_path=os.path.join(file_output_dir, "right.png")
+            rendered_images=rendered_images
         )
 
-        with open(os.path.join(file_output_dir, "report.md"), "w") as f:
+        REPORT_FILEPATH = os.path.join(file_output_dir, "report.md")
+        with open(REPORT_FILEPATH, "w") as f:
             f.write(report)
 
-        print(f"Report saved to: {os.path.join(file_output_dir, 'report.md')}")
+        print(f"Report saved to: {REPORT_FILEPATH}")
 
         return {
             "file": gltf_file,
             "report": report,
-            "results": results,
-            "report_path": os.path.join(file_output_dir, "report.md"),
-            "images_dir": file_output_dir,
+            "validation_results": validation_results,
+            "report_filepath": REPORT_FILEPATH,
+            "file_output_dir": file_output_dir,
             "success": True
         }
     except Exception as e:
@@ -628,6 +625,17 @@ def create_github_comment(results: list[dict]) -> str:
     Create a GitHub comment from the validation results.
     """
     comment = "## GLTF Validation Results\n\n"
+
+    # Result:
+    # {
+    #     "file": gltf_file,
+    #     "report": report,
+    #     "validation_results": validation_results,
+    #     "report_filepath": REPORT_FILEPATH,
+    #     "images_dir": file_output_dir,
+    #     "success": True
+    # }
+
     
     for result in results:
         report = result.get("report", None)
@@ -643,21 +651,21 @@ def create_github_comment(results: list[dict]) -> str:
         
         # Add validation results
         comment += "#### Validation Results:\n"
-        for key, value in result["results"].items():
+        for key, value in result["validation_results"].items():
             status = "✅" if value == "OK" else "❌"
             comment += f"- {key}: {status} {value}\n"
         
         # Add report content
-        with open(result["report_path"], "r") as f:
+        with open(result["report_filepath"], "r") as f:
             report_content = f.read()
             comment += f"\n#### Model Report:\n{report_content}\n"
         
-        # Add images
-        comment += "\n#### Model Views:\n"
-        for view in ["front", "top", "right"]:
-            image_path = os.path.join(result["images_dir"], f"{view}.png")
-            if os.path.exists(image_path):
-                comment += f"![{view} view]({image_path})\n"
+        # # Add images
+        # comment += "\n#### Model Views:\n"
+        # for view in ["front", "top", "right"]:
+        #     image_path = os.path.join(result["images_dir"], f"{view}.png")
+        #     if os.path.exists(image_path):
+        #         comment += f"![{view} view]({image_path})\n"
         
         comment += "\n---\n\n"
     

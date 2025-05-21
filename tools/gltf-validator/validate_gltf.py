@@ -453,8 +453,6 @@ def create_markdown_report(poly_count: int, width: float, depth: float, height: 
 - **Total Bones found**: {len(bones)}
 - **Facing Direction**: {facing_direction}
 
-
-
 """
     recommended_poly_max = 20000
     has_too_many_polys = poly_count > recommended_poly_max
@@ -472,7 +470,7 @@ def create_markdown_report(poly_count: int, width: float, depth: float, height: 
     report += "## Images\n\n"
 
     for image_name, image_path in rendered_images.items():
-        report += f"![{image_name}]({image_path})\n"
+        report += f"![{image_name}]({image_path})"
 
     return report
 
@@ -577,8 +575,11 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
             "top": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename(gltf_file, "top"), model_facing_direction="down"),
             "right": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename(gltf_file, "right"), model_facing_direction="right"),
             "front_wireframe": render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, create_png_filename(gltf_file, "front_wireframe"), render_flags=wireframe_render_flags),
-            "top_wireframe": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename(gltf_file, "top_wireframe"), render_flags=wireframe_render_flags, model_facing_direction="down"),
-            "right_wireframe": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename(gltf_file, "right_wireframe"), render_flags=wireframe_render_flags, model_facing_direction="right"),
+            "top_wireframe": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename(gltf_file, "top_wireframe"), render_flags=wireframe_render_flags),
+            "right_wireframe": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename(gltf_file, "right_wireframe"), render_flags=wireframe_render_flags),
+            "front_normals": render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, create_png_filename(gltf_file, "front_normals"), render_flags=RenderFlags.RGBA + RenderFlags.SHOW_NORMALS),
+            "top_normals": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename(gltf_file, "top_normals"), render_flags=RenderFlags.RGBA + RenderFlags.SHOW_NORMALS),
+            "right_normals": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename(gltf_file, "right_normals"), render_flags=RenderFlags.RGBA + RenderFlags.SHOW_NORMALS),
         }
         
         # Create markdown report
@@ -624,7 +625,7 @@ def create_github_comment(results: list[dict]) -> str:
     """
     Create a GitHub comment from the validation results.
     """
-    comment = "## GLTF Validation Results\n\n"
+    comment = ""
 
     # Result:
     # {
@@ -638,10 +639,7 @@ def create_github_comment(results: list[dict]) -> str:
 
     
     for result in results:
-        report = result.get("report", None)
-        if report:
-            comment += f"### Report:\n"
-            comment += f"{report}\n\n"
+        
         if not result["success"]:
             comment += f"### ❌ {os.path.basename(result['file'])}\n"
             comment += f"Error: {result['error']}\n\n"
@@ -656,9 +654,13 @@ def create_github_comment(results: list[dict]) -> str:
             comment += f"- {key}: {status} {value}\n"
         
         # Add report content
-        with open(result["report_filepath"], "r") as f:
-            report_content = f.read()
-            comment += f"\n#### Model Report:\n{report_content}\n"
+        # with open(result["report_filepath"], "r") as f:
+        #     report_content = f.read()
+        #     comment += f"\n#### Model Report:\n{report_content}\n"
+
+        report = result.get("report", None)
+        if report:
+            comment += f"#### Model Report:\n{report}\n\n"
         
         # # Add images
         # comment += "\n#### Model Views:\n"

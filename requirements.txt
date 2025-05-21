@@ -1,0 +1,3 @@
+# requirements.txt for test dependencies
+pytest
+trimesh

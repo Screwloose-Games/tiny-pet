@@ -23,3 +23,6 @@ movies/
 .env
 
 .idea/
+
+# Python virtual environment
+.venv/

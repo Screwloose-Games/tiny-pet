@@ -38,7 +38,7 @@ def draw_arrow_right(draw, img_width, img_height):
 def draw_text_facing(draw, img_width, img_height, direction):
     center = (img_width // 2, img_height // 2)
     if direction == 'right':
-        target = (img_width, img_height // 2)
+        target = (img_width // 4, img_height // 2)
         mid = ((center[0] + target[0]) // 2, (center[1] + target[1]) // 2)
     elif direction == 'down':
         target = (img_width // 2, img_height)

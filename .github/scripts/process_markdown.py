@@ -14,7 +14,8 @@ MARKDOWN_FILE = sys.argv[1]
 ASSETS_BRANCH_NAME = "assets"
 
 ASSETS_BRANCH_PATH = "assets-branch"
-ASSETS_FOLDER = os.path.join(ASSETS_BRANCH_PATH, "uploaded-assets")
+ASSET_DIR = "uploaded-assets"
+ASSETS_FOLDER = os.path.join(ASSETS_BRANCH_PATH, ASSET_DIR)
 
 os.makedirs(ASSETS_FOLDER, exist_ok=True)
 
@@ -47,7 +48,7 @@ for image_path in matches:
     print(f"Copying {image_path} to {target_path}")
     shutil.copy2(image_path, target_path)
 
-    raw_url = get_raw_url(repo, ASSETS_BRANCH_NAME, ASSETS_FOLDER, filename)
+    raw_url = get_raw_url(repo, ASSETS_BRANCH_NAME, ASSET_DIR, filename)
     print(f"Raw URL: {raw_url}")
 
     new_lines = new_lines.replace(image_path, raw_url)

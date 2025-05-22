@@ -12,6 +12,8 @@ from trimesh.transformations import euler_matrix, translation_matrix
 import yaml
 from spec_image_tools import draw_facing_direction
 
+GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
+GITHUB_COMMIT_SHA = os.getenv("GITHUB_COMMIT_SHA")
 THICK_GRID_COLOR = (100, 100, 100, 255)
 THIN_GRID_COLOR = (200, 200, 200, 255)
 THICK_GRID_THICKNESS = 2
@@ -19,6 +21,34 @@ THIN_GRID_THICKNESS = 1
 CAMERA_DISTANCE_PADDING = 1.0
 SPEC_EXTENSION = ".spec.yaml"
 image_width, image_height = 256, 256
+
+def get_raw_url(repo, branch, filepath):
+    # Construct the raw URL for the file in the GitHub repository
+    # Example raw URL: https://github.com/Screwloose-Games/tiny-pet/blob/assets/uploaded-assets/example_character_front_4404.png?raw=true
+    print(f"get_raw_url: repo={repo}, branch={branch}, filepath={filepath}")
+    return f"https://github.com/{repo}/blob/{branch}/{filepath}?raw=true"
+
+def create_3d_preview_url(gltf_filepth: str, gltf: GLTF2) -> str:
+    """
+    Create a 3D preview URL for the assets.
+    """
+    assets: list[str] = []
+    assets.append(gltf_filepth)
+    if gltf_filepth.endswith(".gltf"):
+        bin_file = os.path.splitext(gltf_filepth)[0] + ".bin"
+        if os.path.exists(bin_file):
+            assets.append(bin_file)
+        else:
+            print(f"Warning: {bin_file} not found.")
+        gltf_basepath = os.path.dirname(gltf_filepth)
+        for image in gltf.images:
+            if hasattr(image, 'uri') and image.uri:
+                assets.append(os.path.join(gltf_basepath, image.uri))
+
+    comma_separated_assets = ",".join([get_raw_url(GITHUB_REPOSITORY, GITHUB_COMMIT_SHA, asset) for asset in assets])
+    complete_url = f"https://3dviewer.net/#model={comma_separated_assets}"
+    print(f"3D preview URL: {complete_url}")
+    return complete_url
 
 def get_bounding_box(mesh, accessors, buffer_views, buffers):
     min_coords = np.array([np.inf, np.inf, np.inf])
@@ -420,12 +450,13 @@ def render_and_save_view(scene, camera, camera_pose, grid_img, output_path, rend
     final_img.convert("RGB").save(output_path)
     return output_path
 
-def create_markdown_report(poly_count: int, width: float, depth: float, height: float, animations: list[str], textures: list[str], images: list[str], materials: list[str], bones: list[str], scale: float, rendered_images: dict) -> str:
+def create_markdown_report(poly_count: int, width: float, depth: float, height: float, animations: list[str], textures: list[str], images: list[str], materials: list[str], bones: list[str], scale: float, rendered_images: dict, preview_3d_url: str = None) -> str:
     """
     Creates a markdown report of the model.
     """
     report = f"""
-### Model Report
+# [*Preview Model in 3D Viewer*]({preview_3d_url})
+
 #### Model Statistics
 - **Total Polygons**: {poly_count}
 
@@ -573,6 +604,10 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
             "top_normals": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename(gltf_file, "top_normals"), render_flags=RenderFlags.RGBA + RenderFlags.OFFSCREEN + RenderFlags.FACE_NORMALS),
             "right_normals": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename(gltf_file, "right_normals"), render_flags=RenderFlags.RGBA + RenderFlags.OFFSCREEN + RenderFlags.FACE_NORMALS),
         }
+
+        # Create 3D preview URL
+
+        preview_3d_url = create_3d_preview_url(gltf_file, gltf)
         
         # Create markdown report
         print(f"Creating markdown report for {gltf_file}")
@@ -587,7 +622,8 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
             materials=list_materials(gltf),
             bones=list_bones(gltf),
             scale=get_gltf_scale(gltf),
-            rendered_images=rendered_images
+            rendered_images=rendered_images,
+            preview_3d_url=preview_3d_url,
         )
 
         REPORT_FILEPATH = os.path.join(file_output_dir, "report.md")
@@ -695,5 +731,3 @@ if __name__ == "__main__":
     # Print summary
     success_count = sum(1 for r in results if r["success"])
     print(f"Processed {len(results)} files: {success_count} successful, {len(results) - success_count} failed")
-
-

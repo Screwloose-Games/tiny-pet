@@ -193,13 +193,13 @@ def list_textures(gltf: GLTF2) -> list[str]:
         print("No textures found.")
         return textures
     for texture in gltf.textures:
-        texture_name_str = ""
+        texture_strs = []
         if hasattr(texture, 'source') and texture.source is not None:
             image_str = list_images(gltf)[texture.source]
-            texture_name_str = f"Image: {image_str}"
+            texture_strs.append(f"Image: {image_str}")
         if hasattr(texture, 'name') and texture.name:
-            texture_name_str += f"| Name: {texture.name}"
-        textures.append(texture_name_str)
+            texture_strs.append(f"Name: {texture.name}")
+        textures.append("| ".join(texture_strs))
     return textures
 
 def list_images(gltf: GLTF2) -> list[str]:

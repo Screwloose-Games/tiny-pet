@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dw8s4sssb4f0w"
-path.s3tc="res://.godot/imported/base_basic_pbr_texture_normal.png-4a4c19e6f0d11081b393afbb041ccf7d.s3tc.ctex"
+uid="uid://cvxkrhnax1aff"
+path.s3tc="res://.godot/imported/base_basic_pbr_texture_normal.png-25b8573e59cd9afb1b9f10a6a8805877.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "75f77d7ef0b53aca31e216c0700fa0ed"
-}
 
 [deps]
 
-source_file="res://assets/3d/creature/base_basic_pbr_texture_normal.png"
-dest_files=["res://.godot/imported/base_basic_pbr_texture_normal.png-4a4c19e6f0d11081b393afbb041ccf7d.s3tc.ctex"]
+source_file="res://tests/test_asset_validation/creature/base_basic_pbr_texture_normal.png"
+dest_files=["res://.godot/imported/base_basic_pbr_texture_normal.png-25b8573e59cd9afb1b9f10a6a8805877.s3tc.ctex"]
 
 [params]
 
@@ -27,8 +24,8 @@ compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=1
-roughness/src_normal="res://base_basic_pbr_texture_normal.png"
+roughness/mode=0
+roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false

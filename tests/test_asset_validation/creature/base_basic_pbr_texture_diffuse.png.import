@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ba0jifynqrryo"
-path.s3tc="res://.godot/imported/base_basic_pbr_texture_diffuse.png-525374ceb51e609b378503b3ee046dbd.s3tc.ctex"
+uid="uid://2dstuov55qby"
+path.s3tc="res://.godot/imported/base_basic_pbr_texture_diffuse.png-f3a6f638a3fb5b64a12c9b67256e08b4.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "46267e0d7625d66faf543243300777ff"
-}
 
 [deps]
 
-source_file="res://assets/3d/creature/base_basic_pbr_texture_diffuse.png"
-dest_files=["res://.godot/imported/base_basic_pbr_texture_diffuse.png-525374ceb51e609b378503b3ee046dbd.s3tc.ctex"]
+source_file="res://tests/test_asset_validation/creature/base_basic_pbr_texture_diffuse.png"
+dest_files=["res://.godot/imported/base_basic_pbr_texture_diffuse.png-f3a6f638a3fb5b64a12c9b67256e08b4.s3tc.ctex"]
 
 [params]
 

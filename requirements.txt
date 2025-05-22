@@ -3,3 +3,4 @@ pytest
 trimesh
 pyyaml
 pygltflib
+gdtoolkit==4.*

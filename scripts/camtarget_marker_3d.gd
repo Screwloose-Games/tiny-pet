@@ -8,4 +8,5 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	pass
 	#rotate(Vector3.UP, delta*PI * 0.5)	pass

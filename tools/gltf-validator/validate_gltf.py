@@ -193,7 +193,14 @@ def list_textures(gltf: GLTF2) -> list[str]:
         print("No textures found.")
         return textures
     for texture in gltf.textures:
-        textures.append(texture.name)
+        texture_name_str = ""
+        if hasattr(texture, 'source') and texture.source is not None:
+            texture_name_str = f"Image id: {texture.source}"
+        if hasattr(texture, 'sampler') and texture.sampler is not None:
+            texture_name_str += f"Sampler id: {texture.sampler}"
+        if hasattr(texture, 'name') and texture.name:
+            texture_name_str += f"Name: {texture.name}"
+        textures.append(texture_name_str)
     return textures
 
 def list_images(gltf: GLTF2) -> list[str]:
@@ -224,9 +231,9 @@ def list_bones(gltf: GLTF2) -> list[str]:
         print("No bones found.")
         return bones
     for skin in gltf.skins:
-        bones.append(skin.name)
-        # for joint in skin.joints:
-        #     bones.append(joint)
+        # bones.append(skin.name)
+        for joint_node_id in skin.joints:
+            bones.append(gltf.nodes[joint_node_id].name)
     return bones
 
 def list_materials(gltf: GLTF2) -> list[str]:

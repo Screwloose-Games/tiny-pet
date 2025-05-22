@@ -71,6 +71,8 @@ jobs:
             docker run --rm \
               -v "$(pwd):/workspace" \
               -w /workspace \
+              -e GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
+              -e GITHUB_REF_NAME="${GITHUB_REF_NAME}" \
               ghcr.io/screwloose-games/gltf-validator:latest \
               "/workspace/gltf-validation-results" $files
           else

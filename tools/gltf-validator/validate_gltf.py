@@ -195,11 +195,10 @@ def list_textures(gltf: GLTF2) -> list[str]:
     for texture in gltf.textures:
         texture_name_str = ""
         if hasattr(texture, 'source') and texture.source is not None:
-            texture_name_str = f"Image id: {texture.source}"
-        if hasattr(texture, 'sampler') and texture.sampler is not None:
-            texture_name_str += f"Sampler id: {texture.sampler}"
+            image_str = list_images(gltf)[texture.source]
+            texture_name_str = f"Image: {image_str}"
         if hasattr(texture, 'name') and texture.name:
-            texture_name_str += f"Name: {texture.name}"
+            texture_name_str += f"| Name: {texture.name}"
         textures.append(texture_name_str)
     return textures
 

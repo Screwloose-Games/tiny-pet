@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7td0fbdkbfxb"]
+
+[ext_resource type="PackedScene" uid="uid://cqnrknitmrym6" path="res://tests/test_asset_validation/creature/base_basic_pbr.tscn" id="1_w6gn8"]
+
+[node name="PrefabCreature" type="Node3D"]
+
+[node name="base_basic_pbr" parent="." instance=ExtResource("1_w6gn8")]
+transform = Transform3D(0.88689, 0, -0.461981, 0, 1, 0, 0.461981, 0, 0.88689, 0, 0, 0)

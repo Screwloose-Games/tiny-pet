@@ -4,7 +4,7 @@ extends Node3D
 signal sample
 
 var node_name: String:
-	set(val): 
+	set(val):
 		node_name = val
 		update_signal_options(node_name)
 var signal_name: String:
@@ -12,20 +12,21 @@ var signal_name: String:
 		signal_name = val
 		_on_signal_name_updated(signal_name)
 var expected_args: Dictionary[String, Variant] = {}
-
 var _signal_name_options: Array[StringName] = []
 var _signal_options: Array[Dictionary] = []
 
 var _current_signal_data: Dictionary = {}
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	pass  # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
+
 
 func get_current_signal_args() -> Dictionary:
 	var arg_dictionary = {}
@@ -35,6 +36,7 @@ func get_current_signal_args() -> Dictionary:
 		var current_arg_dict: Dictionary = current_args[arg_index]
 		arg_dictionary[current_arg_dict["name"]] = null
 	return arg_dictionary
+
 
 func _get_property_list() -> Array[Dictionary]:
 	# get globals and return a list of global autoload node names as strings options for the node_name property
@@ -51,7 +53,6 @@ func _get_property_list() -> Array[Dictionary]:
 
 	#var test_enum = load("res://globals/environment_manager.gd")
 	#var final_enum = test_enum.get("ItemType")
-	
 
 	var properties: Array[Dictionary] = [
 		{
@@ -69,36 +70,33 @@ func _get_property_list() -> Array[Dictionary]:
 			"usage": PROPERTY_USAGE_DEFAULT
 		},
 	]
-	
-	
-	
-	
-	if _current_signal_data:
-		
 
-			
+	if _current_signal_data:
 		#data_to_append.merge({
-			#"name": "args",
-			#"usage": PROPERTY_USAGE_DEFAULT
+		#"name": "args",
+		#"usage": PROPERTY_USAGE_DEFAULT
 		#})
 		#hint_string = "%d:%d:" % [TYPE_STRING, TYPE_FLOAT]
-		
-		properties.append({
-			"name": "expected_args",
-			"type": TYPE_DICTIONARY,
-			"hint": PROPERTY_HINT_DICTIONARY_TYPE,
-			"hint_string": "person:%d:%d:" % [TYPE_STRING, TYPE_FLOAT],
-			"usage": PROPERTY_USAGE_DEFAULT
-		})
-			#"hint_string": "String,float",
+
+		properties.append(
+			{
+				"name": "expected_args",
+				"type": TYPE_DICTIONARY,
+				"hint": PROPERTY_HINT_DICTIONARY_TYPE,
+				"hint_string": "person:%d:%d:" % [TYPE_STRING, TYPE_FLOAT],
+				"usage": PROPERTY_USAGE_DEFAULT
+			}
+		)
+		#"hint_string": "String,float",
 	#
 	return properties
+
 
 func update_signal_options(autoload_name: StringName):
 	var singleton: String = ProjectSettings.get_setting("autoload/" + autoload_name)
 	if singleton is String:
 		singleton = singleton.trim_prefix("*")
-	
+
 	var signals = get_signals_by_script_path(singleton)
 	if _signal_name_options != signals:
 		_signal_name_options = signals
@@ -108,18 +106,21 @@ func update_signal_options(autoload_name: StringName):
 		signal_name = ""
 		notify_property_list_changed()
 
+
 func _on_signal_name_updated(signal_name: String):
 	var current_signal_data: Dictionary
-	var current_signal_data_index = _signal_options.find_custom(func(signal_data: Dictionary): return signal_data.name == signal_name)
+	var current_signal_data_index = _signal_options.find_custom(
+		func(signal_data: Dictionary): return signal_data.name == signal_name
+	)
 
 	if current_signal_data_index != -1:
 		current_signal_data = _signal_options[current_signal_data_index]
-	_current_signal_data =  current_signal_data
+	_current_signal_data = current_signal_data
 
 	expected_args.clear()
 	expected_args.merge(get_current_signal_args())
 	notify_property_list_changed()
-	
+
 
 func get_signals_by_script_path(script_path: String):
 	var signals: Array[StringName] = []
@@ -127,6 +128,7 @@ func get_signals_by_script_path(script_path: String):
 	for signal_info in signal_list:
 		signals.append(signal_info.name)
 	return signals
+
 
 func get_signal_data_by_script_path(script_path: String):
 	var signals: Array[StringName] = []

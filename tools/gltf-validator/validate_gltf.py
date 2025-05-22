@@ -13,7 +13,7 @@ import yaml
 from spec_image_tools import draw_facing_direction
 
 GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
-GITHUB_BRANCH_NAME = os.getenv("GITHUB_REF_NAME")
+GITHUB_COMMIT_SHA = os.getenv("GITHUB_COMMIT_SHA")
 THICK_GRID_COLOR = (100, 100, 100, 255)
 THIN_GRID_COLOR = (200, 200, 200, 255)
 THICK_GRID_THICKNESS = 2
@@ -45,7 +45,7 @@ def create_3d_preview_url(gltf_filepth: str, gltf: GLTF2) -> str:
             if hasattr(image, 'uri') and image.uri:
                 assets.append(os.path.join(gltf_basepath, image.uri))
 
-    comma_separated_assets = ",".join([get_raw_url(GITHUB_REPOSITORY, GITHUB_BRANCH_NAME, asset) for asset in assets])
+    comma_separated_assets = ",".join([get_raw_url(GITHUB_REPOSITORY, GITHUB_COMMIT_SHA, asset) for asset in assets])
     complete_url = f"https://3dviewer.net/#model={comma_separated_assets}"
     print(f"3D preview URL: {complete_url}")
     return complete_url

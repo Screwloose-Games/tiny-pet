@@ -22,6 +22,29 @@ CAMERA_DISTANCE_PADDING = 1.0
 SPEC_EXTENSION = ".spec.yaml"
 image_width, image_height = 256, 256
 
+def get_raw_url(repo, branch, filepath):
+    # Construct the raw URL for the file in the GitHub repository
+    # Example raw URL: https://github.com/Screwloose-Games/tiny-pet/blob/assets/uploaded-assets/example_character_front_4404.png?raw=true
+    print(f"get_raw_url: repo={repo}, branch={branch}, filepath={filepath}")
+    return f"https://github.com/{repo}/blob/{branch}/{filepath}?raw=true"
+
+def create_3d_preview_url(gltf_filepth: str, gltf: GLTF2) -> str:
+    """
+    Create a 3D preview URL for the assets.
+    """
+    assets: list[str] = []
+    assets.append(gltf_filepth)
+    if gltf_filepth.endswith(".gltf"):
+        gltf_basepath = os.path.dirname(gltf_filepth)
+        for image in gltf.images:
+            if hasattr(image, 'uri') and image.uri:
+                assets.append(os.path.join(gltf_basepath, image.uri))
+
+    comma_separated_assets = ",".join([get_raw_url(GITHUB_REPOSITORY, GITHUB_BRANCH_NAME, asset) for asset in assets])
+    complete_url = f"https://3dviewer.net/#model={comma_separated_assets}"
+    print(f"3D preview URL: {complete_url}")
+    return complete_url
+
 def get_bounding_box(mesh, accessors, buffer_views, buffers):
     min_coords = np.array([np.inf, np.inf, np.inf])
     max_coords = np.array([-np.inf, -np.inf, -np.inf])
@@ -704,27 +727,3 @@ if __name__ == "__main__":
     # Print summary
     success_count = sum(1 for r in results if r["success"])
     print(f"Processed {len(results)} files: {success_count} successful, {len(results) - success_count} failed")
-
-
-def get_raw_url(repo, branch, filepath):
-    # Construct the raw URL for the file in the GitHub repository
-    # Example raw URL: https://github.com/Screwloose-Games/tiny-pet/blob/assets/uploaded-assets/example_character_front_4404.png?raw=true
-    print(f"get_raw_url: repo={repo}, branch={branch}, filepath={filepath}")
-    return f"https://github.com/{repo}/blob/{branch}/{filepath}?raw=true"
-
-def create_3d_preview_url(gltf_filepth: str, gltf: GLTF2) -> str:
-    """
-    Create a 3D preview URL for the assets.
-    """
-    assets: list[str] = []
-    assets.append(gltf_filepth)
-    if gltf_filepth.endswith(".gltf"):
-        gltf_basepath = os.path.dirname(gltf_filepth)
-        for image in gltf.images:
-            if hasattr(image, 'uri') and image.uri:
-                assets.append(os.path.join(gltf_basepath, image.uri))
-
-    comma_separated_assets = ",".join([get_raw_url(GITHUB_REPOSITORY, GITHUB_BRANCH_NAME, asset) for asset in assets])
-    complete_url = f"https://3dviewer.net/#model={comma_separated_assets}"
-    print(f"3D preview URL: {complete_url}")
-    return complete_url

@@ -35,6 +35,11 @@ def create_3d_preview_url(gltf_filepth: str, gltf: GLTF2) -> str:
     assets: list[str] = []
     assets.append(gltf_filepth)
     if gltf_filepth.endswith(".gltf"):
+        bin_file = os.path.splitext(gltf_filepth)[0] + ".bin"
+        if os.path.exists(bin_file):
+            assets.append(bin_file)
+        else:
+            print(f"Warning: {bin_file} not found.")
         gltf_basepath = os.path.dirname(gltf_filepth)
         for image in gltf.images:
             if hasattr(image, 'uri') and image.uri:

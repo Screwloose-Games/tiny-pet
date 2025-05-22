@@ -61,6 +61,9 @@ jobs:
 
       - name: Run GLTF validator
         if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
         run: |
           if [ -s gltf_files.txt ]; then
             files=$(tr '\n' ' ' < gltf_files.txt)

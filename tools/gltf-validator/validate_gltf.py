@@ -455,9 +455,8 @@ def create_markdown_report(poly_count: int, width: float, depth: float, height: 
     Creates a markdown report of the model.
     """
     report = f"""
-### [Model Preview]({preview_3d_url})""" + '{:target="_blank"}' + f"""
+# [*Preview Model in 3D Viewer*]({preview_3d_url})
 
-### Model Report
 #### Model Statistics
 - **Total Polygons**: {poly_count}
 

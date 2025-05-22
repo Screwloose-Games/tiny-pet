@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y \
   libgl1-mesa-glx \
   libgl1-mesa-dri \
   xvfb \
+  libosmesa6 \
+  mesa-utils \
   libglib2.0-0 \
   libsm6 \
   libxext6 \
@@ -30,6 +32,8 @@ WORKDIR /app
 # Copy the render script and any local modules
 COPY validate_gltf.py /app/
 COPY spec_image_tools.py /app/
+COPY entrypoint.sh /app/
+RUN chmod +x /app/entrypoint.sh
 
-# Set the entrypoint
-ENTRYPOINT ["python", "/app/validate_gltf.py"]
+# Set the entrypoint to the script that starts Xvfb and then runs the validator
+ENTRYPOINT ["/app/entrypoint.sh"]

@@ -115,17 +115,20 @@ def generate_orthographic_image(scene: trimesh.Scene, camera: pyrender.Orthograp
     No grid is drawn.
     """
     pyrender_scene = pyrender.Scene.from_trimesh_scene(scene)
+    print("Rendering scene")
     pyrender_scene.bg_color = [0, 0, 0, 0]
 
     pyrender_scene.add(camera, pose=camera_pose)
     light = pyrender.DirectionalLight(color=np.ones(3), intensity=2.0)
     pyrender_scene.add(light, pose=camera_pose)
 
-    
+    print("preparing renderer")
     r = pyrender.OffscreenRenderer(viewport_width=image_width, viewport_height=image_height)
+    print("Rendering image")
     color, _ = r.render(pyrender_scene, flags=render_flags)
-
+    print("Generating image from data")
     model_img = Image.fromarray(color, mode="RGBA")
+    print("Image generated")
     return model_img
 
 def generate_grid_image(height: int = 1024, width: int = 1024, largest_dist:  float = 2.0) -> Image:
@@ -190,7 +193,13 @@ def list_textures(gltf: GLTF2) -> list[str]:
         print("No textures found.")
         return textures
     for texture in gltf.textures:
-        textures.append(texture.sampler)
+        texture_strs = []
+        if hasattr(texture, 'source') and texture.source is not None:
+            image_str = list_images(gltf)[texture.source]
+            texture_strs.append(f"Image: {image_str}")
+        if hasattr(texture, 'name') and texture.name:
+            texture_strs.append(f"Name: {texture.name}")
+        textures.append("| ".join(texture_strs))
     return textures
 
 def list_images(gltf: GLTF2) -> list[str]:
@@ -202,7 +211,14 @@ def list_images(gltf: GLTF2) -> list[str]:
         print("No images found.")
         return images
     for image in gltf.images:
-        images.append(image.uri)
+        if hasattr(image, 'uri') and image.uri:
+            images.append(image.uri)
+        elif hasattr(image, 'name') and image.name:
+            images.append(image.name)
+        elif hasattr(image, 'bufferView') and image.bufferView:
+            images.append(f"BufferView id: {image.bufferView}")
+        else:
+            images.append("Unknown image")
     return images
 
 def list_bones(gltf: GLTF2) -> list[str]:
@@ -214,8 +230,9 @@ def list_bones(gltf: GLTF2) -> list[str]:
         print("No bones found.")
         return bones
     for skin in gltf.skins:
-        for joint in skin.joints:
-            bones.append(joint)
+        # bones.append(skin.name)
+        for joint_node_id in skin.joints:
+            bones.append(gltf.nodes[joint_node_id].name)
     return bones
 
 def list_materials(gltf: GLTF2) -> list[str]:
@@ -246,32 +263,6 @@ def get_gltf_scale(gltf: GLTF2) -> float:
         print("No scale found in the node.")
         return 1.0
     return node.scale[0]  # Assuming uniform scaling
-
-def get_model_facing_direction(gltf: GLTF2) -> str:
-    """
-    Returns the model facing direction.
-    """
-    if not gltf.scenes:
-        print("No scenes found.")
-        return "Unknown"
-    scene = gltf.scenes[gltf.scene]
-    if not scene.nodes:
-        print("No nodes found in the scene.")
-        return "Unknown"
-    node = gltf.nodes[scene.nodes[0]]
-    if not node.rotation:
-        print("No rotation found in the node.")
-        return "Unknown"
-    rotation = node.rotation
-    if rotation[0] == 0 and rotation[1] == 0 and rotation[2] == 0 and rotation[3] == 1:
-        return "Z+"
-    elif rotation[0] == 0 and rotation[1] == 1 and rotation[2] == 0 and rotation[3] == 0:
-        return "Y+"
-    elif rotation[0] == 1 and rotation[1] == 0 and rotation[2] == 0 and rotation[3] == 0:
-        return "X+"
-    else:
-        return "Unknown"
-
 
 def get_poly_count(scene: trimesh.Scene) -> int:
     """
@@ -326,8 +317,8 @@ def evaluate_model_against_spec(
     facing_dir = spec.get("facing_direction", None)
     if facing_dir:
         facing_dir = facing_dir.strip().upper()
-        model_facing = get_model_facing_direction(gltf)
-        results["facing_direction"] = (model_facing.replace("+", "") == facing_dir.replace("+", ""))
+        # model_facing = get_model_facing_direction(gltf)
+        # results["facing_direction"] = (model_facing.replace("+", "") == facing_dir.replace("+", ""))
 
     # Poly count
     poly_budget = spec.get("poly_count_budget", None)
@@ -413,41 +404,46 @@ def evaluate_model_against_spec(
 
     return results
 
-def render_and_save_view(scene, camera, camera_pose, grid_img, output_path, render_flags=RenderFlags.RGBA, model_facing_direction: str = None):
+def render_and_save_view(scene, camera, camera_pose, grid_img, output_path, render_flags=RenderFlags.RGBA, model_facing_direction: str = None) -> str:
     """
     Renders a view of the scene with the given camera pose, overlays the grid, and saves the image.
     """
+    print(f"Generating image for {output_path}")
     model_img = generate_orthographic_image(scene, camera, camera_pose, render_flags)
+    print(f"Rendering image for {output_path}")
     final_img = Image.alpha_composite(grid_img, model_img)
+    print(f"Overlaying grid on image for {output_path}")
     draw = ImageDraw.Draw(final_img)
     if model_facing_direction:
         draw_facing_direction(draw, model_facing_direction)
+    print(f"Saving image to {output_path}")
     final_img.convert("RGB").save(output_path)
+    return output_path
 
-def create_markdown_report(poly_count: int, width: float, depth: float, height: float, animations: list[str], textures: list[str], images: list[str], materials: list[str], bones: list[str], scale: float, facing_direction: str, front_image_path: str, top_image_path: str, side_image_path: str) -> str:
+def create_markdown_report(poly_count: int, width: float, depth: float, height: float, animations: list[str], textures: list[str], images: list[str], materials: list[str], bones: list[str], scale: float, rendered_images: dict) -> str:
     """
     Creates a markdown report of the model.
     """
     report = f"""
-# Model Report
-## Model Statistics
+### Model Report
+#### Model Statistics
 - **Total Polygons**: {poly_count}
 
-## Size
+#### Size
 - **Width (X)**: {width:.4f}
-- **Depth (Y)**: {depth:.4f}
-- **Height (Z)**: {height:.4f}
+- **Height (Y)**: {height:.4f}
+- **Depth (Z)**: {depth:.4f}
 - **Scale**: {scale}
 - **Animations**: {animations}
 - **Textures**: {textures}
 - **Images**: {images}
 - **Materials**: {materials}
 - **Total Bones found**: {len(bones)}
-- **Facing Direction**: {facing_direction}
-
-
-
 """
+
+    if len(bones) > 0:
+        report += f"- **Bones**: {bones}\n"
+
     recommended_poly_max = 20000
     has_too_many_polys = poly_count > recommended_poly_max
     is_scaled = scale != 1.0
@@ -461,17 +457,20 @@ def create_markdown_report(poly_count: int, width: float, depth: float, height: 
     if has_too_many_polys:
         report += f"\nThe model has a high polygon count. This may affect performance. Max recommended poly count: {recommended_poly_max}\n"
 
-    report += f"""## Images
+    report += "#### Images\n\n"
 
-![Front View](front.png)
-![Top View](top.png)
-![Right Side View](right.png)
+    for image_name, image_path in rendered_images.items():
+        report += f"![{image_name}]({image_path})"
 
-![Front View](front_wireframe.png)
-![Top View](top_wireframe.png)
-![Right Side View](right_wireframe.png)
-"""
     return report
+
+def create_png_filename(gltf_file: str, view: str) -> str:
+    """
+    Create a PNG filename based on the GLTF file name and view.
+    """
+    base_name = os.path.splitext(os.path.basename(gltf_file))[0]
+    return f"{base_name}_{view}.png"
+
 
 def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
     """
@@ -480,6 +479,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
     try:
         # First check if the file exists
         if not os.path.exists(gltf_file):
+            print(f"File not found: {gltf_file}")
             return {
                 "file": gltf_file,
                 "error": f"File not found: {gltf_file}",
@@ -488,6 +488,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
 
         # Check if the file is a GLTF file
         if not gltf_file.lower().endswith(('.gltf', '.glb')):
+            print(f"Not a GLTF file: {gltf_file}")
             return {
                 "file": gltf_file,
                 "error": f"Not a GLTF file: {gltf_file}",
@@ -516,6 +517,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                         missing_resources.append(f"Buffer: {buffer.uri}")
 
         if missing_resources:
+            print(f"Missing resources:\n" + "\n".join(f"- {r}" for r in missing_resources))
             return {
                 "file": gltf_file,
                 "error": f"Missing resources:\n" + "\n".join(f"- {r}" for r in missing_resources),
@@ -525,23 +527,27 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
         try:
             scene = load_gltf_with_trimesh(gltf_file)
         except Exception as e:
+            print(f"Failed to load GLTF file: {str(e)}")
             return {
                 "file": gltf_file,
                 "error": f"Failed to load GLTF file: {str(e)}",
                 "success": False
             }
 
-        scene_bounds_size = scene.bounds[1] - scene.bounds[0]
-        largest_dim = max(scene_bounds_size)
+        scene_bounds_size: np.ndarray[np.float64] = scene.bounds[1] - scene.bounds[0]
+        SCENE_BOUNDS_PADDING_PERCENTAGE = 0.1
+        padded_scene_bounds_size = scene_bounds_size * (1 + SCENE_BOUNDS_PADDING_PERCENTAGE)  # add some padding to the bounds in all directions
+
+        largest_dim = max(padded_scene_bounds_size)
         camera = pyrender.OrthographicCamera(xmag=largest_dim / 2, ymag=largest_dim / 2)
         grid_img = generate_grid_image(height=image_height, width=image_width, largest_dist=largest_dim)
-        color_render_flags = RenderFlags.RGBA
         wireframe_render_flags = RenderFlags.RGBA + RenderFlags.ALL_WIREFRAME
 
         spec = read_spec_file(gltf_file + SPEC_EXTENSION)
         
         poly_count = get_poly_count(scene)
-        results = evaluate_model_against_spec(
+        print(f"Evaluating model against spec for {gltf_file}")
+        validation_results = evaluate_model_against_spec(
             gltf=gltf,
             spec=spec,
             scene_bounds_size=scene_bounds_size,
@@ -553,21 +559,23 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
         os.makedirs(file_output_dir, exist_ok=True)
 
         # Render and save views
-        render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "top.png"), model_facing_direction="down")
-        render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "front.png"))
-        render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "right.png"), model_facing_direction="right")
+        print(f"Rendering and saving views for {gltf_file}")
+        print(f"Output directory: {file_output_dir}")
 
-        render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "top_wireframe.png"), wireframe_render_flags, "down")
-        render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "front_wireframe.png"), wireframe_render_flags)
-        render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, 
-                           os.path.join(file_output_dir, "right_wireframe.png"), wireframe_render_flags, "right")
-
+        rendered_images = {
+            "front": render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, create_png_filename(gltf_file, "front")),
+            "top": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename(gltf_file, "top"), model_facing_direction="down"),
+            "right": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename(gltf_file, "right"), model_facing_direction="right"),
+            "front_wireframe": render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, create_png_filename(gltf_file, "front_wireframe"), render_flags=wireframe_render_flags),
+            "top_wireframe": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename(gltf_file, "top_wireframe"), render_flags=wireframe_render_flags),
+            "right_wireframe": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename(gltf_file, "right_wireframe"), render_flags=wireframe_render_flags),
+            "front_normals": render_and_save_view(scene, camera, get_front_camera_pose(scene), grid_img, create_png_filename(gltf_file, "front_normals"), render_flags=RenderFlags.RGBA + RenderFlags.OFFSCREEN + RenderFlags.FACE_NORMALS),
+            "top_normals": render_and_save_view(scene, camera, get_top_down_camera_pose(scene), grid_img, create_png_filename(gltf_file, "top_normals"), render_flags=RenderFlags.RGBA + RenderFlags.OFFSCREEN + RenderFlags.FACE_NORMALS),
+            "right_normals": render_and_save_view(scene, camera, get_right_side_camera_pose(scene), grid_img, create_png_filename(gltf_file, "right_normals"), render_flags=RenderFlags.RGBA + RenderFlags.OFFSCREEN + RenderFlags.FACE_NORMALS),
+        }
+        
         # Create markdown report
+        print(f"Creating markdown report for {gltf_file}")
         report = create_markdown_report(
             poly_count=get_poly_count(scene),
             width=scene_bounds_size[0],
@@ -579,24 +587,25 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
             materials=list_materials(gltf),
             bones=list_bones(gltf),
             scale=get_gltf_scale(gltf),
-            facing_direction=get_model_facing_direction(gltf),
-            front_image_path=os.path.join(file_output_dir, "front.png"),
-            top_image_path=os.path.join(file_output_dir, "top.png"),
-            side_image_path=os.path.join(file_output_dir, "right.png")
+            rendered_images=rendered_images
         )
 
-        with open(os.path.join(file_output_dir, "report.md"), "w") as f:
+        REPORT_FILEPATH = os.path.join(file_output_dir, "report.md")
+        with open(REPORT_FILEPATH, "w") as f:
             f.write(report)
+
+        print(f"Report saved to: {REPORT_FILEPATH}")
 
         return {
             "file": gltf_file,
             "report": report,
-            "results": results,
-            "report_path": os.path.join(file_output_dir, "report.md"),
-            "images_dir": file_output_dir,
+            "validation_results": validation_results,
+            "report_filepath": REPORT_FILEPATH,
+            "file_output_dir": file_output_dir,
             "success": True
         }
     except Exception as e:
+        print(f"Error processing file: {str(e)}")
         return {
             "file": gltf_file,
             "error": f"Error processing file: {str(e)}",
@@ -607,37 +616,49 @@ def create_github_comment(results: list[dict]) -> str:
     """
     Create a GitHub comment from the validation results.
     """
-    comment = "## GLTF Validation Results\n\n"
+    comment = ""
+
+    # Result:
+    # {
+    #     "file": gltf_file,
+    #     "report": report,
+    #     "validation_results": validation_results,
+    #     "report_filepath": REPORT_FILEPATH,
+    #     "images_dir": file_output_dir,
+    #     "success": True
+    # }
+
     
     for result in results:
-        report = result.get("report", None)
-        if report:
-            comment += f"### Report:\n"
-            comment += f"{report}\n\n"
+        
         if not result["success"]:
-            comment += f"### ❌ {os.path.basename(result['file'])}\n"
+            comment += f"## ❌ {os.path.basename(result['file'])}\n"
             comment += f"Error: {result['error']}\n\n"
             continue
 
-        comment += f"### ✅ {os.path.basename(result['file'])}\n"
+        comment += f"## ✅ {os.path.basename(result['file'])}\n"
         
         # Add validation results
-        comment += "#### Validation Results:\n"
-        for key, value in result["results"].items():
+        comment += "### Validation Results:\n"
+        for key, value in result["validation_results"].items():
             status = "✅" if value == "OK" else "❌"
             comment += f"- {key}: {status} {value}\n"
         
         # Add report content
-        with open(result["report_path"], "r") as f:
-            report_content = f.read()
-            comment += f"\n#### Model Report:\n{report_content}\n"
+        # with open(result["report_filepath"], "r") as f:
+        #     report_content = f.read()
+        #     comment += f"\n#### Model Report:\n{report_content}\n"
+
+        report = result.get("report", None)
+        if report:
+            comment += f"### Model Report:\n{report}\n\n"
         
-        # Add images
-        comment += "\n#### Model Views:\n"
-        for view in ["front", "top", "right"]:
-            image_path = os.path.join(result["images_dir"], f"{view}.png")
-            if os.path.exists(image_path):
-                comment += f"![{view} view]({image_path})\n"
+        # # Add images
+        # comment += "\n#### Model Views:\n"
+        # for view in ["front", "top", "right"]:
+        #     image_path = os.path.join(result["images_dir"], f"{view}.png")
+        #     if os.path.exists(image_path):
+        #         comment += f"![{view} view]({image_path})\n"
         
         comment += "\n---\n\n"
     
@@ -650,6 +671,8 @@ if __name__ == "__main__":
     
     output_dir = sys.argv[1]
     gltf_files = sys.argv[2:]
+    print(f"Output directory: {output_dir}")
+    print(f"GLTF files: {gltf_files}")
     
     if not gltf_files:
         print("No GLTF files provided")

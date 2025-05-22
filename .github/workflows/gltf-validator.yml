@@ -3,122 +3,149 @@ name: GLTF Validator
 on:
   pull_request:
     paths:
-      - '**/*.gltf'
-      - '**/*.glb'
-      - '**/*.spec.yaml'
+      - '**.gltf'
+      - '**.glb'
+      - 'tools/gltf-validator/**'
 
 # Add permissions block
 permissions:
   pull-requests: write  # Required to create/update comments
-  contents: read       # Required to read repository contents
+  contents: write # write access to the repository contents
+  packages: write
 
 jobs:
-  validate:
+  validate-gltf:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Fetch all history for comparing changes
-
-      - name: Find changed GLTF files
-        id: changed-files
-        run: |
-          # Get list of changed files
-          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} > changed_files.txt
-          
-          # Filter for GLTF files and their spec files
-          grep -E '\.(gltf|glb)$' changed_files.txt > gltf_files.txt
-          
-          # Create output directory
-          mkdir -p validation_output
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Cache Docker layers
-        uses: actions/cache@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and run Docker container
-        if: success()
+      - name: Find changed GLTF files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            **.gltf
+            **.glb
+
+      - name: Save changed files list
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n' | grep -E '\.(gltf|glb)$' > gltf_files.txt
+
+      - name: Build and cache Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./tools/gltf-validator
+          push: true
+          tags: ghcr.io/screwloose-games/gltf-validator:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Create output directory
+        run: mkdir -p gltf-validation-results
+
+      - name: Install Xvfb and dependencies
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+
+      - name: Run GLTF validator
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           if [ -s gltf_files.txt ]; then
-            # Build the Docker image and load it into the local Docker daemon
-            docker buildx build \
-              --load \
-              --cache-from=type=local,src=/tmp/.buildx-cache \
-              --cache-to=type=local,dest=/tmp/.buildx-cache-new \
-              -t gltf-validator \
-              tools/gltf-validator
-            
-            # Run the validator for each GLTF file
-            while IFS= read -r gltf_file; do
-              # Create a directory for this file's output
-              file_output_dir="validation_output/$(basename "$gltf_file" .gltf)"
-              mkdir -p "$file_output_dir"
-              
-              # Run the validator with absolute paths
-              docker run --rm \
-                -v "$PWD:/workspace" \
-                -w /workspace \
-                gltf-validator "/workspace/validation_output" "/workspace/$gltf_file"
-            done < gltf_files.txt
-            
-            # Move cache
-            rm -rf /tmp/.buildx-cache
-            mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+            files=$(tr '\n' ' ' < gltf_files.txt)
+            echo "Processing files: $files"
+            docker run --rm \
+              -v "$(pwd):/workspace" \
+              -w /workspace \
+              ghcr.io/screwloose-games/gltf-validator:latest \
+              "/workspace/gltf-validation-results" $files
           else
-            echo "No GLTF files changed"
-            exit 0
+            echo "No GLTF files to process"
           fi
 
       - name: Upload validation results
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/upload-artifact@v4
-        if: success()
         with:
-          name: validation-results
-          path: validation_output/
-          retention-days: 5
+          name: gltf-validation-results
+          path: gltf-validation-results/
+          retention-days: 1
+      
+      - name: Checkout assets branch
+        uses: actions/checkout@v3
+        with:
+          ref: assets
+          path: assets-branch
+      
+      - name: Run markdown processor
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_ISSUE_NUMBER: ${{ github.event.pull_request.number }}
+        run: python .github/scripts/process_markdown.py "gltf-validation-results/github_comment.md"
 
-      - name: Create GitHub comment
-        uses: actions/github-script@v7
-        if: success()
-        with:
-          script: |
-            const fs = require('fs');
-            const path = require('path');
+      - name: Commit and push new images to `assets` branch
+        run: |
+          cd assets-branch
+          git status
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add uploaded-assets
+          git commit -m "Add uploaded assets" || echo "No changes to commit"
+          git push origin HEAD:assets
+
+
+      # - name: Create or update PR comment
+      #   if: steps.changed-files.outputs.any_changed == 'true'
+      #   uses: actions/github-script@v7
+      #   with:
+      #     script: |
+      #       const fs = require('fs');
+      #       const path = require('path');
+      #       const resultsDir = 'gltf-validation-results';
             
-            // Read the comment file
-            const commentPath = path.join('validation_output', 'github_comment.md');
-            if (fs.existsSync(commentPath)) {
-              const comment = fs.readFileSync(commentPath, 'utf8');
-              
-              // Create or update comment
-              const { data: comments } = await github.rest.issues.listComments({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number
-              });
-              
-              const botComment = comments.find(c => c.user.login === 'github-actions[bot]' && c.body.includes('GLTF Validation Results'));
-              
-              if (botComment) {
-                await github.rest.issues.updateComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: botComment.id,
-                  body: comment
-                });
-              } else {
-                await github.rest.issues.createComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: context.issue.number,
-                  body: comment
-                });
-              }
-            } 
+      #       // Read the validation results
+      #       const MARKDOWN_FILE = "github_comment.md"
+      #       const content = fs.readFileSync(path.join(resultsDir, MARKDOWN_FILE), 'utf8');
+            
+      #       // Find existing comments
+      #       const { data: comments } = await github.rest.issues.listComments({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         issue_number: context.issue.number
+      #       });
+
+      #       const commentHeadline = "## GLTF Validation Results\n\n";
+
+      #       const comment = commentHeadline + content;
+            
+      #       const existingComment = comments.find(c => c.body.startsWith(commentHeadline));
+            
+      #       if (existingComment) {
+      #         // Update existing comment
+      #         await github.rest.issues.updateComment({
+      #           owner: context.repo.owner,
+      #           repo: context.repo.repo,
+      #           comment_id: existingComment.id,
+      #           body: comment
+      #         });
+      #       } else {
+      #         // Create new comment
+      #         await github.rest.issues.createComment({
+      #           owner: context.repo.owner,
+      #           repo: context.repo.repo,
+      #           issue_number: context.issue.number,
+      #           body: comment
+      #         });
+      #       } 

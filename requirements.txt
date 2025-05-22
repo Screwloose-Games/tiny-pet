@@ -1,0 +1,5 @@
+# requirements.txt for test dependencies
+pytest
+trimesh
+pyyaml
+pygltflib

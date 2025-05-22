@@ -35,23 +35,25 @@ def draw_arrow_right(draw, img_width, img_height):
     color = 'red'
     draw_arrow(draw, start, end, color=color, width=img_width//100)
 
-def draw_text_right(draw, img_width, img_height):
+def draw_text_facing(draw: ImageDraw.ImageDraw, img_width, img_height, direction):
     center = (img_width // 2, img_height // 2)
-    center_right = (img_width, img_height // 2)
-    center_center_right = (center[0] + center_right[0]) // 2, (center[1] + center_right[1]) // 2
+    if direction == 'right':
+        target = (img_width // 4, img_height // 2)
+        mid = ((center[0] + target[0]) // 2, (center[1] + target[1]) // 2)
+    elif direction == 'down':
+        target = (img_width // 2, img_height)
+        mid = ((center[0] + target[0]) // 2, (center[1] + target[1]) // 2)
+    else:
+        return  # Only handle 'right' and 'down'
     text = "Facing Direction"
+    text_position = (mid[0], mid[1] - img_height // 20)
+    draw.text(text_position, text, fill='red', font_size=img_width // 20)
 
-    text_position =  (center_center_right[0], center_center_right[1] - img_height // 20)
-    draw.text(text_position, text, fill='red', font_size=img_height // 40)
+def draw_text_right(draw, img_width, img_height):
+    draw_text_facing(draw, img_width, img_height, 'right')
 
 def draw_text_down(draw, img_width, img_height):
-    center = (img_width // 2, img_height // 2)
-    bottom_center = (img_width // 2, img_height)
-    center_center_down = (center[0] + bottom_center[0]) // 2 + 0.1 * center[0], (center[1] + bottom_center[1]) // 2
-    text = "Facing Direction"
-
-    text_position =  (center_center_down[0], center_center_down[1] - img_height // 20)
-    draw.text(text_position, text, fill='red', font_size=img_height // 40)
+    draw_text_facing(draw, img_width, img_height, 'down')
 
 def draw_facing_direction(draw, direction: str):
     img_width, img_height = draw.im.size
@@ -62,7 +64,8 @@ def draw_facing_direction(draw, direction: str):
         draw_arrow_right(draw, img_width, img_height)
         draw_text_right(draw, img_width, img_height)
     else:
-        raise ValueError("Direction must be either 'down' or 'right'")
+        pass
+        # Do nothing. It only makes sense to draw the facing direction for down and right.
 
 def main():
     width, height = 256, 256

@@ -431,8 +431,8 @@ def create_markdown_report(poly_count: int, width: float, depth: float, height: 
 
 #### Size
 - **Width (X)**: {width:.4f}
-- **Depth (Y)**: {depth:.4f}
-- **Height (Z)**: {height:.4f}
+- **Height (Y)**: {height:.4f}
+- **Depth (Z)**: {depth:.4f}
 - **Scale**: {scale}
 - **Animations**: {animations}
 - **Textures**: {textures}

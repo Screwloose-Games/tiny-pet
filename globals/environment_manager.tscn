@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cvjly75qx25ho"]
-
-[ext_resource type="Script" uid="uid://br6ltb22adcf0" path="res://globals/environment_manager.gd" id="1_csxlc"]
-
-[node name="EnvironmentManager" type="Node"]
-script = ExtResource("1_csxlc")

@@ -1,11 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://bd2umttirdhh8"]
+[gd_scene load_steps=12 format=3 uid="uid://bd2umttirdhh8"]
 
 [ext_resource type="Script" uid="uid://cbp7u20p834bb" path="res://scripts/tiny_creature_game.gd" id="1_chjw3"]
 [ext_resource type="PackedScene" uid="uid://b7td0fbdkbfxb" path="res://actors/creature/prefab_creature.tscn" id="2_chjw3"]
 [ext_resource type="Script" uid="uid://s0dwxj5gim5a" path="res://scripts/camtarget_marker_3d.gd" id="3_1vx7t"]
 [ext_resource type="Shader" uid="uid://ck061bafdwf06" path="res://shaders/glass_02.gdshader" id="4_pexq2"]
 [ext_resource type="Shader" uid="uid://cvx4u6361cydg" path="res://shaders/wood.gdshader" id="5_47e7m"]
-[ext_resource type="Texture2D" uid="uid://lhr8alggdn24" path="res://assets/2d/poo_eyes.png" id="6_1xlk0"]
 
 [sub_resource type="Environment" id="Environment_032ar"]
 
@@ -31,37 +30,18 @@ shader_parameter/random_scale = 4.6
 shader_parameter/noise_scale = 0.03
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7crt5"]
-albedo_color = Color(0.404677, 0.254471, 0.0781797, 1)
+albedo_color = Color(0.262745, 1, 0, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_okrti"]
 material = SubResource("StandardMaterial3D_7crt5")
 radius = 0.02
-height = 0.02
-
-[sub_resource type="SphereMesh" id="SphereMesh_gdnoh"]
-material = SubResource("StandardMaterial3D_7crt5")
-radius = 0.03
-height = 0.02
-
-[sub_resource type="SphereMesh" id="SphereMesh_c8oum"]
-material = SubResource("StandardMaterial3D_7crt5")
-radius = 0.025
-height = 0.02
-
-[sub_resource type="SphereMesh" id="SphereMesh_hsdal"]
-material = SubResource("StandardMaterial3D_7crt5")
-radius = 0.02
-height = 0.02
-
-[sub_resource type="SphereMesh" id="SphereMesh_1j56i"]
-material = SubResource("StandardMaterial3D_7crt5")
-radius = 0.01
-height = 0.02
+height = 0.04
 
 [node name="TinyCreatureGame" type="Node3D"]
 script = ExtResource("1_chjw3")
 
-[node name="PrefabCreature" parent="." instance=ExtResource("2_chjw3")]
+[node name="PrefabCreature" parent="." node_paths=PackedStringArray("poop_location_marker") instance=ExtResource("2_chjw3")]
+poop_location_marker = NodePath("../PoopSpotMarker3D")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_032ar")
@@ -116,48 +96,23 @@ material = SubResource("ShaderMaterial_ljxe0")
 
 [node name="InteractionsCanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="FoodStack" type="Node3D" parent="."]
+[node name="FoodSource" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0252496, 0, 0.16606)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FoodStack"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.152885)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FoodSource"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0162206, 0)
 mesh = SubResource("SphereMesh_okrti")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="FoodStack"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0133096, 0.152885)
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="FoodSource"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0453188, 0)
 mesh = SubResource("SphereMesh_okrti")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="FoodStack"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0250117, 0.152885)
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="FoodSource"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0818856, 0)
 mesh = SubResource("SphereMesh_okrti")
 skeleton = NodePath("../..")
 
-[node name="Poop" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.119654, -7.45058e-09, 0.331256)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Poop"]
-mesh = SubResource("SphereMesh_gdnoh")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Poop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0133096, 0)
-mesh = SubResource("SphereMesh_c8oum")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="Poop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0250117, 0)
-mesh = SubResource("SphereMesh_hsdal")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="Poop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0348487, 0)
-mesh = SubResource("SphereMesh_1j56i")
-skeleton = NodePath("../..")
-
-[node name="PooFace" type="Sprite3D" parent="Poop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00668918, 0)
-pixel_size = 0.0003
-billboard = 1
-no_depth_test = true
-texture = ExtResource("6_1xlk0")
+[node name="PoopSpotMarker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.152193, -7.45058e-09, 0.14605)

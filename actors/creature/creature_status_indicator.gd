@@ -16,6 +16,9 @@ extends Sprite3D
 var current_states_to_indicate: Dictionary = {}
 var current_state_index: int = 0
 var state_timer: float = 0.0
+var should_display: bool = false
+var time_since_display_change: float = 0
+var time_per_display: float = 0.5
 
 func _ready() -> void:
 	# Connect to state change signals
@@ -30,15 +33,31 @@ func _ready() -> void:
 	
 	_update_states_to_indicate()
 
+func handle_blink_display(delta: float):
+	time_since_display_change += delta
+	if time_since_display_change > time_per_display:
+		time_since_display_change = 0
+		visible = !visible
+	
+
+func _handle_dead():
+	if lifecycle_state_indicators.has(LifecycleState.LifeState.DEAD):
+		current_states_to_indicate[lifecycle_state] = lifecycle_state_indicators[LifecycleState.LifeState.DEAD]
+		_update_current_indicator()
+	
 func _process(delta: float) -> void:
+	if lifecycle_state and lifecycle_state.is_dead:
+		return _handle_dead()
 	if current_states_to_indicate.is_empty():
 		texture = null
 		visible = false
 		return
 	
 	state_timer += delta
+	handle_blink_display(delta)
 	if state_timer >= state_indication_duration:
 		state_timer = 0.0
+		time_since_display_change = 0
 		current_state_index = (current_state_index + 1) % current_states_to_indicate.size()
 		_update_current_indicator()
 
@@ -46,10 +65,8 @@ func _update_states_to_indicate() -> void:
 	current_states_to_indicate.clear()
 	
 	if lifecycle_state and lifecycle_state.is_dead:
-		# If dead, only show death state
-		if lifecycle_state_indicators.has(LifecycleState.LifeState.DEAD):
-			current_states_to_indicate[lifecycle_state] = lifecycle_state_indicators[LifecycleState.LifeState.DEAD]
-		return
+		return _handle_dead()
+		
 	
 	# Add other states if they have indicators
 	if hunger_state and hunger_state_indicators.has(hunger_state.fed_state):

@@ -1,3 +1,4 @@
+class_name SocialComponent
 extends Node
 
 @export var social_state: SocialState
@@ -10,3 +11,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	social_state.tick(delta)
+
+func pet():
+	social_state.pet()

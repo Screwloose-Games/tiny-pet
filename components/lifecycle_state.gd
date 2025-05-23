@@ -60,6 +60,11 @@ func get_life_state() -> LifeState:
 func tick(delta: float) -> void:
 	if not is_dead:
 		current_age += delta / seconds_per_year
+		if current_age >= life_span:
+			die()
+
+func die():
+	life_state = LifeState.DEAD
 
 func reduce_life_span(amount: float) -> void:
 	life_span -= amount

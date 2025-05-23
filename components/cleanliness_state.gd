@@ -28,7 +28,17 @@ var clean_state: CleanState = CleanState.CLEAN:
 		if value != clean_state:
 			clean_state = value
 			state_changed.emit(value)
-var is_pooping: bool = false
+
+var poops: Array[Node]
+
+func poop(poo: Poop):
+	poops.append(poo)
+	poo.tree_exited.connect(_on_poop_exited_scene.bind(poo))
+
+func _on_poop_exited_scene(poo: Poop):
+	poops.erase(poo)
+	if poops.size() == 0:
+		clean_completely()
 
 func get_clean_state(value: float) -> CleanState:
 	if value >= clean_threshold:
@@ -37,9 +47,13 @@ func get_clean_state(value: float) -> CleanState:
 		return CleanState.DIRTY
 	return CleanState.FILTHY
 
-# Call every frame
 func tick(delta: float) -> void:
-	cleanliness -= cleanliness_down_rate * delta
+	if poops.size() > 0:
+		cleanliness -= cleanliness_down_rate * delta
+		print("Cleanliness meter: ", cleanliness)
 
 func clean(amount: float) -> void:
 	cleanliness += amount
+
+func clean_completely() -> void:
+	cleanliness = 1

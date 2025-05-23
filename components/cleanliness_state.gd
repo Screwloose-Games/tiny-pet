@@ -39,7 +39,7 @@ func get_clean_state(value: float) -> CleanState:
 
 # Call every frame
 func tick(delta: float) -> void:
-	cleanliness -= current_rate * delta
+	cleanliness -= cleanliness_down_rate * delta
 
 func clean(amount: float) -> void:
 	cleanliness += amount

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b7td0fbdkbfxb"]
+[gd_scene load_steps=9 format=3 uid="uid://b7td0fbdkbfxb"]
 
 [ext_resource type="PackedScene" uid="uid://cqnrknitmrym6" path="res://tests/test_asset_validation/creature/base_basic_pbr.tscn" id="1_w6gn8"]
 [ext_resource type="Script" uid="uid://d1qhf4hm6c6xy" path="res://components/hunger_component.gd" id="2_gr8kh"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://xgrqbygkv83j" path="res://components/cleanliness_component.gd" id="4_oqnla"]
 [ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="5_7kcvt"]
 [ext_resource type="Resource" uid="uid://depk3elhit4o" path="res://game_state/creature_cleanliness_state.tres" id="7_2gyru"]
+[ext_resource type="Script" uid="uid://cl3fqqpjyho71" path="res://components/lifecycle_component.gd" id="8_opemd"]
 
 [node name="PrefabCreature" type="Node3D"]
 
@@ -24,3 +25,6 @@ social_state = ExtResource("5_7kcvt")
 [node name="CleanlinessComponent" type="Node" parent="."]
 script = ExtResource("4_oqnla")
 cleanliness_state = ExtResource("7_2gyru")
+
+[node name="LifecycleComponent" type="Node" parent="."]
+script = ExtResource("8_opemd")

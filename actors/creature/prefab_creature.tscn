@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://b7td0fbdkbfxb"]
+[gd_scene load_steps=13 format=3 uid="uid://b7td0fbdkbfxb"]
 
+[ext_resource type="Script" uid="uid://bcfmxvyw5fled" path="res://actors/creature/creature_status_indicator.gd" id="1_3lcc8"]
 [ext_resource type="PackedScene" uid="uid://cqnrknitmrym6" path="res://tests/test_asset_validation/creature/base_basic_pbr.tscn" id="1_w6gn8"]
 [ext_resource type="Script" uid="uid://d1qhf4hm6c6xy" path="res://components/hunger_component.gd" id="2_gr8kh"]
 [ext_resource type="Script" uid="uid://chkatlctnyt1l" path="res://components/social_component.gd" id="3_2yd0l"]
@@ -8,23 +9,40 @@
 [ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="5_7kcvt"]
 [ext_resource type="Resource" uid="uid://depk3elhit4o" path="res://game_state/creature_cleanliness_state.tres" id="7_2gyru"]
 [ext_resource type="Script" uid="uid://cl3fqqpjyho71" path="res://components/lifecycle_component.gd" id="8_opemd"]
+[ext_resource type="Script" uid="uid://d0fo2q5dalod4" path="res://actors/creature/creature_state_notifier.gd" id="10_6bams"]
+[ext_resource type="Resource" uid="uid://cnyg3hf7v7png" path="res://game_state/creature_lifecycle_state.tres" id="10_jve1q"]
+[ext_resource type="Script" uid="uid://dtso0ko84oyaj" path="res://components/status_debuff_system.gd" id="11_um5j8"]
 
 [node name="PrefabCreature" type="Node3D"]
+
+[node name="CreatureStatusIndicator" type="Sprite3D" parent="."]
+script = ExtResource("1_3lcc8")
 
 [node name="base_basic_pbr" parent="." instance=ExtResource("1_w6gn8")]
 transform = Transform3D(0.88689, 0, -0.461981, 0, 1, 0, 0.461981, 0, 0.88689, 0, 0, 0)
 
 [node name="HungerComponent" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("2_gr8kh")
 hunger_state = ExtResource("3_dpn06")
 
 [node name="SocialComponent" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("3_2yd0l")
 social_state = ExtResource("5_7kcvt")
 
 [node name="CleanlinessComponent" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("4_oqnla")
 cleanliness_state = ExtResource("7_2gyru")
 
 [node name="LifecycleComponent" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("8_opemd")
+lifecycle_state = ExtResource("10_jve1q")
+
+[node name="CreatureStateNotifier" type="Node" parent="."]
+script = ExtResource("10_6bams")
+
+[node name="StatusDebuffSystem" type="Node" parent="."]
+script = ExtResource("11_um5j8")

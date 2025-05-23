@@ -1,13 +1,14 @@
-class_name LifecycleComponent
+
+## Sends signals when any state is in a state to be addressed.
+class_name CreateStateNotifier
 extends Node
 
-@export var lifecycle_state: LifecycleState
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if not lifecycle_state:
-		lifecycle_state = LifecycleState.new()
+	pass # Replace with function body.
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	lifecycle_state.tick(delta)
+	pass

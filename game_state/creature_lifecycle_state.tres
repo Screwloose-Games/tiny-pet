@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="LifecycleState" load_steps=2 format=3 uid="uid://cnyg3hf7v7png"]
+
+[ext_resource type="Script" uid="uid://bofpvg0ah1orh" path="res://components/lifecycle_state.gd" id="1_v8q8j"]
+
+[resource]
+script = ExtResource("1_v8q8j")
+current_age = 0.0
+life_span = 80.0
+egg_threshold = 1.0
+baby_threshold = 3.0
+young_threshold = 10.0
+adult_threshold = 40.0
+old_threshold = 60.0
+seconds_per_year = 1.0
+metadata/_custom_type_script = "uid://bofpvg0ah1orh"

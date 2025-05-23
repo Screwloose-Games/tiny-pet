@@ -12,4 +12,4 @@ func _ready() -> void:
 		cleanliness_state = CleanlinessState.new()
 
 func _process(delta: float) -> void:
-	cleanliness_state.tick(delta) 
+	cleanliness_state.tick(delta)

@@ -11,13 +11,12 @@ signal cooed
 @export var poop_group: String = "Poop"
 @export var poop_location_marker: Marker3D
 
+var time_since_last_poop: float = 0
+var current_poop_count: int = 0
+
 @onready var cleanliness_component: CleanlinessComponent = %CleanlinessComponent
 @onready var clickable_static_body_3d: ClickableStaticBody3D = %ClickableStaticBody3D
 @onready var social_component: SocialComponent = %SocialComponent
-
-
-var time_since_last_poop: float = 0
-var current_poop_count: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

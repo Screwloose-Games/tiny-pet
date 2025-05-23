@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="HungerState" load_steps=2 format=3 uid="uid://c8p22i4so65t3"]
+
+[ext_resource type="Script" uid="uid://c56d5xfbi3j21" path="res://components/hunger_state.gd" id="1_ouft8"]
+
+[resource]
+script = ExtResource("1_ouft8")
+fullness = 0.5
+fullness_down_rate = 0.01
+overfed_threshold = 0.6
+full_threshold = 0.5
+hungry_threshold = 0.3
+metadata/_custom_type_script = "uid://c56d5xfbi3j21"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SocialState" load_steps=2 format=3 uid="uid://c1y7hr0aajia1"]
+
+[ext_resource type="Script" uid="uid://bm5cjxd88p5is" path="res://components/social_state.gd" id="1_j31l4"]
+
+[resource]
+script = ExtResource("1_j31l4")
+social_meter = 0.5
+social_down_rate = 0.01
+loved_threshold = 0.5
+lonely_threshold = 0.3
+metadata/_custom_type_script = "uid://bm5cjxd88p5is"

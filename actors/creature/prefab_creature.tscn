@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b7td0fbdkbfxb"]
+[gd_scene load_steps=15 format=3 uid="uid://b7td0fbdkbfxb"]
 
 [ext_resource type="Script" uid="uid://bcfmxvyw5fled" path="res://actors/creature/creature_status_indicator.gd" id="1_3lcc8"]
 [ext_resource type="PackedScene" uid="uid://cqnrknitmrym6" path="res://tests/test_asset_validation/creature/base_basic_pbr.tscn" id="1_w6gn8"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" uid="uid://xgrqbygkv83j" path="res://components/cleanliness_component.gd" id="4_oqnla"]
 [ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="5_7kcvt"]
 [ext_resource type="Resource" uid="uid://depk3elhit4o" path="res://game_state/creature_cleanliness_state.tres" id="7_2gyru"]
+[ext_resource type="Texture2D" uid="uid://c64cj1ik4nmeb" path="res://assets/2d/UI/icon-state-dirty.png" id="7_mwhrg"]
+[ext_resource type="Texture2D" uid="uid://jq8ixo4wcwnk" path="res://assets/2d/UI/icon-state-lonely.png" id="8_kk8qq"]
 [ext_resource type="Script" uid="uid://cl3fqqpjyho71" path="res://components/lifecycle_component.gd" id="8_opemd"]
 [ext_resource type="Script" uid="uid://d0fo2q5dalod4" path="res://actors/creature/creature_state_notifier.gd" id="10_6bams"]
 [ext_resource type="Resource" uid="uid://cnyg3hf7v7png" path="res://game_state/creature_lifecycle_state.tres" id="10_jve1q"]
@@ -16,7 +18,24 @@
 [node name="PrefabCreature" type="Node3D"]
 
 [node name="CreatureStatusIndicator" type="Sprite3D" parent="."]
+offset = Vector2(0, 229)
+flip_h = true
+pixel_size = 0.002
+billboard = 1
+no_depth_test = true
+fixed_size = true
 script = ExtResource("1_3lcc8")
+hunger_state = ExtResource("3_dpn06")
+social_state = ExtResource("5_7kcvt")
+cleanliness_state = ExtResource("7_2gyru")
+lifecycle_state = ExtResource("10_jve1q")
+cleanliness_state_indicators = Dictionary[int, Texture2D]({
+1: ExtResource("7_mwhrg"),
+2: ExtResource("7_mwhrg")
+})
+social_state_indicators = Dictionary[int, Texture2D]({
+1: ExtResource("8_kk8qq")
+})
 
 [node name="base_basic_pbr" parent="." instance=ExtResource("1_w6gn8")]
 transform = Transform3D(0.88689, 0, -0.461981, 0, 1, 0, 0.461981, 0, 0.88689, 0, 0, 0)

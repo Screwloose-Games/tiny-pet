@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_j31l4")
-social_meter = 0.5
+social_meter = 1.0
 social_down_rate = 0.01
 loved_threshold = 0.5
 lonely_threshold = 0.3

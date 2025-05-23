@@ -11,7 +11,7 @@ enum FedState {
 }
 
 # Current value
-@export_range(0, 1, .01) var fullness: float = 0.5:
+@export_range(0, 1, .01) var fullness: float = 0.7:
 	set(value):
 		fullness = clamp(value, 0.0, 1.0)
 		fed_state = get_fed_state(value)
@@ -20,7 +20,7 @@ enum FedState {
 @export_range(0, 1, .01) var fullness_down_rate: float = 0.01 # per second
 
 # State thresholds
-@export_range(0, 1, .01) var overfed_threshold: float = 0.6
+@export_range(0, 1, .01) var overfed_threshold: float = 0.7
 @export_range(0, 1, .01) var full_threshold: float = 0.5
 @export_range(0, 1, .01) var hungry_threshold: float = 0.3
 

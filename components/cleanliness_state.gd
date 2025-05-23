@@ -10,7 +10,7 @@ enum CleanState {
 }
 
 # Current value
-@export_range(0, 1, .01) var cleanliness: float = 0.7:
+@export_range(0, 1, .01) var cleanliness: float = 1:
 	set(value):
 		cleanliness = clamp(value, 0.0, 1.0)
 		clean_state = get_clean_state(value)

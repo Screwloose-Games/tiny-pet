@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_lufm5")
-cleanliness = 0.7
+cleanliness = 1.0
 cleanliness_down_rate = 0.01
 poop_cleanliness_down_rate = 0.05
 clean_threshold = 0.7

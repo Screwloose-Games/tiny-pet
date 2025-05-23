@@ -10,7 +10,7 @@ enum State {
 }
 
 # Current value
-@export_range(0, 1, .01) var social_meter: float = 0.5:
+@export_range(0, 1, .01) var social_meter: float = 1.0:
 	set(value):
 		social_meter = clamp(value, 0.0, 1.0)
 		social_state = get_social_state(value)
@@ -38,6 +38,7 @@ func get_social_state(value: float) -> State:
 # Call every frame
 func tick(delta: float) -> void:
 	social_meter -= social_down_rate * delta
+	print("Social meter: ", social_meter)
 
 func socialize(amount: float) -> void:
 	social_meter += amount

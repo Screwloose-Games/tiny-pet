@@ -21,6 +21,7 @@ enum State {
 # State thresholds
 @export_range(0, 1, .01) var loved_threshold: float = 0.5
 @export_range(0, 1, .01) var lonely_threshold: float = 0.3
+@export_range(0, 1, .01) var pet_socialization_amount: float = 0.5
 
 var social_state: State = State.LOVED:
 	set(value):
@@ -38,7 +39,11 @@ func get_social_state(value: float) -> State:
 # Call every frame
 func tick(delta: float) -> void:
 	social_meter -= social_down_rate * delta
-	print("Social meter: ", social_meter)
+	#print("Social meter: ", social_meter)
+
+func pet():
+	GlobalSignalBus.creature_petted.emit()
+	socialize(pet_socialization_amount)
 
 func socialize(amount: float) -> void:
 	social_meter += amount

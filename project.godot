@@ -17,8 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-QuestManager="*res://globals/quest_manager.tscn"
-EnvironmentManager="*res://globals/environment_manager.tscn"
+GlobalSignalBus="*res://globals/global_signal_bus.tscn"
 
 [display]
 

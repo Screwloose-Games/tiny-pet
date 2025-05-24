@@ -1,10 +1,9 @@
 class_name Transition extends CanvasLayer
 
-@export var animation: AnimationPlayer
-
 signal on_fade_in
 signal on_fade_out
 
+@export var animation: AnimationPlayer
 
 func _ready():
 	animation.animation_finished.connect(_on_animation_finished)

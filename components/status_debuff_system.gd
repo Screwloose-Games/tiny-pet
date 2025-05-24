@@ -24,6 +24,7 @@ extends Node
 	get:
 		return GameState.game_state.lifecycle_state
 
+
 func _ready() -> void:
 	# Connect to state change signals
 	if hunger_state:
@@ -33,10 +34,12 @@ func _ready() -> void:
 	if social_state:
 		social_state.state_changed.connect(_on_social_state_changed)
 
+
 func _process(delta: float) -> void:
 	if not lifecycle_state or lifecycle_state.is_dead:
 		return
 	_apply_debuffs(delta)
+
 
 func _apply_debuffs(delta: float) -> void:
 	if not lifecycle_state:
@@ -44,6 +47,7 @@ func _apply_debuffs(delta: float) -> void:
 	_apply_hunger_debuffs(delta)
 	_apply_cleanliness_debuffs(delta)
 	_apply_social_debuffs(delta)
+
 
 func _apply_hunger_debuffs(delta: float) -> void:
 	if not hunger_state:
@@ -54,12 +58,14 @@ func _apply_hunger_debuffs(delta: float) -> void:
 		HungerState.FedState.STARVING:
 			lifecycle_state.reduce_life_span(starving_debuff * delta)
 
+
 func _apply_cleanliness_debuffs(delta: float) -> void:
 	if not cleanliness_state:
 		return
 	match cleanliness_state.clean_state:
 		CleanlinessState.CleanState.FILTHY:
 			lifecycle_state.reduce_life_span(filthy_debuff * delta)
+
 
 func _apply_social_debuffs(delta: float) -> void:
 	if not social_state:
@@ -70,13 +76,16 @@ func _apply_social_debuffs(delta: float) -> void:
 		SocialState.State.LONELY:
 			lifecycle_state.reduce_life_span(lonely_debuff * delta)
 
+
 func _on_hunger_state_changed(_new_state: HungerState.FedState) -> void:
 	# Could add additional logic here if needed when hunger state changes
 	pass
 
+
 func _on_cleanliness_state_changed(_new_state: CleanlinessState.CleanState) -> void:
 	# Could add additional logic here if needed when cleanliness state changes
 	pass
+
 
 func _on_social_state_changed(_new_state: SocialState.State) -> void:
 	# Could add additional logic here if needed when social state changes

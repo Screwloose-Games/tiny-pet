@@ -18,8 +18,10 @@ static var dragged_object: Node3D
 var world_intersect_position: Vector3
 var ignore_colliders: Array[CollisionObject3D] = []
 
+
 func _ready() -> void:
 	pass
+
 
 func _process(_delta: float) -> void:
 	if is_being_dragged:
@@ -27,6 +29,7 @@ func _process(_delta: float) -> void:
 		if ray_intersect:
 			world_intersect_position = ray_intersect.position
 		dragged_object.global_position = world_intersect_position
+
 
 func _start_drag():
 	if duplicate_on_drag:
@@ -43,13 +46,17 @@ func _start_drag():
 	for child in col_children:
 		child.tree_exited.connect(func(): ignore_colliders.erase(child))
 
+
 func _stop_drag():
 	is_being_dragged = false
 	drag_ended.emit()
 	_handle_drop()
 
+
 func _handle_drop():
-	var drop_area_collision: Dictionary = get_mouse_intersect(get_viewport().get_mouse_position(), true)
+	var drop_area_collision: Dictionary = get_mouse_intersect(
+		get_viewport().get_mouse_position(), true
+	)
 	var collider = drop_area_collision.get("collider")
 	if collider is DroppableStaticBody3D:
 		collider.drop(self)
@@ -57,13 +64,18 @@ func _handle_drop():
 	else:
 		handle_not_droppable()
 
+
 func get_object_to_drop():
 	return owner
+
 
 func handle_not_droppable():
 	owner.queue_free.call_deferred()
 
-func _input_event(_camera: Node, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
+
+func _input_event(
+	_camera: Node, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int
+) -> void:
 	if event is InputEventMouse:
 		var ray_intersect: Dictionary = get_mouse_intersect(event.position)
 		if ray_intersect:
@@ -75,6 +87,7 @@ func _input_event(_camera: Node, event: InputEvent, _position: Vector3, _normal:
 			_stop_drag()
 		elif left_button_pressed:
 			_start_drag()
+
 
 func get_mouse_intersect(mouse_pos: Vector2, drop_only: bool = false) -> Dictionary:
 	var cam = get_viewport().get_camera_3d()

@@ -7,6 +7,7 @@ func _ready():
 	if OS.get_name() == "Windows" or OS.get_name() == "macOS" or OS.get_name() == "Linux":
 		_handle_desktop_platform()
 
+
 func _handle_desktop_platform():
 	# 4. Make it stay put.
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)

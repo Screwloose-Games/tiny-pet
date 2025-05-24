@@ -3,12 +3,7 @@ extends Resource
 
 signal state_changed(new_state: FedState)
 
-enum FedState {
-	OVERFED,
-	FULL,
-	HUNGRY,
-	STARVING
-}
+enum FedState { OVERFED, FULL, HUNGRY, STARVING }
 
 # Current value
 @export_range(0, 1, .01) var fullness: float = 0.7:
@@ -17,7 +12,7 @@ enum FedState {
 		fed_state = get_fed_state(value)
 
 # Rate of change
-@export_range(0, 1, .01) var fullness_down_rate: float = 0.01 # per second
+@export_range(0, 1, .01) var fullness_down_rate: float = 0.01  # per second
 
 # State thresholds
 @export_range(0, 1, .01) var overfed_threshold: float = 0.7
@@ -33,6 +28,7 @@ var fed_state: FedState = FedState.FULL:
 			fed_state = value
 			state_changed.emit(value)
 
+
 func get_fed_state(value: float) -> FedState:
 	if value > overfed_threshold:
 		return FedState.OVERFED
@@ -42,18 +38,23 @@ func get_fed_state(value: float) -> FedState:
 		return FedState.HUNGRY
 	return FedState.STARVING
 
+
 # Call every frame
 func tick(delta: float) -> void:
 	fullness -= fullness_down_rate * delta
 
+
 func feed(amount: float = food_per_feed_action) -> void:
 	fullness += amount
+
 
 func save():
 	ResourceSaver.save(self, save_location)
 
+
 func load_saved():
 	load(save_location)
+
 
 func update_from(other):
 	for property in other.get_property_list():

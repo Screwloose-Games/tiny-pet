@@ -5,12 +5,15 @@ extends Node
 	get:
 		return GameState.game_state.hunger_state
 
+
 func _ready() -> void:
 	if not hunger_state:
 		hunger_state = HungerState.new()
 
+
 func _process(delta: float) -> void:
 	hunger_state.tick(delta)
+
 
 func feed():
 	hunger_state.feed()

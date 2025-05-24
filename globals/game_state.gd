@@ -19,6 +19,7 @@ var _autosave_timer: Timer
 func _init() -> void:
 	load_game_state()
 
+
 func _enter_tree() -> void:
 	if autosave:
 		_autosave_timer = Timer.new()
@@ -36,16 +37,19 @@ func _ready() -> void:
 	load_button.pressed.connect(load_saved_game_state)
 	reset_button.pressed.connect(reset_game_state_to_default)
 
+
 func load_game_state() -> void:
 	if ResourceLoader.exists(save_file):
 		game_state = ResourceLoader.load(save_file)
 	else:
 		game_state = default_game_state.duplicate()
 
+
 func load_saved_game_state() -> void:
 	var loaded_state = ResourceLoader.load(save_file, "", ResourceLoader.CACHE_MODE_REPLACE_DEEP)
 	if loaded_state:
 		game_state = loaded_state.duplicate()
+
 
 func save_game_state():
 	if game_state == null:
@@ -53,11 +57,15 @@ func save_game_state():
 	ResourceSaver.save(game_state, save_file)
 	print("Game state saved to: ", save_file)
 
+
 func reset_game_state_to_default():
-	ResourceLoader.load(default_game_state.resource_path, "", ResourceLoader.CACHE_MODE_REPLACE_DEEP)
+	ResourceLoader.load(
+		default_game_state.resource_path, "", ResourceLoader.CACHE_MODE_REPLACE_DEEP
+	)
 	game_state = default_game_state.duplicate(true)
 	save_game_state()
 	get_tree().reload_current_scene()
+
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:

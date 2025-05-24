@@ -6,6 +6,7 @@ var dragging_collider
 var do_drag: bool = false
 var mouse_position: Vector2
 
+
 func _process(_delta: float) -> void:
 	if dragging_collider:
 		dragging_collider.global_position = mouse_position
@@ -29,6 +30,7 @@ func _input(event: InputEvent) -> void:
 			do_drag = true
 			drag_and_drop(intersect)
 
+
 func drag_and_drop(intersect: Dictionary) -> void:
 	if !dragging_collider and do_drag:
 		if intersect.has("collider"):
@@ -37,6 +39,7 @@ func drag_and_drop(intersect: Dictionary) -> void:
 	elif dragging_collider:
 		dragging_collider.set_collision_layer(1)  # restore collisions
 		dragging_collider = null
+
 
 func get_mouse_intersect(mouse_pos: Vector2) -> Dictionary:
 	var cam = get_viewport().get_camera_3d()

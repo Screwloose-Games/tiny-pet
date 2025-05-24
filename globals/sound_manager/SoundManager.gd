@@ -1,22 +1,22 @@
-extends AudioStreamPlayer
 class_name GSoundManager
+extends AudioStreamPlayer
 
+enum SoundPlayerType {
+	UI,
+	AMBIENT,
+	WEATHER,
+}
 @onready var ui_sound_player: AudioStreamPlayer = %UiSoundPlayer
 @onready var weather_sound_player: AudioStreamPlayer = %WeatherSoundPlayer
 @onready var ambient_sound_player: AudioStreamPlayer = %AmbientSoundPlayer
 
-enum SoundPlayerType {
-	UI,
-	AMBIENT, 
-	WEATHER,
-}
 
 
 func get_sound_player(player_type: SoundPlayerType):
 	match player_type:
-		SoundPlayerType.UI: 
+		SoundPlayerType.UI:
 			return ui_sound_player
-		SoundPlayerType.WEATHER: 
+		SoundPlayerType.WEATHER:
 			return weather_sound_player
 		_:
 			return null

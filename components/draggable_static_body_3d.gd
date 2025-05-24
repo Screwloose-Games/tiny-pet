@@ -81,9 +81,7 @@ func get_mouse_intersect(mouse_pos: Vector2, drop_only: bool = false) -> Diction
 	var cam = get_viewport().get_camera_3d()
 	var params = PhysicsRayQueryParameters3D.new()
 	params.from = cam.project_ray_origin(mouse_pos)
-	print("ray origin: ", params.from)
 	params.to = cam.project_position(mouse_pos, ray_length)
-	print("ray origin: ", params.from)
 	# get all collision shapes that are children of
 	var to_ignore = [self]
 	to_ignore.append_array(ignore_colliders)

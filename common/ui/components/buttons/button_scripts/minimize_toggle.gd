@@ -19,8 +19,7 @@ func _on_toggled(is_minimized: bool):
 		var new_size = Vector2i(400, 300)
 		get_window().size = new_size
 		await get_tree().process_frame
-		var current_window = DisplayServer.get_window_at_screen_position(get_local_mouse_position())
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED, current_window)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED, get_window().get_window_id())
 		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_RESIZE_DISABLED, false)
 		#DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
 		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
@@ -34,7 +33,8 @@ func _on_toggled(is_minimized: bool):
 
 	else:
 		# maximize screen
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN, screen_id)
+		if screen_id != -1:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN, screen_id)
 		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_RESIZE_DISABLED, false)
 		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
 		DisplayServer.window_set_size(

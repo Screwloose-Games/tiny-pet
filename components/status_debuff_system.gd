@@ -5,18 +5,24 @@
 class_name StatusDebuffSystem
 extends Node
 
-# References to state components
-@export var hunger_state: HungerState
-@export var cleanliness_state: CleanlinessState
-@export var social_state: SocialState
-@export var lifecycle_state: LifecycleState
-
-# Debuff amounts per second (in years)
 @export_range(0, 1, 0.1) var filthy_debuff: float = 0.1
 @export_range(0, 1, 0.1) var overfed_debuff: float = 0.1
 @export_range(0, 5, 0.1) var starving_debuff: float = 1
 @export_range(0, 1, 0.1) var lonely_debuff: float = 0.1
 @export_range(0, 5, 0.1) var abandoned_debuff: float = 0.5
+
+@onready var hunger_state: HungerState = GameState.game_state.hunger_state:
+	get:
+		return GameState.game_state.hunger_state
+@onready var cleanliness_state: CleanlinessState = GameState.game_state.cleanliness_state:
+	get:
+		return GameState.game_state.cleanliness_state
+@onready var social_state: SocialState = GameState.game_state.social_state:
+	get:
+		return GameState.game_state.social_state
+@onready var lifecycle_state: LifecycleState = GameState.game_state.lifecycle_state:
+	get:
+		return GameState.game_state.lifecycle_state
 
 func _ready() -> void:
 	# Connect to state change signals

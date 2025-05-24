@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://b7td0fbdkbfxb"]
+[gd_scene load_steps=20 format=3 uid="uid://b7td0fbdkbfxb"]
 
 [ext_resource type="Script" uid="uid://bcfmxvyw5fled" path="res://actors/creature/creature_status_indicator.gd" id="1_3lcc8"]
 [ext_resource type="Script" uid="uid://2nai3nugjc5x" path="res://actors/creature/prefab_creature.gd" id="1_kk8qq"]
@@ -6,16 +6,12 @@
 [ext_resource type="Script" uid="uid://d1qhf4hm6c6xy" path="res://components/hunger_component.gd" id="2_gr8kh"]
 [ext_resource type="PackedScene" uid="uid://d4t6lqohvmpb" path="res://assets/3d/poop/prefab_poop.tscn" id="2_prdta"]
 [ext_resource type="Script" uid="uid://chkatlctnyt1l" path="res://components/social_component.gd" id="3_2yd0l"]
-[ext_resource type="Resource" uid="uid://c8p22i4so65t3" path="res://game_state/creature_hunger_state.tres" id="3_dpn06"]
 [ext_resource type="Script" uid="uid://xgrqbygkv83j" path="res://components/cleanliness_component.gd" id="4_oqnla"]
-[ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="5_7kcvt"]
 [ext_resource type="Texture2D" uid="uid://cch8khh4mjoci" path="res://assets/2d/UI/icon-state-overfed.png" id="6_28ol3"]
-[ext_resource type="Resource" uid="uid://depk3elhit4o" path="res://game_state/creature_cleanliness_state.tres" id="7_2gyru"]
 [ext_resource type="Texture2D" uid="uid://c64cj1ik4nmeb" path="res://assets/2d/UI/icon-state-dirty.png" id="7_mwhrg"]
 [ext_resource type="Texture2D" uid="uid://jq8ixo4wcwnk" path="res://assets/2d/UI/icon-state-lonely.png" id="8_kk8qq"]
 [ext_resource type="Script" uid="uid://cl3fqqpjyho71" path="res://components/lifecycle_component.gd" id="8_opemd"]
 [ext_resource type="Texture2D" uid="uid://dmadgkld7ly3" path="res://assets/2d/UI/icon-state-hungry.png" id="9_g25h7"]
-[ext_resource type="Resource" uid="uid://cnyg3hf7v7png" path="res://game_state/creature_lifecycle_state.tres" id="10_jve1q"]
 [ext_resource type="Texture2D" uid="uid://msv7wobyf82l" path="res://assets/2d/UI/icon-state-dead.png" id="10_xpx33"]
 [ext_resource type="Script" uid="uid://dtso0ko84oyaj" path="res://components/status_debuff_system.gd" id="11_um5j8"]
 [ext_resource type="Script" uid="uid://cgb23fr60yakj" path="res://components/clickable_static_body_3d.gd" id="18_ajme3"]
@@ -40,10 +36,6 @@ billboard = 1
 no_depth_test = true
 fixed_size = true
 script = ExtResource("1_3lcc8")
-hunger_state = ExtResource("3_dpn06")
-social_state = ExtResource("5_7kcvt")
-cleanliness_state = ExtResource("7_2gyru")
-lifecycle_state = ExtResource("10_jve1q")
 hunger_state_indicators = Dictionary[int, Texture2D]({
 0: ExtResource("6_28ol3"),
 2: ExtResource("9_g25h7"),
@@ -65,29 +57,21 @@ lifecycle_state_indicators = Dictionary[int, Texture2D]({
 [node name="HungerComponent" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_gr8kh")
-hunger_state = ExtResource("3_dpn06")
 
 [node name="SocialComponent" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_2yd0l")
-social_state = ExtResource("5_7kcvt")
 
 [node name="CleanlinessComponent" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_oqnla")
-cleanliness_state = ExtResource("7_2gyru")
 
 [node name="LifecycleComponent" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("8_opemd")
-lifecycle_state = ExtResource("10_jve1q")
 
 [node name="StatusDebuffSystem" type="Node" parent="."]
 script = ExtResource("11_um5j8")
-hunger_state = ExtResource("3_dpn06")
-cleanliness_state = ExtResource("7_2gyru")
-social_state = ExtResource("5_7kcvt")
-lifecycle_state = ExtResource("10_jve1q")
 
 [node name="ClickableStaticBody3D" type="StaticBody3D" parent="."]
 unique_name_in_owner = true

@@ -134,7 +134,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.10974, 0.44818, -0.968233)
 
 [node name="StatsCanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("7_6vc24")
-lifecycle_state = ExtResource("8_1vx7t")
 
 [node name="Control" type="Control" parent="StatsCanvasLayer"]
 layout_mode = 3

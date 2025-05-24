@@ -1,6 +1,8 @@
 extends CanvasLayer
 
-@export var lifecycle_state: LifecycleState
+@onready var lifecycle_state: LifecycleState = GameState.game_state.lifecycle_state:
+	get:
+		return GameState.game_state.lifecycle_state
 
 @onready var creature_age_value_label: Label = %CreatureAgeValueLabel
 @onready var restart_button: Button = %RestartButton

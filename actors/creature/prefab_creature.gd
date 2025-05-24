@@ -23,7 +23,7 @@ var current_poop_count: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	time_since_last_poop = seconds_per_poop
+	time_since_last_poop = 0
 	clickable_static_body_3d.clicked.connect(_on_creature_clicked)
 	droppable_static_body_3d.dropped.connect(_on_draggable_dropped)
 

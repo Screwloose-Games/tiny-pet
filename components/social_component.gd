@@ -1,8 +1,9 @@
 class_name SocialComponent
 extends Node
 
-@export var social_state: SocialState
-
+@onready var social_state: SocialState = GameState.game_state.social_state:
+	get:
+		return GameState.game_state.social_state
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if not social_state:

@@ -25,6 +25,8 @@ enum FedState {
 @export_range(0, 1, .01) var hungry_threshold: float = 0.3
 @export_range(0, 1, .01) var food_per_feed_action: float = 0.1
 
+var save_location: String = ""
+
 var fed_state: FedState = FedState.FULL:
 	set(value):
 		if value != fed_state:
@@ -46,3 +48,13 @@ func tick(delta: float) -> void:
 
 func feed(amount: float = food_per_feed_action) -> void:
 	fullness += amount
+
+func save():
+	ResourceSaver.save(self, save_location)
+
+func load_saved():
+	load(save_location)
+
+func update_from(other):
+	for property in other.get_property_list():
+		self[property.name] = other[property.name]

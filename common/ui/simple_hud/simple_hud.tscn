@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=3 uid="uid://dfm5xdpxoirk4"]
+
+[ext_resource type="Texture2D" uid="uid://d2ca3nxgbv8op" path="res://assets/2d/UI/toolbar/icon-unmute-button.png" id="2_wbbn8"]
+[ext_resource type="Script" uid="uid://cpw81c36nbwh7" path="res://common/ui/components/buttons/button_scripts/mute_button_toggle.gd" id="3_2448h"]
+[ext_resource type="Texture2D" uid="uid://sshkwmauq4cy" path="res://assets/2d/UI/toolbar/icon-minimize-button.png" id="3_ntf1r"]
+[ext_resource type="Texture2D" uid="uid://cpd2sqe75gij2" path="res://assets/2d/UI/toolbar/icon-mute-button.png" id="4_5o0ik"]
+[ext_resource type="Script" uid="uid://5abhwtcqmkrf" path="res://common/ui/components/buttons/button_scripts/minimize_toggle.gd" id="4_ntf1r"]
+[ext_resource type="Texture2D" uid="uid://bddmg7ns4pu2c" path="res://assets/2d/UI/toolbar/icon-close-button.png" id="4_wbbn8"]
+[ext_resource type="Script" uid="uid://ccpelng2i2wf7" path="res://common/ui/components/buttons/button_scripts/exit_button.gd" id="6_twsaa"]
+[ext_resource type="Texture2D" uid="uid://bne2aocwta5bi" path="res://assets/2d/UI/toolbar/icon-maximize-button.png" id="6_vn2q7"]
+[ext_resource type="Texture2D" uid="uid://vw8r4f51kpwn" path="res://assets/2d/UI/toolbar/icon-restart-button.png" id="9_gdisi"]
+[ext_resource type="Script" uid="uid://bpt13f2eec63u" path="res://common/ui/simple_hud/restart_button.gd" id="10_gdisi"]
+
+[node name="SimpleHudCanvasLayer" type="CanvasLayer"]
+
+[node name="SimpleHud" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SimpleHud"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -158.0
+offset_bottom = 50.0
+grow_horizontal = 0
+
+[node name="RestartButton" type="Button" parent="SimpleHud/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+icon = ExtResource("9_gdisi")
+expand_icon = true
+script = ExtResource("10_gdisi")
+
+[node name="MuteToggle" type="Button" parent="SimpleHud/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("4_5o0ik")
+expand_icon = true
+script = ExtResource("3_2448h")
+mute_icon = ExtResource("4_5o0ik")
+unmute_icon = ExtResource("2_wbbn8")
+
+[node name="MinimizeToggle" type="Button" parent="SimpleHud/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("3_ntf1r")
+expand_icon = true
+script = ExtResource("4_ntf1r")
+maxmimize_icon = ExtResource("6_vn2q7")
+minimize_icon = ExtResource("3_ntf1r")
+
+[node name="CloseButton" type="Button" parent="SimpleHud/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+icon = ExtResource("4_wbbn8")
+expand_icon = true
+script = ExtResource("6_twsaa")

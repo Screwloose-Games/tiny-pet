@@ -14,7 +14,6 @@ func _ready() -> void:
 
 func _on_restart_button_pressed():
 	GameState.reset_game_state_to_default()
-	get_tree().reload_current_scene()
 
 func _on_life_state_changed(life_state: LifecycleState.LifeState):
 	if life_state == LifecycleState.LifeState.DEAD:

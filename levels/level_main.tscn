@@ -55,6 +55,7 @@ cleanliness_state = ExtResource("5_8r1vr")
 social_state = ExtResource("6_s8b20")
 
 [node name="PrefabCreature" parent="." node_paths=PackedStringArray("poop_location_marker") instance=ExtResource("2_chjw3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.494878, 0)
 poop_location_marker = NodePath("../PoopSpotMarker3D")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -65,7 +66,7 @@ transform = Transform3D(1, 0, 0, 0, 0.0966622, 0.995317, 0, -0.995317, 0.0966622
 light_energy = 0.848
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.46153, 0.275475, -0.824354)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.46153, 2.529, -0.824354)
 light_energy = 0.847
 light_indirect_energy = 2.524
 
@@ -85,34 +86,34 @@ light_volumetric_fog_energy = 1.13
 script = ExtResource("3_1vx7t")
 
 [node name="Camera3D" type="Camera3D" parent="CamtargetMarker3D"]
-transform = Transform3D(-0.0811555, 0.385372, -0.919186, 8.3142e-09, 0.922228, 0.386647, 0.996702, 0.0313785, -0.0748439, -0.360485, 0.137324, 0.0803764)
+transform = Transform3D(-0.0811555, 0.385372, -0.919186, 8.3142e-09, 0.922228, 0.386647, 0.996701, 0.0313785, -0.0748438, -3.328, 1.91999, 0.326053)
 
 [node name="Dirt" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0112305, -0.0479817, 0)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.0112305, -0.0479817, 0)
 use_collision = true
 size = Vector3(0.465, 0.1, 0.86)
 material = SubResource("StandardMaterial3D_okrti")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0112305, 0.152393, 0)
-size = Vector3(0.517334, 0.474159, 0.896484)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0112305, 2.52711, 0)
+size = Vector3(5.17, 4.74, 8.96)
 material = SubResource("ShaderMaterial_032ar")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0218864, 0)
 operation = 2
-size = Vector3(0.464844, 0.474159, 0.860352)
+size = Vector3(4.65, 4.74, 8.6)
 material = SubResource("ShaderMaterial_032ar")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.179932, -0.112732, 0.167725)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.179932, -0.112732, 0.167725)
 size = Vector3(1.97998, 0.0496826, 2.37646)
 material = SubResource("ShaderMaterial_ljxe0")
 
 [node name="InteractionsCanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="FoodSource" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0252496, 0, 0.16606)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19237, 0.571185, 0.748205)
 
 [node name="PrefabFood" parent="FoodSource" instance=ExtResource("6_chjw3")]
 
@@ -129,7 +130,7 @@ mesh = SubResource("SphereMesh_okrti")
 skeleton = NodePath("../..")
 
 [node name="PoopSpotMarker3D" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.152193, -7.45058e-09, 0.14605)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.10974, 0.44818, -0.968233)
 
 [node name="StatsCanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("7_6vc24")

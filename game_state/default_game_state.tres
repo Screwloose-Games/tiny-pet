@@ -28,7 +28,7 @@ metadata/_custom_type_script = "uid://c56d5xfbi3j21"
 [sub_resource type="Resource" id="Resource_8gfsq"]
 script = ExtResource("3_72kh2")
 current_age = 0.0
-life_span = 5.1
+life_span = 80.0
 egg_threshold = 1.0
 baby_threshold = 3.0
 young_threshold = 10.0

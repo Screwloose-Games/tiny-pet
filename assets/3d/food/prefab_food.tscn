@@ -8,11 +8,11 @@ albedo_color = Color(0.262745, 1, 0, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_okrti"]
 material = SubResource("StandardMaterial3D_7crt5")
-radius = 0.02
-height = 0.04
+radius = 0.2
+height = 0.4
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_mm4qh"]
-radius = 0.02
+radius = 0.2
 
 [node name="PrefabFood" type="Node3D"]
 script = ExtResource("1_mm4qh")

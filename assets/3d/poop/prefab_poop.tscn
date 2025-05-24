@@ -9,27 +9,27 @@ albedo_color = Color(0.404677, 0.254471, 0.0781797, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_gdnoh"]
 material = SubResource("StandardMaterial3D_7crt5")
-radius = 0.03
-height = 0.02
+radius = 0.3
+height = 0.2
 
 [sub_resource type="SphereMesh" id="SphereMesh_c8oum"]
 material = SubResource("StandardMaterial3D_7crt5")
-radius = 0.025
-height = 0.02
+radius = 0.25
+height = 0.2
 
 [sub_resource type="SphereMesh" id="SphereMesh_hsdal"]
 material = SubResource("StandardMaterial3D_7crt5")
-radius = 0.02
-height = 0.02
+radius = 0.2
+height = 0.2
 
 [sub_resource type="SphereMesh" id="SphereMesh_1j56i"]
 material = SubResource("StandardMaterial3D_7crt5")
-radius = 0.01
-height = 0.02
+radius = 0.1
+height = 0.2
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_kcnjd"]
-height = 0.05
-radius = 0.03
+height = 0.5
+radius = 0.3
 
 [node name="Poop" type="Node3D"]
 script = ExtResource("1_kcnjd")
@@ -39,23 +39,23 @@ mesh = SubResource("SphereMesh_gdnoh")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0133096, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.102599, 0)
 mesh = SubResource("SphereMesh_c8oum")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0250117, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.199087, 0)
 mesh = SubResource("SphereMesh_hsdal")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0348487, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.272359, 0)
 mesh = SubResource("SphereMesh_1j56i")
 skeleton = NodePath("../..")
 
 [node name="PooFace" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00668918, 0)
-pixel_size = 0.0003
+pixel_size = 0.003
 billboard = 1
 no_depth_test = true
 texture = ExtResource("1_d42ja")

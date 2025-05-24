@@ -5,11 +5,11 @@ const MASTER_AUDIO_MUS_INDEX = 0
 @export var mute_icon: Texture2D
 @export var unmute_icon: Texture2D
 
-var _is_muted: bool = true
+var _is_muted: bool = false
 
 
 func _ready() -> void:
-	button_pressed = true
+	button_pressed = _is_muted
 	toggled.connect(_on_toggled)
 	_on_toggled(_is_muted)
 

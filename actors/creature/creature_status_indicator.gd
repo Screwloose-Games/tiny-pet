@@ -1,11 +1,6 @@
 class_name CreatureStatusIndicator
 extends Sprite3D
 
-@export var hunger_state: HungerState
-@export var social_state: SocialState
-@export var cleanliness_state: CleanlinessState
-@export var lifecycle_state: LifecycleState
-
 @export var hunger_state_indicators: Dictionary[HungerState.FedState, Texture2D] = {}
 @export var cleanliness_state_indicators: Dictionary[CleanlinessState.CleanState, Texture2D] = {}
 @export var social_state_indicators: Dictionary[SocialState.State, Texture2D] = {}
@@ -20,6 +15,18 @@ var should_display: bool = false
 var time_since_display_change: float = 0
 var time_per_display: float = 0.5
 
+@onready var hunger_state: HungerState = GameState.game_state.hunger_state:
+	get:
+		return GameState.game_state.hunger_state
+@onready var social_state: SocialState = GameState.game_state.social_state:
+	get:
+		return GameState.game_state.social_state
+@onready var cleanliness_state: CleanlinessState = GameState.game_state.cleanliness_state:
+	get:
+		return GameState.game_state.cleanliness_state
+@onready var lifecycle_state: LifecycleState = GameState.game_state.lifecycle_state:
+	get:
+		return GameState.game_state.lifecycle_state
 
 func _ready() -> void:
 	# Connect to state change signals
@@ -102,20 +109,20 @@ func _update_current_indicator() -> void:
 
 	texture = states[current_state_index]
 	visible = true
-	print("Hunger state: ", hunger_state.fed_state, "Hunger value: ", hunger_state.fullness)
-	print(
-		"Cleanliness state: ",
-		cleanliness_state.clean_state,
-		"Cleanliness value: ",
-		cleanliness_state.cleanliness
-	)
-	print("Social state: ", social_state.social_state, "Social value: ", social_state.social_meter)
-	print(
-		"Lifecycle state: ",
-		lifecycle_state.life_state,
-		"Lifecycle value: ",
-		lifecycle_state.current_age
-	)
+	#print("Hunger state: ", hunger_state.fed_state, "Hunger value: ", hunger_state.fullness)
+	#print(
+		#"Cleanliness state: ",
+		#cleanliness_state.clean_state,
+		#"Cleanliness value: ",
+		#cleanliness_state.cleanliness
+	#)
+	#print("Social state: ", social_state.social_state, "Social value: ", social_state.social_meter)
+	#print(
+		#"Lifecycle state: ",
+		#lifecycle_state.life_state,
+		#"Lifecycle value: ",
+		#lifecycle_state.current_age
+	#)
 
 
 func _on_hunger_state_changed(_new_state: HungerState.FedState) -> void:

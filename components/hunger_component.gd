@@ -1,7 +1,9 @@
 class_name HungarComponent
 extends Node
 
-@export var hunger_state: HungerState
+@onready var hunger_state: HungerState = GameState.game_state.hunger_state:
+	get:
+		return GameState.game_state.hunger_state
 
 func _ready() -> void:
 	if not hunger_state:

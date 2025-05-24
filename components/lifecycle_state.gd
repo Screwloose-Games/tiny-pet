@@ -39,6 +39,7 @@ var life_state: LifeState = get_life_state():
 			lifecycle_state_changed.emit(value)
 			if value == LifeState.DEAD:
 				died.emit()
+				print("Died at age: ", current_age)
 
 var is_dead: bool = false:
 	get:

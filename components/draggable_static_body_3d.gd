@@ -68,7 +68,6 @@ func _input_event(_camera: Node, event: InputEvent, _position: Vector3, _normal:
 		var ray_intersect: Dictionary = get_mouse_intersect(event.position)
 		if ray_intersect:
 			world_intersect_position = ray_intersect.position
-			print(world_intersect_position)
 	if event is InputEventMouseButton:
 		var left_button_pressed = event.button_index == MOUSE_BUTTON_LEFT && event.pressed
 		var left_button_released = event.button_index == MOUSE_BUTTON_LEFT && !event.pressed

@@ -31,6 +31,8 @@ var clean_state: CleanState = CleanState.CLEAN:
 
 var poops: Array[Node]
 
+var save_location: String = ""
+
 func poop(poo: Poop):
 	poops.append(poo)
 	poo.tree_exited.connect(_on_poop_exited_scene.bind(poo))
@@ -57,3 +59,13 @@ func clean(amount: float) -> void:
 
 func clean_completely() -> void:
 	cleanliness = 1
+
+func save():
+	ResourceSaver.save(self, save_location)
+
+func load_saved():
+	load(save_location)
+
+func update_from(other):
+	for property in other.get_property_list():
+		self[property.name] = other[property.name]

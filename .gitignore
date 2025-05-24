@@ -26,3 +26,6 @@ movies/
 
 # Python virtual environment
 .venv/
+
+# Custom local only directory
+local_only/

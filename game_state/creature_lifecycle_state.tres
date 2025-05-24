@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_v8q8j")
 current_age = 0.0
-life_span = 5.1
+life_span = 80.0
 egg_threshold = 1.0
 baby_threshold = 3.0
 young_threshold = 10.0

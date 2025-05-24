@@ -1,0 +1,33 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=15 format=3 uid="uid://b5031souw3s1m"]
+
+[ext_resource type="AudioStream" uid="uid://b1ovx7u2vpoeh" path="res://actors/creature/sfx/poos/poo_01.wav" id="1_wjpg5"]
+[ext_resource type="AudioStream" uid="uid://ci4pkhpvbivap" path="res://actors/creature/sfx/poos/poo_02.wav" id="2_nr5en"]
+[ext_resource type="AudioStream" uid="uid://bj1yqmf55qxx" path="res://actors/creature/sfx/poos/poo_03.wav" id="3_2adev"]
+[ext_resource type="AudioStream" uid="uid://dwayvfitf6q4q" path="res://actors/creature/sfx/poos/poo_11.wav" id="3_bkqtq"]
+[ext_resource type="AudioStream" uid="uid://mgr04l2ootri" path="res://actors/creature/sfx/poos/poo_12.wav" id="4_jm5i0"]
+[ext_resource type="AudioStream" uid="uid://b0wnguqj2134u" path="res://actors/creature/sfx/poos/poo_04.wav" id="4_vqre4"]
+[ext_resource type="AudioStream" uid="uid://bpwlibf6xa48j" path="res://actors/creature/sfx/poos/poo_13.wav" id="5_orcal"]
+[ext_resource type="AudioStream" uid="uid://dphky5psjee3j" path="res://actors/creature/sfx/poos/poo_14.wav" id="6_rge3y"]
+[ext_resource type="AudioStream" uid="uid://qhs5i11mc4l3" path="res://actors/creature/sfx/poos/poo_05.wav" id="9_pkv5c"]
+[ext_resource type="AudioStream" uid="uid://cycts0amhq7lf" path="res://actors/creature/sfx/poos/poo_06.wav" id="10_j8ccu"]
+[ext_resource type="AudioStream" uid="uid://bw6j4mpd6aep2" path="res://actors/creature/sfx/poos/poo_07.wav" id="11_xyt0c"]
+[ext_resource type="AudioStream" uid="uid://ccgpwv7eqvb7d" path="res://actors/creature/sfx/poos/poo_08.wav" id="12_gt0lf"]
+[ext_resource type="AudioStream" uid="uid://bl41ri4qnwe00" path="res://actors/creature/sfx/poos/poo_09.wav" id="13_b53lj"]
+[ext_resource type="AudioStream" uid="uid://bax17jxrprl4y" path="res://actors/creature/sfx/poos/poo_10.wav" id="14_wf6wy"]
+
+[resource]
+streams_count = 14
+stream_0/stream = ExtResource("1_wjpg5")
+stream_1/stream = ExtResource("2_nr5en")
+stream_2/stream = ExtResource("3_2adev")
+stream_3/stream = ExtResource("4_vqre4")
+stream_4/stream = ExtResource("9_pkv5c")
+stream_5/stream = ExtResource("10_j8ccu")
+stream_6/stream = ExtResource("11_xyt0c")
+stream_7/stream = ExtResource("12_gt0lf")
+stream_8/stream = ExtResource("13_b53lj")
+stream_9/stream = ExtResource("14_wf6wy")
+stream_10/stream = ExtResource("3_bkqtq")
+stream_11/stream = ExtResource("4_jm5i0")
+stream_12/stream = ExtResource("5_orcal")
+stream_13/stream = ExtResource("6_rge3y")

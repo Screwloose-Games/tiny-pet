@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://bd2umttirdhh8"]
+[gd_scene load_steps=13 format=3 uid="uid://bd2umttirdhh8"]
 
 [ext_resource type="Script" uid="uid://cbp7u20p834bb" path="res://scripts/tiny_creature_game.gd" id="1_chjw3"]
 [ext_resource type="PackedScene" uid="uid://b7td0fbdkbfxb" path="res://actors/creature/prefab_creature.tscn" id="2_chjw3"]
 [ext_resource type="Script" uid="uid://s0dwxj5gim5a" path="res://scripts/camtarget_marker_3d.gd" id="3_1vx7t"]
 [ext_resource type="Shader" uid="uid://ck061bafdwf06" path="res://shaders/glass_02.gdshader" id="4_pexq2"]
 [ext_resource type="Shader" uid="uid://cvx4u6361cydg" path="res://shaders/wood.gdshader" id="5_47e7m"]
+[ext_resource type="PackedScene" uid="uid://cwxsslwbqxs5x" path="res://assets/3d/food/prefab_food.tscn" id="6_chjw3"]
 
 [sub_resource type="Environment" id="Environment_032ar"]
 
@@ -75,6 +76,7 @@ transform = Transform3D(-0.0811555, 0.385372, -0.919186, 8.3142e-09, 0.922228, 0
 
 [node name="Dirt" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0112305, -0.0479817, 0)
+use_collision = true
 size = Vector3(0.465, 0.1, 0.86)
 material = SubResource("StandardMaterial3D_okrti")
 
@@ -99,18 +101,17 @@ material = SubResource("ShaderMaterial_ljxe0")
 [node name="FoodSource" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0252496, 0, 0.16606)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FoodSource"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0162206, 0)
-mesh = SubResource("SphereMesh_okrti")
-skeleton = NodePath("../..")
+[node name="PrefabFood" parent="FoodSource" instance=ExtResource("6_chjw3")]
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="FoodSource"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0453188, 0)
+visible = false
 mesh = SubResource("SphereMesh_okrti")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="FoodSource"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0818856, 0)
+visible = false
 mesh = SubResource("SphereMesh_okrti")
 skeleton = NodePath("../..")
 

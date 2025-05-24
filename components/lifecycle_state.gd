@@ -51,11 +51,8 @@ func get_life_state() -> LifeState:
 		return LifeState.BABY
 	if current_age <= young_threshold:
 		return LifeState.YOUNG
-	if current_age <= adult_threshold:
-		return LifeState.ADULT
-	if current_age <= old_threshold:
-		return LifeState.OLD
-	return LifeState.DEAD
+	return LifeState.ADULT
+
 
 func tick(delta: float) -> void:
 	if not is_dead:

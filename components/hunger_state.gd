@@ -23,6 +23,7 @@ enum FedState {
 @export_range(0, 1, .01) var overfed_threshold: float = 0.7
 @export_range(0, 1, .01) var full_threshold: float = 0.5
 @export_range(0, 1, .01) var hungry_threshold: float = 0.3
+@export_range(0, 1, .01) var food_per_feed_action: float = 0.1
 
 var fed_state: FedState = FedState.FULL:
 	set(value):
@@ -43,5 +44,5 @@ func get_fed_state(value: float) -> FedState:
 func tick(delta: float) -> void:
 	fullness -= fullness_down_rate * delta
 
-func feed(amount: float) -> void:
+func feed(amount: float = food_per_feed_action) -> void:
 	fullness += amount

@@ -1,3 +1,4 @@
+class_name HungarComponent
 extends Node
 
 @export var hunger_state: HungerState
@@ -8,3 +9,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	hunger_state.tick(delta)
+
+func feed():
+	hunger_state.feed()

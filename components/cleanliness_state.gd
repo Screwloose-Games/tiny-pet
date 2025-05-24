@@ -50,7 +50,7 @@ func get_clean_state(value: float) -> CleanState:
 func tick(delta: float) -> void:
 	if poops.size() > 0:
 		cleanliness -= cleanliness_down_rate * delta
-		print("Cleanliness meter: ", cleanliness)
+		#print("Cleanliness meter: ", cleanliness)
 
 func clean(amount: float) -> void:
 	cleanliness += amount

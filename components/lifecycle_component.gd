@@ -3,6 +3,12 @@ extends Node
 
 @export var lifecycle_state: LifecycleState
 
+var is_dead: bool:
+	get:
+		if lifecycle_state:
+			return lifecycle_state.is_dead
+		return true
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if not lifecycle_state:

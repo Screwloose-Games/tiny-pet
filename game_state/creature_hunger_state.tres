@@ -4,9 +4,10 @@
 
 [resource]
 script = ExtResource("1_ouft8")
-fullness = 0.5
+fullness = 0.7
 fullness_down_rate = 0.01
 overfed_threshold = 0.7
 full_threshold = 0.5
 hungry_threshold = 0.3
+food_per_feed_action = 0.1
 metadata/_custom_type_script = "uid://c56d5xfbi3j21"

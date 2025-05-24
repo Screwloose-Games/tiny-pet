@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b7td0fbdkbfxb"]
+[gd_scene load_steps=25 format=3 uid="uid://b7td0fbdkbfxb"]
 
 [ext_resource type="Script" uid="uid://bcfmxvyw5fled" path="res://actors/creature/creature_status_indicator.gd" id="1_3lcc8"]
 [ext_resource type="Script" uid="uid://2nai3nugjc5x" path="res://actors/creature/prefab_creature.gd" id="1_kk8qq"]
@@ -9,17 +9,25 @@
 [ext_resource type="Resource" uid="uid://c8p22i4so65t3" path="res://game_state/creature_hunger_state.tres" id="3_dpn06"]
 [ext_resource type="Script" uid="uid://xgrqbygkv83j" path="res://components/cleanliness_component.gd" id="4_oqnla"]
 [ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="5_7kcvt"]
+[ext_resource type="Texture2D" uid="uid://cch8khh4mjoci" path="res://assets/2d/UI/icon-state-overfed.png" id="6_28ol3"]
 [ext_resource type="Resource" uid="uid://depk3elhit4o" path="res://game_state/creature_cleanliness_state.tres" id="7_2gyru"]
 [ext_resource type="Texture2D" uid="uid://c64cj1ik4nmeb" path="res://assets/2d/UI/icon-state-dirty.png" id="7_mwhrg"]
 [ext_resource type="Texture2D" uid="uid://jq8ixo4wcwnk" path="res://assets/2d/UI/icon-state-lonely.png" id="8_kk8qq"]
 [ext_resource type="Script" uid="uid://cl3fqqpjyho71" path="res://components/lifecycle_component.gd" id="8_opemd"]
+[ext_resource type="Texture2D" uid="uid://dmadgkld7ly3" path="res://assets/2d/UI/icon-state-hungry.png" id="9_g25h7"]
 [ext_resource type="Resource" uid="uid://cnyg3hf7v7png" path="res://game_state/creature_lifecycle_state.tres" id="10_jve1q"]
 [ext_resource type="Texture2D" uid="uid://msv7wobyf82l" path="res://assets/2d/UI/icon-state-dead.png" id="10_xpx33"]
 [ext_resource type="Script" uid="uid://dtso0ko84oyaj" path="res://components/status_debuff_system.gd" id="11_um5j8"]
 [ext_resource type="Script" uid="uid://cgb23fr60yakj" path="res://components/clickable_static_body_3d.gd" id="18_ajme3"]
 [ext_resource type="Script" uid="uid://dhifo2bn5impv" path="res://components/configurable_audio_stream_player_3d.gd" id="19_8vxwe"]
+[ext_resource type="Script" uid="uid://dys20sbeiuusf" path="res://components/droppable_static_body_3d.gd" id="19_kfnfr"]
+[ext_resource type="Texture2D" uid="uid://dc3wxdmc7mb2m" path="res://assets/2d/UI/hand-cursor-icon.png" id="20_22a3u"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ajme3"]
+radius = 0.1
+height = 0.3
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8vxwe"]
 radius = 0.1
 height = 0.3
 
@@ -39,6 +47,11 @@ hunger_state = ExtResource("3_dpn06")
 social_state = ExtResource("5_7kcvt")
 cleanliness_state = ExtResource("7_2gyru")
 lifecycle_state = ExtResource("10_jve1q")
+hunger_state_indicators = Dictionary[int, Texture2D]({
+0: ExtResource("6_28ol3"),
+2: ExtResource("9_g25h7"),
+3: ExtResource("9_g25h7")
+})
 cleanliness_state_indicators = Dictionary[int, Texture2D]({
 1: ExtResource("7_mwhrg"),
 2: ExtResource("7_mwhrg")
@@ -50,8 +63,7 @@ lifecycle_state_indicators = Dictionary[int, Texture2D]({
 5: ExtResource("10_xpx33")
 })
 
-[node name="base_basic_pbr" parent="." instance=ExtResource("1_w6gn8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Model" parent="." instance=ExtResource("1_w6gn8")]
 
 [node name="HungerComponent" type="Node" parent="."]
 unique_name_in_owner = true
@@ -83,6 +95,7 @@ lifecycle_state = ExtResource("10_jve1q")
 [node name="ClickableStaticBody3D" type="StaticBody3D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("18_ajme3")
+hover_cursor = ExtResource("20_22a3u")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ClickableStaticBody3D"]
 transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0.0635164, 0)
@@ -90,3 +103,13 @@ shape = SubResource("CapsuleShape3D_ajme3")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 script = ExtResource("19_8vxwe")
+
+[node name="DroppableStaticBody3D" type="StaticBody3D" parent="."]
+unique_name_in_owner = true
+collision_layer = 256
+collision_mask = 0
+script = ExtResource("19_kfnfr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DroppableStaticBody3D"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0.0635164, 0)
+shape = SubResource("CapsuleShape3D_8vxwe")

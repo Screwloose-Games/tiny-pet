@@ -28,6 +28,10 @@ window/size/transparent=true
 window/stretch/mode="canvas_items"
 window/per_pixel_transparency/allowed=true
 
+[layer_names]
+
+3d_physics/layer_9="Droppable"
+
 [rendering]
 
 rendering_device/driver.windows="d3d12"

@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://y4120a5dioev"]
+
+[ext_resource type="PackedScene" uid="uid://cwxsslwbqxs5x" path="res://assets/3d/food/prefab_food.tscn" id="1_1y4u0"]
+
+[sub_resource type="Environment" id="Environment_1y4u0"]
+
+[node name="TestDrag3d" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.1, 0)
+environment = SubResource("Environment_1y4u0")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(100, 1, 100)
+
+[node name="PrefabFood" parent="." instance=ExtResource("1_1y4u0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85924, 0)

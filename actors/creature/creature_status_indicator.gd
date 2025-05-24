@@ -28,6 +28,7 @@ var time_per_display: float = 0.5
 	get:
 		return GameState.game_state.lifecycle_state
 
+
 func _ready() -> void:
 	# Connect to state change signals
 	if hunger_state:
@@ -111,17 +112,17 @@ func _update_current_indicator() -> void:
 	visible = true
 	#print("Hunger state: ", hunger_state.fed_state, "Hunger value: ", hunger_state.fullness)
 	#print(
-		#"Cleanliness state: ",
-		#cleanliness_state.clean_state,
-		#"Cleanliness value: ",
-		#cleanliness_state.cleanliness
+	#"Cleanliness state: ",
+	#cleanliness_state.clean_state,
+	#"Cleanliness value: ",
+	#cleanliness_state.cleanliness
 	#)
 	#print("Social state: ", social_state.social_state, "Social value: ", social_state.social_meter)
 	#print(
-		#"Lifecycle state: ",
-		#lifecycle_state.life_state,
-		#"Lifecycle value: ",
-		#lifecycle_state.current_age
+	#"Lifecycle state: ",
+	#lifecycle_state.life_state,
+	#"Lifecycle value: ",
+	#lifecycle_state.current_age
 	#)
 
 

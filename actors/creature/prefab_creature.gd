@@ -21,20 +21,24 @@ var current_poop_count: int = 0
 @onready var droppable_static_body_3d: DroppableStaticBody3D = %DroppableStaticBody3D
 @onready var lifecycle_component: LifecycleComponent = %LifecycleComponent
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	time_since_last_poop = 0
 	clickable_static_body_3d.clicked.connect(_on_creature_clicked)
 	droppable_static_body_3d.dropped.connect(_on_draggable_dropped)
 
+
 func _on_draggable_dropped(draggable: DraggableStaticBody3D):
 	var dropped_object = draggable.get_object_to_drop()
 	if dropped_object is Food:
 		hunger_component.feed()
 
+
 func _on_creature_clicked():
 	social_component.pet()
 	petted.emit()
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -45,6 +49,7 @@ func _process(delta: float) -> void:
 	if time_since_last_poop >= seconds_per_poop and global_poops_count < max_poops:
 		spawn_poop()
 		time_since_last_poop = 0
+
 
 func spawn_poop():
 	if not poop_scene or not poop_location_marker:

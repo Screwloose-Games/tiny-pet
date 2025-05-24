@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bd2umttirdhh8"]
+[gd_scene load_steps=20 format=3 uid="uid://bd2umttirdhh8"]
 
 [ext_resource type="Script" uid="uid://cbp7u20p834bb" path="res://scripts/tiny_creature_game.gd" id="1_chjw3"]
 [ext_resource type="PackedScene" uid="uid://b7td0fbdkbfxb" path="res://actors/creature/prefab_creature.tscn" id="2_chjw3"]
@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="6_s8b20"]
 [ext_resource type="Script" uid="uid://d2pglrojq4wbp" path="res://scripts/stats_canvas_layer.gd" id="7_6vc24"]
 [ext_resource type="Resource" uid="uid://cnyg3hf7v7png" path="res://game_state/creature_lifecycle_state.tres" id="8_1vx7t"]
+[ext_resource type="PackedScene" uid="uid://dfm5xdpxoirk4" path="res://common/ui/simple_hud/simple_hud.tscn" id="13_8r1vr"]
 
 [sub_resource type="Environment" id="Environment_032ar"]
 
@@ -183,3 +184,5 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 text = "Restart"
+
+[node name="SimpleHud" parent="." instance=ExtResource("13_8r1vr")]

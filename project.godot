@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 GlobalSignalBus="*res://globals/global_signal_bus.tscn"
 GameState="*res://globals/game_state.tscn"
+SoundManager="*res://globals/sound_manager/SoundManager.tscn"
+SceneManager="*res://globals/scene_manager.gd"
+SceneTransitionManager="*res://globals/scene_transition_manager.gd"
+GameSettings="*res://globals/game_settings.tscn"
 
 [display]
 

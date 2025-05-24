@@ -3,11 +3,7 @@ extends Resource
 
 signal state_changed(new_state: State)
 
-enum State {
-	LOVED,
-	LONELY,
-	ABANDONED
-}
+enum State { LOVED, LONELY, ABANDONED }
 
 # Current value
 @export_range(0, 1, .01) var social_meter: float = 1.0:
@@ -16,7 +12,7 @@ enum State {
 		social_state = get_social_state(value)
 
 # Rate of change
-@export_range(0, 1, .01) var social_down_rate: float = 0.01 # per second
+@export_range(0, 1, .01) var social_down_rate: float = 0.01  # per second
 
 # State thresholds
 @export_range(0, 1, .01) var loved_threshold: float = 0.5
@@ -29,6 +25,7 @@ var social_state: State = State.LOVED:
 			social_state = value
 			state_changed.emit(value)
 
+
 func get_social_state(value: float) -> State:
 	if value >= loved_threshold:
 		return State.LOVED
@@ -36,14 +33,17 @@ func get_social_state(value: float) -> State:
 		return State.LONELY
 	return State.ABANDONED
 
+
 # Call every frame
 func tick(delta: float) -> void:
 	social_meter -= social_down_rate * delta
 	#print("Social meter: ", social_meter)
 
+
 func pet():
 	GlobalSignalBus.creature_petted.emit()
 	socialize(pet_socialization_amount)
+
 
 func socialize(amount: float) -> void:
 	social_meter += amount

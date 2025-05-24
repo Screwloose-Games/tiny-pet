@@ -5,14 +5,7 @@ signal lifecycle_state_changed(lifecycle_state: LifeState)
 signal age_changed(new_age: float)
 signal died
 
-enum LifeState {
-	EGG,
-	BABY,
-	YOUNG,
-	ADULT,
-	OLD,
-	DEAD
-}
+enum LifeState { EGG, BABY, YOUNG, ADULT, OLD, DEAD }
 # Age tracking
 @export_range(0, 100, 0.1) var current_age: float = 0.0:
 	set(value):
@@ -45,6 +38,7 @@ var is_dead: bool = false:
 	get:
 		return life_state == LifeState.DEAD
 
+
 func get_life_state() -> LifeState:
 	if current_age <= egg_threshold:
 		return LifeState.EGG
@@ -61,8 +55,10 @@ func tick(delta: float) -> void:
 		if current_age >= life_span:
 			die()
 
+
 func die():
 	life_state = LifeState.DEAD
+
 
 func reduce_life_span(amount: float) -> void:
 	life_span -= amount

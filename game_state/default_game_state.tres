@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="GameStateResource" load_steps=10 format=3 uid="uid://bfncameot2in6"]
+
+[ext_resource type="Script" uid="uid://df6iaoolq03m3" path="res://components/cleanliness_state.gd" id="1_u46sn"]
+[ext_resource type="Script" uid="uid://c56d5xfbi3j21" path="res://components/hunger_state.gd" id="2_pbi05"]
+[ext_resource type="Script" uid="uid://bofpvg0ah1orh" path="res://components/lifecycle_state.gd" id="3_72kh2"]
+[ext_resource type="Script" uid="uid://bm5cjxd88p5is" path="res://components/social_state.gd" id="4_ao6wl"]
+[ext_resource type="Script" uid="uid://qoq1jsvfho2s" path="res://game_state/game_state_resource.gd" id="5_bxh5t"]
+
+[sub_resource type="Resource" id="Resource_bxh5t"]
+script = ExtResource("1_u46sn")
+cleanliness = 1.0
+cleanliness_down_rate = 0.01
+poop_cleanliness_down_rate = 0.05
+clean_threshold = 0.7
+dirty_threshold = 0.4
+metadata/_custom_type_script = "uid://df6iaoolq03m3"
+
+[sub_resource type="Resource" id="Resource_p20xx"]
+script = ExtResource("2_pbi05")
+fullness = 0.7
+fullness_down_rate = 0.01
+overfed_threshold = 0.7
+full_threshold = 0.5
+hungry_threshold = 0.3
+food_per_feed_action = 0.1
+metadata/_custom_type_script = "uid://c56d5xfbi3j21"
+
+[sub_resource type="Resource" id="Resource_8gfsq"]
+script = ExtResource("3_72kh2")
+current_age = 0.0
+life_span = 5.1
+egg_threshold = 1.0
+baby_threshold = 3.0
+young_threshold = 10.0
+adult_threshold = 40.0
+old_threshold = 60.0
+seconds_per_year = 1.0
+metadata/_custom_type_script = "uid://bofpvg0ah1orh"
+
+[sub_resource type="Resource" id="Resource_gj3yn"]
+script = ExtResource("4_ao6wl")
+social_meter = 1.0
+social_down_rate = 0.01
+loved_threshold = 0.5
+lonely_threshold = 0.3
+pet_socialization_amount = 0.5
+metadata/_custom_type_script = "uid://bm5cjxd88p5is"
+
+[resource]
+script = ExtResource("5_bxh5t")
+default_hunger_state = SubResource("Resource_p20xx")
+default_cleanliness_state = SubResource("Resource_bxh5t")
+default_social_state = SubResource("Resource_gj3yn")
+default_lifecycle_state = SubResource("Resource_8gfsq")
+metadata/_custom_type_script = "uid://qoq1jsvfho2s"

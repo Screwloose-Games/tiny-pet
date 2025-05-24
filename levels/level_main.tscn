@@ -1,11 +1,17 @@
-[gd_scene load_steps=13 format=3 uid="uid://bd2umttirdhh8"]
+[gd_scene load_steps=19 format=3 uid="uid://bd2umttirdhh8"]
 
 [ext_resource type="Script" uid="uid://cbp7u20p834bb" path="res://scripts/tiny_creature_game.gd" id="1_chjw3"]
 [ext_resource type="PackedScene" uid="uid://b7td0fbdkbfxb" path="res://actors/creature/prefab_creature.tscn" id="2_chjw3"]
+[ext_resource type="Script" uid="uid://u4ejnjoumlmd" path="res://levels/level_state.gd" id="2_pexq2"]
 [ext_resource type="Script" uid="uid://s0dwxj5gim5a" path="res://scripts/camtarget_marker_3d.gd" id="3_1vx7t"]
+[ext_resource type="Resource" uid="uid://c8p22i4so65t3" path="res://game_state/creature_hunger_state.tres" id="4_hosi1"]
 [ext_resource type="Shader" uid="uid://ck061bafdwf06" path="res://shaders/glass_02.gdshader" id="4_pexq2"]
+[ext_resource type="Resource" uid="uid://depk3elhit4o" path="res://game_state/creature_cleanliness_state.tres" id="5_8r1vr"]
 [ext_resource type="Shader" uid="uid://cvx4u6361cydg" path="res://shaders/wood.gdshader" id="5_47e7m"]
 [ext_resource type="PackedScene" uid="uid://cwxsslwbqxs5x" path="res://assets/3d/food/prefab_food.tscn" id="6_chjw3"]
+[ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="6_s8b20"]
+[ext_resource type="Script" uid="uid://d2pglrojq4wbp" path="res://scripts/stats_canvas_layer.gd" id="7_6vc24"]
+[ext_resource type="Resource" uid="uid://cnyg3hf7v7png" path="res://game_state/creature_lifecycle_state.tres" id="8_1vx7t"]
 
 [sub_resource type="Environment" id="Environment_032ar"]
 
@@ -41,7 +47,15 @@ height = 0.04
 [node name="TinyCreatureGame" type="Node3D"]
 script = ExtResource("1_chjw3")
 
-[node name="PrefabCreature" parent="." instance=ExtResource("2_chjw3")]
+[node name="LevelState" type="Node" parent="."]
+script = ExtResource("2_pexq2")
+lifecycle_state = ExtResource("8_1vx7t")
+hunger_state = ExtResource("4_hosi1")
+cleanliness_state = ExtResource("5_8r1vr")
+social_state = ExtResource("6_s8b20")
+
+[node name="PrefabCreature" parent="." node_paths=PackedStringArray("poop_location_marker") instance=ExtResource("2_chjw3")]
+poop_location_marker = NodePath("../PoopSpotMarker3D")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_032ar")
@@ -116,3 +130,56 @@ skeleton = NodePath("../..")
 
 [node name="PoopSpotMarker3D" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.152193, -7.45058e-09, 0.14605)
+
+[node name="StatsCanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("7_6vc24")
+lifecycle_state = ExtResource("8_1vx7t")
+
+[node name="Control" type="Control" parent="StatsCanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="StatsCanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="StatsCanvasLayer/Control/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatsCanvasLayer/Control/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StatsCanvasLayer/Control/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CreatureAgeLabel" type="Label" parent="StatsCanvasLayer/Control/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Age:"
+
+[node name="CreatureAgeValueLabel" type="Label" parent="StatsCanvasLayer/Control/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RestartButton" type="Button" parent="StatsCanvasLayer/Control/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Restart"

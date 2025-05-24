@@ -33,7 +33,8 @@ jobs:
       id: audio_files
       run: |
         echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n' | grep -E '\.(wav|ogg|mp3)$' > audio_files.txt
-
+        echo "files=$(cat audio_files.txt | paste -sd ',' -)" >> $GITHUB_OUTPUT
+    # output the list of changed audio files
     # - name: Get list of added or changed audio files
     #   id: audio_files
     #   run: |

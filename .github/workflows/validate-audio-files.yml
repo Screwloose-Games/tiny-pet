@@ -7,6 +7,9 @@ on:
       - '**/*.ogg'
       - '**/*.mp3'
 
+permissions:
+  contents: read # write access to the repository contents
+
 jobs:
   validate-audio:
     runs-on: ubuntu-latest

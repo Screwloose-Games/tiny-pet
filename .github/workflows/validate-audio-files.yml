@@ -1,0 +1,35 @@
+name: Validate Audio Files
+
+on:
+  pull_request:
+    paths:
+      - '**/*.wav'
+      - '**/*.ogg'
+      - '**/*.mp3'
+
+jobs:
+  validate-audio:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Get list of added or changed audio files
+      id: audio_files
+      run: |
+        git fetch origin ${{ github.base_ref }}
+        git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(wav|ogg|mp3)$' || true > audio_files.txt
+        echo "files=$(cat audio_files.txt | paste -sd ',' -)" >> $GITHUB_OUTPUT
+
+    - name: Validate audio files
+      if: steps.audio_files.outputs.files != ''
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_ISSUE_NUMBER: ${{ github.event.pull_request.number }}
+      run: python .github/scripts/validate-audio-files.py $(cat audio_files.txt)

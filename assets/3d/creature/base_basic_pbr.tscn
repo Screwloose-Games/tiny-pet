@@ -1,5 +1,5 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqnrknitmrym6"]
+[gd_scene load_steps=2 format=3 uid="uid://c34l2g1y6r2g0"]
 
-[ext_resource type="PackedScene" uid="uid://d16gdnaeo8sdj" path="res://assets/3d/creature/base_basic_pbr.glb" id="1_n30fy"]
+[ext_resource type="PackedScene" uid="uid://d16gdnaeo8sdj" path="res://assets/base_basic_pbr.glb" id="1_n30fy"]
 
 [node name="base_basic_pbr" instance=ExtResource("1_n30fy")]

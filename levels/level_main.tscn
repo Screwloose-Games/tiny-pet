@@ -41,8 +41,7 @@ height = 0.04
 [node name="TinyCreatureGame" type="Node3D"]
 script = ExtResource("1_chjw3")
 
-[node name="PrefabCreature" parent="." node_paths=PackedStringArray("poop_location_marker") instance=ExtResource("2_chjw3")]
-poop_location_marker = NodePath("../PoopSpotMarker3D")
+[node name="PrefabCreature" parent="." instance=ExtResource("2_chjw3")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_032ar")

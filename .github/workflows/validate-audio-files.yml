@@ -52,3 +52,30 @@ jobs:
         GITHUB_REPOSITORY: ${{ github.repository }}
         GITHUB_ISSUE_NUMBER: ${{ github.event.pull_request.number }}
       run: python .github/scripts/validate-audio-files.py $(cat audio_files.txt)
+
+    - name: Comment PR
+      uses: thollander/actions-comment-pull-request@v3
+      with:
+        comment-tag: execution
+        message: |
+          This PR has been checked for audio files.
+          {% if steps.audio_files.outputs.files != '' %}
+          The following audio files were found:
+          ```
+          {{ steps.audio_files.outputs.files }}
+          ```
+          {% endif %}
+          {% if steps.validate-audio-files.outputs.result == 'success' %}
+          All audio files passed validation.
+          {% else %}
+          Some audio files failed validation.
+          {% endif %}
+          <br />
+          <details>
+          <summary>Validation Results</summary>
+          <pre>{{ steps.validate-audio-files.outputs.result }}</pre>
+          </details>
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_ISSUE_NUMBER: ${{ github.event.pull_request.number }}

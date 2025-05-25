@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+from urllib.parse import unquote
 import numpy as np
 from pygltflib import GLTF2
 import trimesh
@@ -242,7 +243,8 @@ def list_images(gltf: GLTF2) -> list[str]:
         return images
     for image in gltf.images:
         if hasattr(image, 'uri') and image.uri:
-            images.append(image.uri)
+            decoded_uri = unquote(image.uri)
+            images.append(decoded_uri)
         elif hasattr(image, 'name') and image.name:
             images.append(image.name)
         elif hasattr(image, 'bufferView') and image.bufferView:
@@ -535,7 +537,8 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
         if gltf.images:
             for image in gltf.images:
                 if hasattr(image, 'uri') and image.uri:
-                    image_path = os.path.join(base_dir, image.uri)
+                    decoded_uri = unquote(image.uri)
+                    image_path = os.path.join(base_dir, decoded_uri)
                     if not os.path.exists(image_path):
                         missing_resources.append(f"Image: {image.uri}")
 

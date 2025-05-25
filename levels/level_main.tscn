@@ -9,12 +9,10 @@
 [ext_resource type="Resource" uid="uid://depk3elhit4o" path="res://game_state/creature_cleanliness_state.tres" id="5_8r1vr"]
 [ext_resource type="Shader" uid="uid://cvx4u6361cydg" path="res://shaders/wood.gdshader" id="5_47e7m"]
 [ext_resource type="PackedScene" uid="uid://cwxsslwbqxs5x" path="res://assets/3d/food/prefab_food.tscn" id="6_chjw3"]
-
+[ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="6_s8b20"]
 [ext_resource type="Script" uid="uid://d2pglrojq4wbp" path="res://scripts/stats_canvas_layer.gd" id="7_6vc24"]
 [ext_resource type="Resource" uid="uid://cnyg3hf7v7png" path="res://game_state/creature_lifecycle_state.tres" id="8_1vx7t"]
 [ext_resource type="PackedScene" uid="uid://dfm5xdpxoirk4" path="res://common/ui/simple_hud/simple_hud.tscn" id="13_8r1vr"]
-[ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="6_s8b20"]
-
 
 [sub_resource type="Environment" id="Environment_032ar"]
 
@@ -50,7 +48,6 @@ height = 0.04
 [node name="TinyCreatureGame" type="Node3D"]
 script = ExtResource("1_chjw3")
 
-[node name="PrefabCreature" parent="." instance=ExtResource("2_chjw3")]
 [node name="LevelState" type="Node" parent="."]
 script = ExtResource("2_pexq2")
 lifecycle_state = ExtResource("8_1vx7t")

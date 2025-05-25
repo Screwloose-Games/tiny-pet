@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cbp7u20p834bb" path="res://scripts/tiny_creature_game.gd" id="1_chjw3"]
 [ext_resource type="PackedScene" uid="uid://b7td0fbdkbfxb" path="res://actors/creature/prefab_creature.tscn" id="2_chjw3"]
-[ext_resource type="Script" uid="uid://u4ejnjoumlmd" path="res://levels/level_state.gd" id="2_pexq2"]
+[ext_resource type="Script" path="res://levels/level_state.gd" id="2_pexq2"]
 [ext_resource type="Script" uid="uid://s0dwxj5gim5a" path="res://scripts/camtarget_marker_3d.gd" id="3_1vx7t"]
 [ext_resource type="Resource" uid="uid://c8p22i4so65t3" path="res://game_state/creature_hunger_state.tres" id="4_hosi1"]
 [ext_resource type="Shader" uid="uid://ck061bafdwf06" path="res://shaders/glass_02.gdshader" id="4_pexq2"]
@@ -10,7 +10,7 @@
 [ext_resource type="Shader" uid="uid://cvx4u6361cydg" path="res://shaders/wood.gdshader" id="5_47e7m"]
 [ext_resource type="PackedScene" uid="uid://cwxsslwbqxs5x" path="res://assets/3d/food/prefab_food.tscn" id="6_chjw3"]
 [ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="6_s8b20"]
-[ext_resource type="Script" uid="uid://d2pglrojq4wbp" path="res://scripts/stats_canvas_layer.gd" id="7_6vc24"]
+[ext_resource type="Script" path="res://scripts/stats_canvas_layer.gd" id="7_6vc24"]
 [ext_resource type="Resource" uid="uid://cnyg3hf7v7png" path="res://game_state/creature_lifecycle_state.tres" id="8_1vx7t"]
 [ext_resource type="PackedScene" uid="uid://dfm5xdpxoirk4" path="res://common/ui/simple_hud/simple_hud.tscn" id="13_8r1vr"]
 
@@ -56,7 +56,7 @@ cleanliness_state = ExtResource("5_8r1vr")
 social_state = ExtResource("6_s8b20")
 
 [node name="PrefabCreature" parent="." node_paths=PackedStringArray("poop_location_marker") instance=ExtResource("2_chjw3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.350965, 0.494878, 0)
+transform = Transform3D(-0.956605, 0, -0.291387, 0, 1, 0, 0.291387, 0, -0.956605, -0.350965, 0.494878, 0)
 poop_location_marker = NodePath("../PoopSpotMarker3D")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

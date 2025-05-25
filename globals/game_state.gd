@@ -15,12 +15,8 @@ var _autosave_timer: Timer
 @onready var load_button: Button = %LoadButton
 @onready var reset_button: Button = %ResetButton
 
-
-func _init() -> void:
-	load_game_state()
-
-
 func _enter_tree() -> void:
+	load_game_state()
 	if autosave:
 		_autosave_timer = Timer.new()
 		_autosave_timer.wait_time = autosave_interval_seconds
@@ -28,7 +24,6 @@ func _enter_tree() -> void:
 		_autosave_timer.one_shot = false
 		_autosave_timer.timeout.connect(save_game_state)
 		add_child(_autosave_timer)
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

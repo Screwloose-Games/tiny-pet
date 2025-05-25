@@ -88,9 +88,6 @@ shape = SubResource("CapsuleShape3D_ajme3")
 stream = ExtResource("18_kfnfr")
 pitch_scale = 1.2
 bus = &"SFX"
-node_name = "GlobalSignalBus"
-signal_name = "poop_spawned"
-expected_args = Dictionary[String, Variant]({})
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 script = ExtResource("19_8vxwe")

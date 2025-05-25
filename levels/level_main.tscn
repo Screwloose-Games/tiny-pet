@@ -2,10 +2,21 @@
 
 [ext_resource type="Script" uid="uid://cbp7u20p834bb" path="res://scripts/tiny_creature_game.gd" id="1_chjw3"]
 [ext_resource type="PackedScene" uid="uid://b7td0fbdkbfxb" path="res://actors/creature/prefab_creature.tscn" id="2_chjw3"]
+<<<<<<< Updated upstream
+=======
+[ext_resource type="Script" path="res://levels/level_state.gd" id="2_pexq2"]
+>>>>>>> Stashed changes
 [ext_resource type="Script" uid="uid://s0dwxj5gim5a" path="res://scripts/camtarget_marker_3d.gd" id="3_1vx7t"]
 [ext_resource type="Shader" uid="uid://ck061bafdwf06" path="res://shaders/glass_02.gdshader" id="4_pexq2"]
 [ext_resource type="Shader" uid="uid://cvx4u6361cydg" path="res://shaders/wood.gdshader" id="5_47e7m"]
 [ext_resource type="PackedScene" uid="uid://cwxsslwbqxs5x" path="res://assets/3d/food/prefab_food.tscn" id="6_chjw3"]
+<<<<<<< Updated upstream
+=======
+[ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="6_s8b20"]
+[ext_resource type="Script" path="res://scripts/stats_canvas_layer.gd" id="7_6vc24"]
+[ext_resource type="Resource" uid="uid://cnyg3hf7v7png" path="res://game_state/creature_lifecycle_state.tres" id="8_1vx7t"]
+[ext_resource type="PackedScene" uid="uid://dfm5xdpxoirk4" path="res://common/ui/simple_hud/simple_hud.tscn" id="13_8r1vr"]
+>>>>>>> Stashed changes
 
 [sub_resource type="Environment" id="Environment_032ar"]
 
@@ -41,29 +52,48 @@ height = 0.04
 [node name="TinyCreatureGame" type="Node3D"]
 script = ExtResource("1_chjw3")
 
+<<<<<<< Updated upstream
 [node name="PrefabCreature" parent="." instance=ExtResource("2_chjw3")]
+=======
+[node name="LevelState" type="Node" parent="."]
+script = ExtResource("2_pexq2")
+lifecycle_state = ExtResource("8_1vx7t")
+hunger_state = ExtResource("4_hosi1")
+cleanliness_state = ExtResource("5_8r1vr")
+social_state = ExtResource("6_s8b20")
+
+[node name="PrefabCreature" parent="." node_paths=PackedStringArray("poop_location_marker") instance=ExtResource("2_chjw3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.350965, 0.494878, 0)
+poop_location_marker = NodePath("../PoopSpotMarker3D")
+>>>>>>> Stashed changes
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_032ar")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.0966622, 0.995317, 0, -0.995317, 0.0966622, 0, 1.95485, 0)
+transform = Transform3D(-0.919369, -0.391554, 0.0380266, -2.22045e-16, 0.0966622, 0.995317, -0.393396, 0.915064, -0.0888683, 0.0627995, 5.53958, 0)
 light_energy = 0.848
+light_indirect_energy = 2.616
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
+<<<<<<< Updated upstream
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.46153, 0.275475, -0.824354)
 light_energy = 0.847
+=======
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.86418, 2.16817, -2.20091)
+light_energy = 1.493
+>>>>>>> Stashed changes
 light_indirect_energy = 2.524
 
 [node name="OmniLight3D" type="OmniLight3D" parent="OmniLight3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.16485, 0.392534, 2.17239)
-light_energy = 0.391
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.16485, 0.392534, 4.73175)
+light_energy = 0.553
 light_indirect_energy = 3.438
 light_volumetric_fog_energy = 1.13
 
 [node name="OmniLight3D" type="OmniLight3D" parent="OmniLight3D/OmniLight3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.71675, -0.319414, -2.75599)
-light_energy = 0.238
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.35141, 0.410756, -4.18296)
+light_energy = 1.046
 light_indirect_energy = 1.8
 light_volumetric_fog_energy = 1.13
 
@@ -71,7 +101,12 @@ light_volumetric_fog_energy = 1.13
 script = ExtResource("3_1vx7t")
 
 [node name="Camera3D" type="Camera3D" parent="CamtargetMarker3D"]
+<<<<<<< Updated upstream
 transform = Transform3D(-0.0811555, 0.385372, -0.919186, 8.3142e-09, 0.922228, 0.386647, 0.996702, 0.0313785, -0.0748439, -0.360485, 0.137324, 0.0803764)
+=======
+transform = Transform3D(-0.600157, 0.39106, -0.697771, 0.0533651, 0.889974, 0.452879, 0.7981, 0.234562, -0.554993, -3.81797, 2.34586, -3.13952)
+fov = 50.0
+>>>>>>> Stashed changes
 
 [node name="Dirt" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0112305, -0.0479817, 0)

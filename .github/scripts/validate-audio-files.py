@@ -22,6 +22,48 @@ WAV_FILE_SPECIFICATIONS = {
     "max_file_size": MAX_FILE_SIZE,  # 49 MB
 }
 
+class AudioFileReport:
+    """Class to generate a report for audio file data. Includes detailed information about the audio file.
+        Attributes:
+            file_path (str): Path to the audio file.
+            file_size (int): Size of the audio file in Megabytes.
+            sample_rate (int): Sample rate of the audio file.
+            bit_depth (int): Bit depth of the audio file.
+            channels (int): Number of channels in the audio file.
+            duration (float): Duration of the audio file in seconds.
+            errors (list): List of validation errors encountered during processing."""
+
+    report_template = """Audio File Report:
+    File Path: {file_path}
+    File Size: {file_size:.2f} Megabytes
+    Sample Rate: {sample_rate} Hz
+    Bit Depth: {bit_depth} bits
+    Channels: {channels}
+    Duration: {duration:.2f} seconds
+    Errors: {errors}
+    """
+
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self.file = wave.open(file_path, 'rb')
+        self.file_size = os.path.getsize(file_path) / (1024 * 1024) # in Megabytes
+        self.sample_rate = self.file.getframerate()
+        self.bit_depth = self.file.getsampwidth() * 8
+        self.channels = self.file.getnchannels()
+        self.duration = self.file.getnframes() / float(self.sample_rate)
+        self.errors = []
+    
+    def __str__(self):
+        return self.report_template.format(
+            file_path=self.file_path,
+            file_size=self.file_size,
+            sample_rate=self.sample_rate,
+            bit_depth=self.bit_depth,
+            channels=self.channels,
+            duration=self.duration,
+            errors=self.errors
+        )
+
 class AudioFileValidator:
     def __init__(self, file_path):
         self.file_path = file_path
@@ -90,3 +132,26 @@ class AudioFileValidator:
             self.errors.append(f"Unexpected error reading WAV file: {self.file_path} ({e})")
 
         return not self.errors
+
+
+def main(audio_files):
+    validators = [AudioFileValidator(file_path) for file_path in audio_files]
+    reports = [AudioFileReport(file_path) for file_path in audio_files]
+    for validator in validators:
+        if not validator.validate():
+            print(f"Validation failed for {validator.file_path}:")
+            for error in validator.errors:
+                print(f" - {error}")
+            print()
+        else:
+            print(f"Validation succeeded for {validator.file_path}")
+    for report in reports:
+        print(report)
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python validate-audio-files.py <audio_file1> <audio_file2> ...")
+        sys.exit(1)
+
+    audio_files = sys.argv[1:]
+    main(audio_files)

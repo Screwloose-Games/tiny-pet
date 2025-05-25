@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://df6iaoolq03m3" path="res://components/cleanliness_state.gd" id="1_u46sn"]
 [ext_resource type="Script" uid="uid://c56d5xfbi3j21" path="res://components/hunger_state.gd" id="2_pbi05"]
 [ext_resource type="Script" uid="uid://bofpvg0ah1orh" path="res://components/lifecycle_state.gd" id="3_72kh2"]
-[ext_resource type="Script" path="res://game_state/game_state_resource.gd" id="4_ao6wl"]
+[ext_resource type="Script" uid="uid://qoq1jsvfho2s" path="res://game_state/game_state_resource.gd" id="4_ao6wl"]
 [ext_resource type="Script" uid="uid://bm5cjxd88p5is" path="res://components/social_state.gd" id="5_bxh5t"]
 
 [sub_resource type="Resource" id="Resource_u46sn"]

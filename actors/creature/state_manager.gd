@@ -1,5 +1,8 @@
 extends Node
 
+signal pet_finished
+signal finished_eating
+
 enum CreatureState {
 	EATING,
 	IDLE,
@@ -12,12 +15,23 @@ enum CreatureState {
 	ABANDONED,
 }
 
-signal pet_finished
-signal finished_eating
+const STATE_NAMES := {
+	CreatureState.EATING: "EATING",
+	CreatureState.IDLE: "IDLE",
+	CreatureState.WALKING: "WALKING",
+	CreatureState.HUNGER_FULL: "HUNGER_FULL",
+	CreatureState.HUNGER_HUNGRY: "HUNGER_HUNGRY",
+	CreatureState.POOPING: "POOPING",
+	CreatureState.PETTED: "PETTED",
+	CreatureState.LONELY: "LONELY",
+	CreatureState.ABANDONED: "ABANDONED",
+}
 
-
-var state: CreatureState = CreatureState.IDLE
-
+var state: CreatureState = CreatureState.IDLE:
+	set(val):
+		if state != val:
+			state = val
+			print("State changed to: %s" % STATE_NAMES.get(val, str(val)))
 
 @onready var prefab_creature: Node3D = $".."
 @onready var hunger_component: HungarComponent = %HungerComponent
@@ -86,13 +100,24 @@ func on_started_walking():
 	state = CreatureState.WALKING
 
 func on_started_eating():
-	state = CreatureState.EATING
-	await finished_eating
+	await get_tree().process_frame
 	if hunger_component.hunger_state.fed_state == HungerState.FedState.OVERFED:
+		#animation_player.play("full")
 		state = CreatureState.HUNGER_FULL
+		
 		pass
 	else:
-		state = CreatureState.IDLE
+		#animation_player.play("eat")
+		state = CreatureState.EATING
+	await get_tree().process_frame
+	#await get_tree().create_timer(0.1).timeout
+	state = CreatureState.IDLE
+	#await finished_eating
+	#if hunger_component.hunger_state.fed_state == HungerState.FedState.OVERFED:
+		#state = CreatureState.HUNGER_FULL
+		#pass
+	#else:
+		#state = CreatureState.IDLE
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

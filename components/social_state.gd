@@ -24,6 +24,10 @@ var social_state: State = State.LOVED:
 		if value != social_state:
 			social_state = value
 			state_changed.emit(value)
+			if social_state == State.LONELY:
+				GlobalSignalBus.creature_became_lonely.emit()
+			if social_state == State.ABANDONED:
+				GlobalSignalBus.creature_became_abandoned.emit()
 
 
 func get_social_state(value: float) -> State:

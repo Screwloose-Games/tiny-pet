@@ -19,4 +19,5 @@ func _process(delta: float) -> void:
 
 func feed():
 	was_fed.emit()
+	GlobalSignalBus.creature_fed.emit()
 	hunger_state.feed()

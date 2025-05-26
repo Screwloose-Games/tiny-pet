@@ -137,6 +137,7 @@ light_volumetric_fog_energy = 1.13
 [node name="Dirt" type="CSGBox3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.0112305, -0.0479817, 0)
 use_collision = true
+collision_layer = 9
 size = Vector3(0.465, 0.1, 0.86)
 material = SubResource("StandardMaterial3D_okrti")
 

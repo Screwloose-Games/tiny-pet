@@ -3,6 +3,9 @@ extends Resource
 
 signal state_changed(new_state: FedState)
 signal was_overfed
+signal became_hungry
+signal became_starving
+
 
 enum FedState { OVERFED, FULL, HUNGRY, STARVING }
 
@@ -28,6 +31,14 @@ var fed_state: FedState = FedState.FULL:
 		if value != fed_state:
 			fed_state = value
 			state_changed.emit(value)
+			if fed_state == FedState.OVERFED:
+				GlobalSignalBus.creature_became_overfed.emit()
+			if fed_state == FedState.HUNGRY:
+				became_hungry.emit()
+				GlobalSignalBus.creature_became_hungry.emit()
+			if fed_state == FedState.STARVING:
+				became_starving.emit()
+				GlobalSignalBus.creature_became_starving.emit()
 
 
 func get_fed_state(value: float) -> FedState:

@@ -15,10 +15,10 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"MeshInstance3D",
+			"name":"MeshInstance3D.003",
 			"translation":[
 				0,
-				0.01622059941291809,
+				0.1581227332353592,
 				0
 			]
 		}
@@ -26,12 +26,12 @@
 	"materials":[
 		{
 			"doubleSided":true,
-			"name":"Material.005",
+			"name":"Material.006",
 			"pbrMetallicRoughness":{
 				"baseColorFactor":[
-					0.65141761302948,
-					1,
-					0.5332676768302917,
+					0.3558850884437561,
+					0.034730516374111176,
+					0.8000626564025879,
 					1
 				],
 				"metallicFactor":0,
@@ -55,7 +55,7 @@
 	],
 	"meshes":[
 		{
-			"name":"Mesh_0.002",
+			"name":"Mesh_0.007",
 			"primitives":[
 				{
 					"attributes":{
@@ -82,63 +82,63 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":2210,
+			"count":253,
 			"max":[
-				0.19977347552776337,
-				0.20000000298023224,
-				0.19977347552776337
+				0.13882118463516235,
+				0.1509471982717514,
+				0.1311665177345276
 			],
 			"min":[
-				-0.19977347552776337,
-				-0.20000000298023224,
-				-0.19977347552776337
+				-0.12679293751716614,
+				-0.16532844305038452,
+				-0.13594265282154083
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":2210,
+			"count":253,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":2210,
+			"count":253,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
 			"componentType":5123,
-			"count":12672,
+			"count":1506,
 			"type":"SCALAR"
 		},
 		{
 			"bufferView":4,
 			"componentType":5126,
-			"count":709,
+			"count":647,
 			"max":[
-				0.046647533774375916,
-				0.2739832401275635,
-				0.09335135668516159
+				0.011981949210166931,
+				0.22745536267757416,
+				0.0934191420674324
 			],
 			"min":[
-				0.00574101135134697,
-				0.1595079004764557,
-				-0.0345122404396534
+				-0.028924573212862015,
+				0.11298002302646637,
+				-0.034444451332092285
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":5,
 			"componentType":5126,
-			"count":709,
+			"count":647,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":6,
 			"componentType":5126,
-			"count":709,
+			"count":647,
 			"type":"VEC2"
 		},
 		{
@@ -151,56 +151,56 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":26520,
+			"byteLength":3036,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":26520,
-			"byteOffset":26520,
+			"byteLength":3036,
+			"byteOffset":3036,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":17680,
-			"byteOffset":53040,
+			"byteLength":2024,
+			"byteOffset":6072,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":25344,
-			"byteOffset":70720,
+			"byteLength":3012,
+			"byteOffset":8096,
 			"target":34963
 		},
 		{
 			"buffer":0,
-			"byteLength":8508,
-			"byteOffset":96064,
+			"byteLength":7764,
+			"byteOffset":11108,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":8508,
-			"byteOffset":104572,
+			"byteLength":7764,
+			"byteOffset":18872,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":5672,
-			"byteOffset":113080,
+			"byteLength":5176,
+			"byteOffset":26636,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":4944,
-			"byteOffset":118752,
+			"byteOffset":31812,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":123696,
+			"byteLength":36756,
 			"uri":"prefab-food.bin"
 		}
 	]

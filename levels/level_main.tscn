@@ -31,7 +31,7 @@ ease = 2
 [sub_resource type="Environment" id="Environment_032ar"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_okrti"]
-albedo_color = Color(0.64204, 0.39596, 0.276641, 1)
+albedo_color = Color(0.729412, 0.588235, 0.439216, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_032ar"]
 render_priority = 0
@@ -162,6 +162,7 @@ material = SubResource("ShaderMaterial_ljxe0")
 transform = Transform3D(-0.798712, 0.204543, 0.565881, 0.303699, 0.948909, 0.0856635, -0.519447, 0.240278, -0.820025, 0.215597, 2.4209, 1.94388)
 
 [node name="PrefabFood" parent="FoodSource" instance=ExtResource("6_chjw3")]
+transform = Transform3D(0.894802, 0.0791279, -0.439397, -0.0388698, 0.99424, 0.0998887, 0.444771, -0.0723011, 0.892722, -0.234093, -0.162154, -0.271798)
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="FoodSource"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0453188, 0)
@@ -233,7 +234,7 @@ text = "Restart"
 [node name="SimpleHud" parent="." instance=ExtResource("13_8r1vr")]
 
 [node name="tree2" parent="." instance=ExtResource("18_c8xrr")]
-transform = Transform3D(-0.527801, 0, 0.849368, 0, 1, 0, -0.849368, 0, -0.527801, -0.985133, 0.193259, 0.40079)
+transform = Transform3D(-0.363365, 0, 0.931647, 0, 1, 0, -0.931647, 0, -0.363365, 0.710488, 0.193259, 3.06472)
 
 [node name="grass2" parent="." instance=ExtResource("19_mdq2w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.48423, 0.500004, 2.30348)

@@ -1,18 +1,28 @@
-[gd_scene load_steps=20 format=3 uid="uid://bd2umttirdhh8"]
+[gd_scene load_steps=25 format=3 uid="uid://bd2umttirdhh8"]
 
 [ext_resource type="Script" uid="uid://cbp7u20p834bb" path="res://scripts/tiny_creature_game.gd" id="1_chjw3"]
 [ext_resource type="PackedScene" uid="uid://b7td0fbdkbfxb" path="res://actors/creature/prefab_creature.tscn" id="2_chjw3"]
-[ext_resource type="Script" path="res://levels/level_state.gd" id="2_pexq2"]
-[ext_resource type="Script" uid="uid://s0dwxj5gim5a" path="res://scripts/camtarget_marker_3d.gd" id="3_1vx7t"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_o4eth"]
+[ext_resource type="Script" uid="uid://u4ejnjoumlmd" path="res://levels/level_state.gd" id="2_pexq2"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_c8xrr"]
 [ext_resource type="Resource" uid="uid://c8p22i4so65t3" path="res://game_state/creature_hunger_state.tres" id="4_hosi1"]
 [ext_resource type="Shader" uid="uid://ck061bafdwf06" path="res://shaders/glass_02.gdshader" id="4_pexq2"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_ybdih"]
 [ext_resource type="Resource" uid="uid://depk3elhit4o" path="res://game_state/creature_cleanliness_state.tres" id="5_8r1vr"]
 [ext_resource type="Shader" uid="uid://cvx4u6361cydg" path="res://shaders/wood.gdshader" id="5_47e7m"]
+[ext_resource type="Script" uid="uid://dvpbb4psfgpic" path="res://components/camera_pivot.gd" id="6_bl5ud"]
 [ext_resource type="PackedScene" uid="uid://cwxsslwbqxs5x" path="res://assets/3d/food/prefab_food.tscn" id="6_chjw3"]
 [ext_resource type="Resource" uid="uid://c1y7hr0aajia1" path="res://game_state/creature_social_state.tres" id="6_s8b20"]
-[ext_resource type="Script" path="res://scripts/stats_canvas_layer.gd" id="7_6vc24"]
+[ext_resource type="Script" uid="uid://d2pglrojq4wbp" path="res://scripts/stats_canvas_layer.gd" id="7_6vc24"]
 [ext_resource type="Resource" uid="uid://cnyg3hf7v7png" path="res://game_state/creature_lifecycle_state.tres" id="8_1vx7t"]
+[ext_resource type="Script" uid="uid://dxe6ovcu2y31k" path="res://components/camera_zoom.gd" id="9_s8b20"]
 [ext_resource type="PackedScene" uid="uid://dfm5xdpxoirk4" path="res://common/ui/simple_hud/simple_hud.tscn" id="13_8r1vr"]
+
+[sub_resource type="Resource" id="Resource_mdq2w"]
+script = ExtResource("4_ybdih")
+duration = 1.0
+transition = 0
+ease = 2
 
 [sub_resource type="Environment" id="Environment_032ar"]
 
@@ -45,8 +55,44 @@ material = SubResource("StandardMaterial3D_7crt5")
 radius = 0.02
 height = 0.04
 
-[node name="TinyCreatureGame" type="Node3D"]
+[node name="TinyCreatureGame2" type="Node3D"]
 script = ExtResource("1_chjw3")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.958258, 0, -0.285906, 0, 1, 0, 0.285906, 0, -0.958258, -0.544493, 0.877278, -1.01744)
+fov = 50.0
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("2_o4eth")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="CameraLookAtMarker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.258588, 0.877278, -0.0591849)
+
+[node name="CreaturePhantomCamera3D" type="Node3D" parent="." node_paths=PackedStringArray("follow_target", "look_at_target")]
+unique_name_in_owner = true
+transform = Transform3D(-0.958255, 0, -0.285906, 0, 1, 0, 0.285905, 0, -0.958257, -0.544493, 0.877278, -1.01744)
+script = ExtResource("3_c8xrr")
+follow_mode = 6
+follow_target = NodePath("../CameraLookAtMarker3D")
+look_at_mode = 2
+look_at_target = NodePath("../CameraLookAtMarker3D")
+tween_resource = SubResource("Resource_mdq2w")
+collision_mask = 8
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+
+[node name="CameraZoom" type="Node" parent="CreaturePhantomCamera3D"]
+script = ExtResource("9_s8b20")
+zoom_speed = 0.2
+min_zoom = 1.0
+max_zoom = 6.0
+
+[node name="CameraPivot" type="Node" parent="CreaturePhantomCamera3D"]
+script = ExtResource("6_bl5ud")
+min_yaw = 105.0
+max_yaw = 274.0
 
 [node name="LevelState" type="Node" parent="."]
 script = ExtResource("2_pexq2")
@@ -83,13 +129,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.35141, 0.410756, -4.18296)
 light_energy = 1.046
 light_indirect_energy = 1.8
 light_volumetric_fog_energy = 1.13
-
-[node name="CamtargetMarker3D" type="Marker3D" parent="."]
-script = ExtResource("3_1vx7t")
-
-[node name="Camera3D" type="Camera3D" parent="CamtargetMarker3D"]
-transform = Transform3D(-0.600157, 0.39106, -0.697771, 0.0533651, 0.889974, 0.452879, 0.7981, 0.234562, -0.554993, -3.81797, 2.34586, -3.13952)
-fov = 50.0
 
 [node name="Dirt" type="CSGBox3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.0112305, -0.0479817, 0)

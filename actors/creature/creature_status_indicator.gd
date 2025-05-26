@@ -1,6 +1,8 @@
 class_name CreatureStatusIndicator
 extends Sprite3D
 
+
+
 @export var hunger_state_indicators: Dictionary[HungerState.FedState, Texture2D] = {}
 @export var cleanliness_state_indicators: Dictionary[CleanlinessState.CleanState, Texture2D] = {}
 @export var social_state_indicators: Dictionary[SocialState.State, Texture2D] = {}

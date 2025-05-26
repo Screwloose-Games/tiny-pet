@@ -1,5 +1,8 @@
 extends Node3D
 
+
+
+
 signal petted
 signal pooped
 signal ate

@@ -1,6 +1,8 @@
 class_name SocialComponent
 extends Node
 
+signal petted
+
 @onready var social_state: SocialState = GameState.game_state.social_state:
 	get:
 		return GameState.game_state.social_state
@@ -18,4 +20,5 @@ func _process(delta: float) -> void:
 
 
 func pet():
+	petted.emit()
 	social_state.pet()

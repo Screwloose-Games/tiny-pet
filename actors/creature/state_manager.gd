@@ -12,6 +12,10 @@ enum CreatureState {
 	ABANDONED,
 }
 
+signal pet_finished
+signal finished_eating
+
+
 var state: CreatureState = CreatureState.IDLE
 
 
@@ -20,18 +24,19 @@ var state: CreatureState = CreatureState.IDLE
 @onready var social_component: SocialComponent = %SocialComponent
 @onready var cleanliness_component: CleanlinessComponent = %CleanlinessComponent
 @onready var lifecycle_component: LifecycleComponent = %LifecycleComponent
-
-
-
+@onready var animation_tree: AnimationTree = %AnimationTree
+@onready var animation_player: AnimationPlayer = $"../Model/AnimationPlayer"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	prefab_creature.pooped.connect(_on_pooped)
 	hunger_component.hunger_state.state_changed.connect(_on_hunger_state_changed)
+	hunger_component.was_fed.connect(on_started_eating)
 	social_component.social_state.state_changed.connect(_on_social_state_changed)
 	social_component.petted.connect(_on_creature_petted)
 	cleanliness_component.cleanliness_state.state_changed.connect(_on_clean_state_changed)
 	lifecycle_component.lifecycle_state.lifecycle_state_changed.connect(_on_lifecycle_state_changed)
+	animation_tree.animation_finished.connect(_on_animation_finished)
 	# TODO: Connect to movement event for WALKING state if available
 
 func _on_hunger_state_changed(new_state: HungerState.FedState):
@@ -62,8 +67,19 @@ func _on_lifecycle_state_changed(new_state: LifecycleState.LifeState):
 func _on_pooped():
 	state = CreatureState.POOPING
 
+func _on_animation_finished(anim_name: StringName):
+	match anim_name:
+		"pet":
+			pet_finished.emit()
+		"eat":
+			finished_eating.emit()
+
 func _on_creature_petted():
 	state = CreatureState.PETTED
+	
+	await pet_finished
+	state = CreatureState.IDLE
+	#await animation_tree.animation_started("idle")
 
 # Placeholder for movement event
 func on_started_walking():
@@ -71,7 +87,15 @@ func on_started_walking():
 
 func on_started_eating():
 	state = CreatureState.EATING
+	await finished_eating
+	if hunger_component.hunger_state.fed_state == HungerState.FedState.OVERFED:
+		state = CreatureState.HUNGER_FULL
+		pass
+	else:
+		state = CreatureState.IDLE
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	#if state != CreatureState.IDLE:
+		#state = CreatureState.IDLE
 	pass

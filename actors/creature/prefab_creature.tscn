@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b7td0fbdkbfxb"]
+[gd_scene load_steps=30 format=3 uid="uid://b7td0fbdkbfxb"]
 
 [ext_resource type="Script" uid="uid://bcfmxvyw5fled" path="res://actors/creature/creature_status_indicator.gd" id="1_3lcc8"]
 [ext_resource type="Script" uid="uid://2nai3nugjc5x" path="res://actors/creature/prefab_creature.gd" id="1_kk8qq"]
@@ -20,6 +20,43 @@
 [ext_resource type="Script" uid="uid://dhifo2bn5impv" path="res://components/configurable_audio_stream_player_3d.gd" id="19_8vxwe"]
 [ext_resource type="Script" uid="uid://dys20sbeiuusf" path="res://components/droppable_static_body_3d.gd" id="19_kfnfr"]
 [ext_resource type="Texture2D" uid="uid://dc3wxdmc7mb2m" path="res://assets/2d/UI/hand-cursor-icon.png" id="20_22a3u"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g25h7"]
+animation = &"eat"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_22a3u"]
+animation = &"full"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w1t36"]
+animation = &"hungry"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kfnfr"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_b60wf"]
+animation = &"pet"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ykb0a"]
+animation = &"poop"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g25h7"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_22a3u"]
+states/eat/node = SubResource("AnimationNodeAnimation_g25h7")
+states/eat/position = Vector2(437, 117)
+states/full/node = SubResource("AnimationNodeAnimation_22a3u")
+states/full/position = Vector2(559, 203)
+states/hungry/node = SubResource("AnimationNodeAnimation_w1t36")
+states/hungry/position = Vector2(612, 65)
+states/idle/node = SubResource("AnimationNodeAnimation_kfnfr")
+states/idle/position = Vector2(339, 61)
+states/pet/node = SubResource("AnimationNodeAnimation_b60wf")
+states/pet/position = Vector2(745, 83)
+states/poop/node = SubResource("AnimationNodeAnimation_ykb0a")
+states/poop/position = Vector2(694, 218)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_g25h7")]
+graph_offset = Vector2(-109, -16)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ajme3"]
 radius = 0.35
@@ -56,6 +93,10 @@ lifecycle_state_indicators = Dictionary[int, Texture2D]({
 
 [node name="Model" parent="." instance=ExtResource("1_w6gn8")]
 
+[node name="AnimationTree" type="AnimationTree" parent="Model"]
+tree_root = SubResource("AnimationNodeStateMachine_22a3u")
+anim_player = NodePath("../AnimationPlayer")
+
 [node name="HungerComponent" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_gr8kh")
@@ -88,6 +129,8 @@ shape = SubResource("CapsuleShape3D_ajme3")
 stream = ExtResource("18_kfnfr")
 pitch_scale = 1.2
 bus = &"SFX"
+node_name = ""
+signal_name = ""
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 script = ExtResource("19_8vxwe")
@@ -101,3 +144,5 @@ script = ExtResource("19_kfnfr")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DroppableStaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.294818, 0)
 shape = SubResource("CapsuleShape3D_ajme3")
+
+[editable path="Model"]

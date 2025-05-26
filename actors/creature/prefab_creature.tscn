@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://b7td0fbdkbfxb"]
+[gd_scene load_steps=61 format=3 uid="uid://b7td0fbdkbfxb"]
 
 [ext_resource type="Script" uid="uid://bcfmxvyw5fled" path="res://actors/creature/creature_status_indicator.gd" id="1_3lcc8"]
 [ext_resource type="Script" uid="uid://2nai3nugjc5x" path="res://actors/creature/prefab_creature.gd" id="1_kk8qq"]
@@ -15,7 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://dmadgkld7ly3" path="res://assets/2d/UI/icon-state-hungry.png" id="9_g25h7"]
 [ext_resource type="Texture2D" uid="uid://msv7wobyf82l" path="res://assets/2d/UI/icon-state-dead.png" id="10_xpx33"]
 [ext_resource type="Script" uid="uid://dtso0ko84oyaj" path="res://components/status_debuff_system.gd" id="11_um5j8"]
-[ext_resource type="PackedScene" uid="uid://eqy6e2c4fpeh" path="res://tests/dynamic_signal_connector.tscn" id="18_8vxwe"]
+[ext_resource type="PackedScene" uid="uid://eqy6e2c4fpeh" path="res://scripts/dynamic_signal_connector.tscn" id="18_8vxwe"]
 [ext_resource type="Script" uid="uid://cgb23fr60yakj" path="res://components/clickable_static_body_3d.gd" id="18_ajme3"]
 [ext_resource type="AudioStream" uid="uid://b5031souw3s1m" path="res://actors/creature/sfx/random_poo_streams.tres" id="18_kfnfr"]
 [ext_resource type="Script" uid="uid://dys20sbeiuusf" path="res://components/droppable_static_body_3d.gd" id="19_kfnfr"]
@@ -146,15 +146,19 @@ states/poop/position = Vector2(770, 221)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_g25h7"), "idle", "eat", SubResource("AnimationNodeStateMachineTransition_22a3u"), "eat", "full", SubResource("AnimationNodeStateMachineTransition_w1t36"), "idle", "hungry", SubResource("AnimationNodeStateMachineTransition_b60wf"), "idle", "pet", SubResource("AnimationNodeStateMachineTransition_ykb0a"), "idle", "poop", SubResource("AnimationNodeStateMachineTransition_v3nai"), "poop", "idle", SubResource("AnimationNodeStateMachineTransition_xy104"), "pet", "idle", SubResource("AnimationNodeStateMachineTransition_spxxs"), "hungry", "idle", SubResource("AnimationNodeStateMachineTransition_jw2cm"), "eat", "idle", SubResource("AnimationNodeStateMachineTransition_lb2co"), "full", "idle", SubResource("AnimationNodeStateMachineTransition_ih74i"), "idle", "full", SubResource("AnimationNodeStateMachineTransition_yp42a"), "full", "poop", SubResource("AnimationNodeStateMachineTransition_ctr5j"), "poop", "pet", SubResource("AnimationNodeStateMachineTransition_5nbmq"), "hungry", "pet", SubResource("AnimationNodeStateMachineTransition_tduwr"), "eat", "pet", SubResource("AnimationNodeStateMachineTransition_fnh4p"), "full", "pet", SubResource("AnimationNodeStateMachineTransition_dtjvk"), "hungry", "full", SubResource("AnimationNodeStateMachineTransition_fws0w"), "pet", "full", SubResource("AnimationNodeStateMachineTransition_6w8m4"), "poop", "full", SubResource("AnimationNodeStateMachineTransition_unenv")]
 graph_offset = Vector2(-200, -116)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ajme3"]
-radius = 0.38
-height = 1.3
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lb2co"]
+radius = 0.41
+height = 1.4
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ih74i"]
 streams_count = 3
 stream_0/stream = ExtResource("22_xy104")
 stream_1/stream = ExtResource("23_spxxs")
 stream_2/stream = ExtResource("24_jw2cm")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ajme3"]
+radius = 0.38
+height = 1.3
 
 [node name="PrefabCreature" type="Node3D"]
 script = ExtResource("1_kk8qq")
@@ -166,7 +170,6 @@ script = ExtResource("3_g25h7")
 
 [node name="CreatureStatusIndicator" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.579, 0)
-flip_h = true
 pixel_size = 0.002
 billboard = 1
 no_depth_test = true
@@ -193,12 +196,12 @@ lifecycle_state_indicators = Dictionary[int, Texture2D]({
 
 [node name="Skeleton3D" parent="Model/Plane/Armature_002" index="0"]
 bones/0/rotation = Quaternion(0.00302969, -0.00321422, -0.705923, 0.708275)
-bones/1/rotation = Quaternion(0.997193, -0.0737023, -0.00277727, 0.0128787)
-bones/2/rotation = Quaternion(0.0139367, -0.00347368, 0.34293, 0.939251)
-bones/3/rotation = Quaternion(0.00180327, -0.00218699, 0.0367749, 0.99932)
+bones/1/rotation = Quaternion(0.997274, -0.0736714, -0.00353364, 0.00215685)
+bones/2/rotation = Quaternion(0.0234071, -0.0085778, 0.342823, 0.939069)
+bones/3/rotation = Quaternion(0.00864935, -0.0104881, 0.0367716, 0.999231)
 bones/4/rotation = Quaternion(0.000959583, -7.03369e-06, 0.0240878, 0.999709)
-bones/5/rotation = Quaternion(-0.00536606, 0.00031344, -0.0125293, 0.999907)
-bones/6/rotation = Quaternion(-0.000858761, 0.00342834, 0.0411898, 0.999145)
+bones/5/rotation = Quaternion(-0.00536863, 0.000265803, -0.0214031, 0.999757)
+bones/6/rotation = Quaternion(-9.14771e-05, 0.000362615, 0.017226, 0.999852)
 bones/7/position = Vector3(0.140633, 0.16367, -0.228982)
 bones/7/rotation = Quaternion(-0.339315, -0.326555, -0.640756, 0.606348)
 bones/8/rotation = Quaternion(-0.00455155, 7.44462e-08, 0.00664046, 0.999968)
@@ -245,10 +248,11 @@ hover_cursor = ExtResource("20_22a3u")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ClickableStaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.294818, 0)
-shape = SubResource("CapsuleShape3D_ajme3")
+shape = SubResource("CapsuleShape3D_lb2co")
 
 [node name="PooSound" parent="." instance=ExtResource("18_8vxwe")]
 stream = ExtResource("18_kfnfr")
+volume_db = -6.0
 pitch_scale = 1.2
 bus = &"SFX"
 node_name = "GlobalSignalBus"

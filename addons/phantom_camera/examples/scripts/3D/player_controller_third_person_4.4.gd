@@ -8,7 +8,7 @@ extends "player_controller_4.4.gd"
 @export var mouse_sensitivity: float = 0.05
 
 @export var min_pitch: float = -89.9
-@export var max_pitch: float = 50
+@export var max_pitch: float = 30
 
 @export var min_yaw: float = 0
 @export var max_yaw: float = 360

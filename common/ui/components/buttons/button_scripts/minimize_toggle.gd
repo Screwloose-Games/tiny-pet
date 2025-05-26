@@ -9,6 +9,9 @@ var _is_minimized: bool = true
 func _ready() -> void:
 	button_pressed = true
 	toggled.connect(_on_toggled)
+	if OS.has_feature("web"):
+		hide()
+		return
 	_on_toggled(_is_minimized)
 
 

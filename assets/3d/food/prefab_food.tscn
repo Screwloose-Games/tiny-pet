@@ -1,8 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://cwxsslwbqxs5x"]
+[gd_scene load_steps=6 format=3 uid="uid://cwxsslwbqxs5x"]
 
 [ext_resource type="Script" uid="uid://dwxfch6j0p7i3" path="res://assets/3d/food/prefab_food.gd" id="1_mm4qh"]
 [ext_resource type="Script" uid="uid://b5kt2kjpwa1na" path="res://components/draggable_static_body_3d.gd" id="2_7kju3"]
 [ext_resource type="PackedScene" uid="uid://bf5f40y0vefwq" path="res://assets/3d/food/prefab-food.gltf" id="2_11kpb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_11kpb"]
+resource_name = "Material.006"
+cull_mode = 2
+albedo_color = Color(0.630959, 0.205145, 0.906363, 1)
+roughness = 0.5
+emission_enabled = true
+emission = Color(0.647059, 0.254902, 0.87451, 1)
+emission_energy_multiplier = 0.2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_mm4qh"]
 radius = 0.2
@@ -11,10 +20,23 @@ radius = 0.2
 script = ExtResource("1_mm4qh")
 
 [node name="prefab-food" parent="." instance=ExtResource("2_11kpb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.360943, 0)
+
+[node name="MeshInstance3D_003" parent="prefab-food" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_11kpb")
 
 [node name="DraggableStaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.194988, 0)
 script = ExtResource("2_7kju3")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DraggableStaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.016255, 0)
 shape = SubResource("SphereShape3D_mm4qh")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.183367, 0)
+light_color = Color(0.835294, 0.482353, 1, 1)
+light_energy = 0.2
+omni_range = 0.747
+
+[editable path="prefab-food"]

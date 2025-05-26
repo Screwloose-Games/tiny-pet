@@ -100,11 +100,12 @@ lifecycle_state_indicators = Dictionary[int, Texture2D]({
 
 [node name="Skeleton3D" parent="Model/Plane/Armature_002" index="0"]
 bones/0/rotation = Quaternion(0.00302969, -0.00321422, -0.705923, 0.708275)
-bones/1/rotation = Quaternion(0.997153, -0.0737092, -0.00257687, 0.0157178)
-bones/3/rotation = Quaternion(-5.23321e-07, 1.6719e-07, 0.0367749, 0.999324)
+bones/1/rotation = Quaternion(0.997234, -0.0736927, -0.00303638, 0.00920607)
+bones/2/rotation = Quaternion(0.0171877, -0.00522573, 0.342898, 0.939201)
+bones/3/rotation = Quaternion(0.00415324, -0.0050364, 0.0367742, 0.999302)
 bones/4/rotation = Quaternion(0.000959583, -7.03369e-06, 0.0240878, 0.999709)
-bones/5/rotation = Quaternion(-0.0053689, 0.00026032, -0.022424, 0.999734)
-bones/6/rotation = Quaternion(-7.63563e-07, 1.64303e-07, 0.0143923, 0.999896)
+bones/5/rotation = Quaternion(-0.00536872, 0.000263896, -0.0217581, 0.999749)
+bones/6/rotation = Quaternion(-4.26408e-05, 0.000167487, 0.0157005, 0.999877)
 bones/7/position = Vector3(0.140633, 0.16367, -0.228982)
 bones/7/rotation = Quaternion(-0.339315, -0.326555, -0.640756, 0.606348)
 bones/8/rotation = Quaternion(-0.00455155, 7.44462e-08, 0.00664046, 0.999968)

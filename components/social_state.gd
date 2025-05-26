@@ -11,8 +11,8 @@ enum State { LOVED, LONELY, ABANDONED }
 		social_meter = clamp(value, 0.0, 1.0)
 		social_state = get_social_state(value)
 
-# Rate of change
-@export_range(0, 1, .01) var social_down_rate: float = 0.01  # per second
+## Rate of social meter per second. social_decrease_rate
+@export_range(0, 1, .0001) var social_down_rate: float = 0.01  # per second
 
 # State thresholds
 @export_range(0, 1, .01) var loved_threshold: float = 0.5

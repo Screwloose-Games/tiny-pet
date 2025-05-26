@@ -21,13 +21,13 @@ func _on_toggled(is_minimized: bool):
 		await get_tree().process_frame
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED, get_window().get_window_id())
 		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_RESIZE_DISABLED, false)
-		#DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
-		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
+		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
+		#DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
 
 		# move to the bottom right corner of the screen
 		var screen_size = DisplayServer.screen_get_size(screen_id)
 		get_window().position = screen_size - new_size
-		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_TRANSPARENT, true)
+		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_TRANSPARENT, false)
 		icon = minimize_icon
 		get_window().size = new_size
 

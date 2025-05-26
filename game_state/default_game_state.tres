@@ -9,7 +9,7 @@
 [sub_resource type="Resource" id="Resource_u46sn"]
 script = ExtResource("1_u46sn")
 cleanliness = 1.0
-cleanliness_down_rate = 0.01
+cleanliness_down_rate = 0.05
 poop_cleanliness_down_rate = 0.05
 clean_threshold = 0.7
 dirty_threshold = 0.4
@@ -19,28 +19,28 @@ metadata/_custom_type_script = "uid://df6iaoolq03m3"
 script = ExtResource("2_pbi05")
 fullness = 0.7
 fullness_down_rate = 0.01
-overfed_threshold = 0.7
-full_threshold = 0.5
-hungry_threshold = 0.3
-food_per_feed_action = 0.1
+overfed_threshold = 0.9
+full_threshold = 0.3
+hungry_threshold = 0.1
+food_per_feed_action = 0.3
 metadata/_custom_type_script = "uid://c56d5xfbi3j21"
 
 [sub_resource type="Resource" id="Resource_72kh2"]
 script = ExtResource("3_72kh2")
 current_age = 0.0
-life_span = 80.0
+life_span = 100.0
 egg_threshold = 1.0
 baby_threshold = 3.0
 young_threshold = 10.0
 adult_threshold = 40.0
 old_threshold = 60.0
-seconds_per_year = 1.0
+seconds_per_year = 5.0
 metadata/_custom_type_script = "uid://bofpvg0ah1orh"
 
 [sub_resource type="Resource" id="Resource_ao6wl"]
 script = ExtResource("5_bxh5t")
 social_meter = 1.0
-social_down_rate = 0.01
+social_down_rate = 0.0083
 loved_threshold = 0.5
 lonely_threshold = 0.3
 pet_socialization_amount = 0.5

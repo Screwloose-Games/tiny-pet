@@ -64,6 +64,7 @@ height = 1.2
 
 [node name="PrefabCreature" type="Node3D"]
 script = ExtResource("1_kk8qq")
+seconds_per_poop = 30.0
 poop_scene = ExtResource("2_prdta")
 
 [node name="CreatureStatusIndicator" type="Sprite3D" parent="."]
@@ -92,6 +93,27 @@ lifecycle_state_indicators = Dictionary[int, Texture2D]({
 })
 
 [node name="Model" parent="." instance=ExtResource("1_w6gn8")]
+
+[node name="Skeleton3D" parent="Model/Plane/Armature_002" index="0"]
+bones/0/rotation = Quaternion(0.00302969, -0.00321422, -0.705923, 0.708275)
+bones/1/rotation = Quaternion(0.997241, -0.0736328, -0.00427384, -0.00834108)
+bones/2/rotation = Quaternion(0.032667, -0.0135689, 0.34268, 0.938786)
+bones/3/rotation = Quaternion(0.0153442, -0.0186058, 0.0367643, 0.999033)
+bones/4/rotation = Quaternion(0.000959583, -7.03369e-06, 0.0240878, 0.999709)
+bones/5/rotation = Quaternion(-0.00536836, 0.000271089, -0.0204187, 0.999777)
+bones/6/rotation = Quaternion(-0.000179533, 0.000714447, 0.0199766, 0.9998)
+bones/7/position = Vector3(0.140633, 0.16367, -0.228982)
+bones/7/rotation = Quaternion(-0.339315, -0.326555, -0.640756, 0.606348)
+bones/8/rotation = Quaternion(-0.00455155, 7.44462e-08, 0.00664046, 0.999968)
+bones/9/position = Vector3(0.140982, 0.168602, 0.230836)
+bones/9/rotation = Quaternion(-0.339315, -0.326555, -0.640756, 0.606348)
+bones/10/rotation = Quaternion(-0.00455152, 7.44423e-08, 0.00664042, 0.999968)
+bones/11/position = Vector3(0.132146, -0.00242756, -0.225123)
+bones/11/rotation = Quaternion(-0.203925, -0.203081, -0.678291, 0.676087)
+bones/12/rotation = Quaternion(-0.0019318, -6.72805e-08, 0.00125199, 0.999997)
+bones/13/position = Vector3(0.132271, 0.00157512, 0.22811)
+bones/13/rotation = Quaternion(-0.203925, -0.203081, -0.678291, 0.676087)
+bones/14/rotation = Quaternion(-0.0019318, -6.72808e-08, 0.00125199, 0.999997)
 
 [node name="AnimationTree" type="AnimationTree" parent="Model"]
 tree_root = SubResource("AnimationNodeStateMachine_22a3u")
@@ -129,8 +151,6 @@ shape = SubResource("CapsuleShape3D_ajme3")
 stream = ExtResource("18_kfnfr")
 pitch_scale = 1.2
 bus = &"SFX"
-node_name = ""
-signal_name = ""
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 script = ExtResource("19_8vxwe")

@@ -2,6 +2,7 @@ class_name HungerState
 extends Resource
 
 signal state_changed(new_state: FedState)
+signal was_overfed
 
 enum FedState { OVERFED, FULL, HUNGRY, STARVING }
 

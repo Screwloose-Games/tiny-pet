@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://b7td0fbdkbfxb"]
+[gd_scene load_steps=31 format=3 uid="uid://b7td0fbdkbfxb"]
 
 [ext_resource type="Script" uid="uid://bcfmxvyw5fled" path="res://actors/creature/creature_status_indicator.gd" id="1_3lcc8"]
 [ext_resource type="Script" uid="uid://2nai3nugjc5x" path="res://actors/creature/prefab_creature.gd" id="1_kk8qq"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://d1qhf4hm6c6xy" path="res://components/hunger_component.gd" id="2_gr8kh"]
 [ext_resource type="PackedScene" uid="uid://d4t6lqohvmpb" path="res://assets/3d/poop/prefab_poop.tscn" id="2_prdta"]
 [ext_resource type="Script" uid="uid://chkatlctnyt1l" path="res://components/social_component.gd" id="3_2yd0l"]
+[ext_resource type="Script" uid="uid://cj0kuv56bvmyh" path="res://actors/creature/state_manager.gd" id="3_g25h7"]
 [ext_resource type="Script" uid="uid://xgrqbygkv83j" path="res://components/cleanliness_component.gd" id="4_oqnla"]
 [ext_resource type="Texture2D" uid="uid://cch8khh4mjoci" path="res://assets/2d/UI/icon-state-overfed.png" id="6_28ol3"]
 [ext_resource type="Texture2D" uid="uid://c64cj1ik4nmeb" path="res://assets/2d/UI/icon-state-dirty.png" id="7_mwhrg"]
@@ -67,6 +68,9 @@ script = ExtResource("1_kk8qq")
 seconds_per_poop = 30.0
 poop_scene = ExtResource("2_prdta")
 
+[node name="StateManager" type="Node" parent="."]
+script = ExtResource("3_g25h7")
+
 [node name="CreatureStatusIndicator" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.578672, 0)
 offset = Vector2(0, 75)
@@ -96,12 +100,11 @@ lifecycle_state_indicators = Dictionary[int, Texture2D]({
 
 [node name="Skeleton3D" parent="Model/Plane/Armature_002" index="0"]
 bones/0/rotation = Quaternion(0.00302969, -0.00321422, -0.705923, 0.708275)
-bones/1/rotation = Quaternion(0.997241, -0.0736328, -0.00427384, -0.00834108)
-bones/2/rotation = Quaternion(0.032667, -0.0135689, 0.34268, 0.938786)
-bones/3/rotation = Quaternion(0.0153442, -0.0186058, 0.0367643, 0.999033)
+bones/1/rotation = Quaternion(0.997153, -0.0737092, -0.00257687, 0.0157178)
+bones/3/rotation = Quaternion(-5.23321e-07, 1.6719e-07, 0.0367749, 0.999324)
 bones/4/rotation = Quaternion(0.000959583, -7.03369e-06, 0.0240878, 0.999709)
-bones/5/rotation = Quaternion(-0.00536836, 0.000271089, -0.0204187, 0.999777)
-bones/6/rotation = Quaternion(-0.000179533, 0.000714447, 0.0199766, 0.9998)
+bones/5/rotation = Quaternion(-0.0053689, 0.00026032, -0.022424, 0.999734)
+bones/6/rotation = Quaternion(-7.63563e-07, 1.64303e-07, 0.0143923, 0.999896)
 bones/7/position = Vector3(0.140633, 0.16367, -0.228982)
 bones/7/rotation = Quaternion(-0.339315, -0.326555, -0.640756, 0.606348)
 bones/8/rotation = Quaternion(-0.00455155, 7.44462e-08, 0.00664046, 0.999968)

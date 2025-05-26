@@ -21,6 +21,7 @@ var _autoload_instance: Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
 	if Engine.is_editor_hint():
 		
 		return
@@ -102,6 +103,7 @@ func _get_property_list() -> Array[Dictionary]:
 
 
 func update_signal_options(autoload_name: StringName):
+	return
 	var singleton: String = ProjectSettings.get_setting("autoload/" + autoload_name)
 	if singleton is String:
 		singleton = singleton.trim_prefix("*")

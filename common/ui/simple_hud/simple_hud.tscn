@@ -29,13 +29,13 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -158.0
-offset_bottom = 50.0
+offset_left = -132.0
+offset_bottom = 30.0
 grow_horizontal = 0
 
 [node name="RestartButton" type="Button" parent="SimpleHud/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 icon = ExtResource("9_gdisi")
 expand_icon = true
@@ -43,7 +43,7 @@ script = ExtResource("10_gdisi")
 
 [node name="MuteToggle" type="Button" parent="SimpleHud/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 toggle_mode = true
 icon = ExtResource("4_5o0ik")
@@ -54,18 +54,18 @@ unmute_icon = ExtResource("2_wbbn8")
 
 [node name="MinimizeToggle" type="Button" parent="SimpleHud/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 toggle_mode = true
 icon = ExtResource("3_ntf1r")
 expand_icon = true
 script = ExtResource("4_ntf1r")
-maxmimize_icon = ExtResource("6_vn2q7")
-minimize_icon = ExtResource("3_ntf1r")
+maxmimize_icon = ExtResource("3_ntf1r")
+minimize_icon = ExtResource("6_vn2q7")
 
 [node name="CloseButton" type="Button" parent="SimpleHud/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 icon = ExtResource("4_wbbn8")
 expand_icon = true

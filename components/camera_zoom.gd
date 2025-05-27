@@ -4,13 +4,14 @@ extends Node
 @export var min_zoom: float = 0.0
 @export var max_zoom: float = 10.0
 
-@onready var camera: PhantomCamera3D = get_parent()
-
 var zoom_distance: float = 4.0
+
+@onready var camera: PhantomCamera3D = get_parent()
 
 func _ready() -> void:
 	await camera.ready
 	camera.spring_length = zoom_distance
+
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

@@ -1,5 +1,6 @@
 # Run this with: python .github/scripts/validate-audio-files.py $(cat audio_files.txt)
 
+import json
 import os
 import sys
 import wave
@@ -34,7 +35,7 @@ class AudioFileReport:
             errors (list): List of validation errors encountered during processing."""
 
     report_template = """Audio File Report:
-    File Path: {file_path}
+    File Path: `{file_path}`
     File Size: {file_size:.2f} Megabytes
     Sample Rate: {sample_rate} Hz
     Bit Depth: {bit_depth} bits
@@ -52,6 +53,12 @@ class AudioFileReport:
         self.channels = self.file.getnchannels()
         self.duration = self.file.getnframes() / float(self.sample_rate)
         self.errors = []
+
+        validator = AudioFileValidator(self.file_path)
+        validator.validate()
+        for error in validator.errors:
+            self.errors.append(error)
+
     
     def __str__(self):
         return self.report_template.format(
@@ -68,6 +75,9 @@ class AudioFileValidator:
     def __init__(self, file_path):
         self.file_path = file_path
         self.errors = []
+
+    def validation_results(self):
+        return "\n".join(self.errors) if self.errors else "No errors found."
 
     def validate(self):
         if not os.path.isfile(self.file_path):
@@ -147,6 +157,18 @@ def main(audio_files):
             print(f"Validation succeeded for {validator.file_path}")
     for report in reports:
         print(report)
+    
+    out_path = os.environ["GITHUB_OUTPUT"]
+    if os.path.exists(out_path):
+        with open(out_path, "a") as fh:
+            reports_str = "\n\n".join([str(report) for report in reports])
+            metadata = {
+                "audio_reports": reports_str,
+            }
+            print("metadata<<EOF", file=fh)
+            print(json.dumps(metadata, indent=2), file=fh)
+            print("EOF", file=fh)
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bd2umttirdhh8"]
+[gd_scene load_steps=36 format=3 uid="uid://bd2umttirdhh8"]
 
 [ext_resource type="Script" uid="uid://cbp7u20p834bb" path="res://scripts/tiny_creature_game.gd" id="1_chjw3"]
 [ext_resource type="PackedScene" uid="uid://b7td0fbdkbfxb" path="res://actors/creature/prefab_creature.tscn" id="2_chjw3"]
@@ -29,6 +29,14 @@ transition = 0
 ease = 2
 
 [sub_resource type="Environment" id="Environment_032ar"]
+background_mode = 2
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ssr_enabled = true
+ssr_fade_in = 0.270375
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mdq2w"]
+size = Vector3(1, 0.1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_okrti"]
 albedo_color = Color(0.729412, 0.588235, 0.439216, 1)
@@ -51,6 +59,44 @@ shader_parameter/wave_scale = 8.454
 shader_parameter/random_scale = 4.6
 shader_parameter/noise_scale = 0.03
 
+[sub_resource type="Animation" id="Animation_ownxf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PrefabFood:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.100056, -0.457388, -0.0390751)]
+}
+
+[sub_resource type="Animation" id="Animation_mdq2w"]
+resource_name = "sway_fruit"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PrefabFood:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -0.457276, -0.0383972), Vector3(-0.100056, -0.457388, -0.0390751)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2q86n"]
+_data = {
+&"RESET": SubResource("Animation_ownxf"),
+&"sway_fruit": SubResource("Animation_mdq2w")
+}
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7crt5"]
 albedo_color = Color(0.262745, 1, 0, 1)
 
@@ -58,6 +104,44 @@ albedo_color = Color(0.262745, 1, 0, 1)
 material = SubResource("StandardMaterial3D_7crt5")
 radius = 0.02
 height = 0.04
+
+[sub_resource type="Animation" id="Animation_g3yc5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2q86n"]
+resource_name = "sway"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.0174533), Vector3(0, 0, 0.0174533)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8u47k"]
+_data = {
+&"RESET": SubResource("Animation_g3yc5"),
+&"sway": SubResource("Animation_2q86n")
+}
 
 [node name="TinyCreatureGame2" type="Node3D"]
 script = ExtResource("1_chjw3")
@@ -95,6 +179,7 @@ max_zoom = 6.0
 
 [node name="CameraPivot" type="Node" parent="CreaturePhantomCamera3D"]
 script = ExtResource("6_bl5ud")
+min_pitch = -30.0
 min_yaw = 105.0
 max_yaw = 274.0
 
@@ -114,6 +199,7 @@ environment = SubResource("Environment_032ar")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.919369, -0.391554, 0.0380266, -2.22045e-16, 0.0966622, 0.995317, -0.393396, 0.915064, -0.0888683, 0.0627995, 5.53958, 0)
+visible = false
 light_energy = 0.848
 light_indirect_energy = 2.616
 
@@ -121,6 +207,7 @@ light_indirect_energy = 2.616
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.86418, 2.16817, -2.20091)
 light_energy = 1.493
 light_indirect_energy = 2.524
+shadow_enabled = true
 
 [node name="OmniLight3D" type="OmniLight3D" parent="OmniLight3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.233396, 0.122749, 3.85144)
@@ -134,9 +221,17 @@ light_energy = 4.032
 light_indirect_energy = 1.8
 light_volumetric_fog_energy = 1.13
 
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.0112305, -4.49896, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.454699, 0)
+shape = SubResource("BoxShape3D_mdq2w")
+
 [node name="Dirt" type="CSGBox3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.0112305, -0.0479817, 0)
 use_collision = true
+collision_layer = 9
 size = Vector3(0.465, 0.1, 0.86)
 material = SubResource("StandardMaterial3D_okrti")
 
@@ -153,16 +248,23 @@ material = SubResource("ShaderMaterial_032ar")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.179932, -0.112732, 0.167725)
+use_collision = true
 size = Vector3(1.97998, 0.0496826, 2.37646)
 material = SubResource("ShaderMaterial_ljxe0")
 
 [node name="InteractionsCanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="FoodSource" type="Node3D" parent="."]
-transform = Transform3D(-0.798712, 0.204543, 0.565881, 0.303699, 0.948909, 0.0856635, -0.519447, 0.240278, -0.820025, 0.215597, 2.4209, 1.94388)
+transform = Transform3D(-0.798712, 0.204543, 0.565881, 0.303699, 0.948909, 0.0856635, -0.519447, 0.240278, -0.820025, 0.0860387, 2.96824, 1.80328)
+
+[node name="FruitAnimationPlayer" type="AnimationPlayer" parent="FoodSource"]
+libraries = {
+&"": SubResource("AnimationLibrary_2q86n")
+}
+autoplay = "sway_fruit"
 
 [node name="PrefabFood" parent="FoodSource" instance=ExtResource("6_chjw3")]
-transform = Transform3D(0.894802, 0.0791279, -0.439397, -0.0388698, 0.99424, 0.0998887, 0.444771, -0.0723011, 0.892722, -0.234093, -0.162154, -0.271798)
+transform = Transform3D(1.7896, 0.158255, -0.878793, -0.0777395, 1.98848, 0.199778, 0.889539, -0.144603, 1.78544, -0.419984, -0.0335684, -0.367017)
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="FoodSource"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0453188, 0)
@@ -171,6 +273,30 @@ mesh = SubResource("SphereMesh_okrti")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="FoodSource"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0818856, 0)
+visible = false
+mesh = SubResource("SphereMesh_okrti")
+skeleton = NodePath("../..")
+
+[node name="FoodSource2" type="Node3D" parent="."]
+transform = Transform3D(-0.798712, 0.204543, 0.565881, 0.303699, 0.948909, 0.0856635, -0.519447, 0.240278, -0.820025, 0.895732, 2.80181, 1.94388)
+
+[node name="FruitAnimationPlayer" type="AnimationPlayer" parent="FoodSource2"]
+libraries = {
+&"": SubResource("AnimationLibrary_2q86n")
+}
+autoplay = "sway_fruit"
+
+[node name="PrefabFood" parent="FoodSource2" instance=ExtResource("6_chjw3")]
+transform = Transform3D(1.7896, 0.158255, -0.878793, -0.0777395, 1.98848, 0.199778, 0.889539, -0.144603, 1.78544, -0.0846703, 0.624078, -0.172791)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="FoodSource2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0453188, 0)
+visible = false
+mesh = SubResource("SphereMesh_okrti")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="FoodSource2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0818856, 0)
 visible = false
 mesh = SubResource("SphereMesh_okrti")
@@ -238,6 +364,12 @@ transform = Transform3D(-0.363365, 0, 0.931647, 0, 1, 0, -0.931647, 0, -0.363365
 
 [node name="grass2" parent="." instance=ExtResource("19_mdq2w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.48423, 0.500004, 2.30348)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="grass2"]
+libraries = {
+&"": SubResource("AnimationLibrary_8u47k")
+}
+autoplay = "sway"
 
 [node name="bush2" parent="." instance=ExtResource("20_ownxf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.62524, 0.452018, 3.41553)

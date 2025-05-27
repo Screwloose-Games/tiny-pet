@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://b7td0fbdkbfxb"]
+[gd_scene load_steps=61 format=3 uid="uid://b7td0fbdkbfxb"]
 
 [ext_resource type="Script" uid="uid://bcfmxvyw5fled" path="res://actors/creature/creature_status_indicator.gd" id="1_3lcc8"]
 [ext_resource type="Script" uid="uid://2nai3nugjc5x" path="res://actors/creature/prefab_creature.gd" id="1_kk8qq"]
@@ -15,12 +15,21 @@
 [ext_resource type="Texture2D" uid="uid://dmadgkld7ly3" path="res://assets/2d/UI/icon-state-hungry.png" id="9_g25h7"]
 [ext_resource type="Texture2D" uid="uid://msv7wobyf82l" path="res://assets/2d/UI/icon-state-dead.png" id="10_xpx33"]
 [ext_resource type="Script" uid="uid://dtso0ko84oyaj" path="res://components/status_debuff_system.gd" id="11_um5j8"]
-[ext_resource type="PackedScene" uid="uid://eqy6e2c4fpeh" path="res://tests/dynamic_signal_connector.tscn" id="18_8vxwe"]
+[ext_resource type="PackedScene" uid="uid://eqy6e2c4fpeh" path="res://scripts/dynamic_signal_connector.tscn" id="18_8vxwe"]
 [ext_resource type="Script" uid="uid://cgb23fr60yakj" path="res://components/clickable_static_body_3d.gd" id="18_ajme3"]
 [ext_resource type="AudioStream" uid="uid://b5031souw3s1m" path="res://actors/creature/sfx/random_poo_streams.tres" id="18_kfnfr"]
-[ext_resource type="Script" uid="uid://dhifo2bn5impv" path="res://components/configurable_audio_stream_player_3d.gd" id="19_8vxwe"]
 [ext_resource type="Script" uid="uid://dys20sbeiuusf" path="res://components/droppable_static_body_3d.gd" id="19_kfnfr"]
 [ext_resource type="Texture2D" uid="uid://dc3wxdmc7mb2m" path="res://assets/2d/UI/hand-cursor-icon.png" id="20_22a3u"]
+[ext_resource type="AudioStream" uid="uid://bsompirgpwvbc" path="res://actors/creature/sfx/sfx_poo_cleanup.wav" id="20_g25h7"]
+[ext_resource type="AudioStream" uid="uid://ks6237ninjw0" path="res://actors/creature/sfx/sfx_creature_eat_food.wav" id="20_spxxs"]
+[ext_resource type="AudioStream" uid="uid://cn5bsxmqsl0o6" path="res://actors/creature/sfx/sfx_petted_happy.wav" id="21_jw2cm"]
+[ext_resource type="AudioStream" uid="uid://ddcyxs1250p06" path="res://actors/creature/sfx/sad_01.wav" id="21_v3nai"]
+[ext_resource type="AudioStream" uid="uid://sfhgcx66snnh" path="res://actors/creature/sfx/crying_01.wav" id="22_spxxs"]
+[ext_resource type="AudioStream" uid="uid://dyd6mfh7ocdbr" path="res://actors/creature/sfx/tummy_01.wav" id="22_xy104"]
+[ext_resource type="AudioStream" uid="uid://cg0lo8d4vqeld" path="res://actors/creature/sfx/tummy_02.wav" id="23_spxxs"]
+[ext_resource type="AudioStream" uid="uid://b1l0dtl1fw4m2" path="res://actors/creature/sfx/tummy_03.wav" id="24_jw2cm"]
+[ext_resource type="AudioStream" uid="uid://0x7x0gr8rikd" path="res://actors/creature/sfx/tummy_04.wav" id="25_lb2co"]
+[ext_resource type="AudioStream" uid="uid://cwpq4e3td1sdc" path="res://actors/creature/sfx/sfx_creature_overfed_response.wav" id="28_lb2co"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g25h7"]
 animation = &"eat"
@@ -43,25 +52,113 @@ animation = &"poop"
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g25h7"]
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_22a3u"]
+advance_mode = 2
+advance_expression = "state == CreatureState.EATING"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w1t36"]
+advance_mode = 2
+advance_expression = "state == CreatureState.HUNGER_FULL"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b60wf"]
+advance_mode = 2
+advance_expression = "state == CreatureState.HUNGER_HUNGRY"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ykb0a"]
+advance_mode = 2
+advance_expression = "state == CreatureState.PETTED"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_v3nai"]
+advance_mode = 2
+advance_expression = "state == CreatureState.POOPING"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xy104"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_spxxs"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jw2cm"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lb2co"]
+switch_mode = 2
+advance_mode = 2
+advance_expression = "state == CreatureState.IDLE"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ih74i"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yp42a"]
+advance_mode = 2
+advance_expression = "state == CreatureState.HUNGER_FULL"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ctr5j"]
+advance_mode = 2
+advance_expression = "state == CreatureState.POOPING"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5nbmq"]
+advance_mode = 2
+advance_expression = "state == CreatureState.PETTED"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tduwr"]
+advance_mode = 2
+advance_expression = "state == CreatureState.PETTED"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fnh4p"]
+advance_mode = 2
+advance_expression = "state == CreatureState.PETTED"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dtjvk"]
+advance_mode = 2
+advance_expression = "state == CreatureState.PETTED"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fws0w"]
+advance_mode = 2
+advance_expression = "state == CreatureState.HUNGER_FULL"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6w8m4"]
+advance_mode = 2
+advance_expression = "state == CreatureState.HUNGER_FULL"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_unenv"]
+advance_mode = 2
+advance_expression = "state == CreatureState.HUNGER_FULL"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_22a3u"]
+states/Start/position = Vector2(-232, 100)
 states/eat/node = SubResource("AnimationNodeAnimation_g25h7")
-states/eat/position = Vector2(437, 117)
+states/eat/position = Vector2(257, -71)
 states/full/node = SubResource("AnimationNodeAnimation_22a3u")
-states/full/position = Vector2(559, 203)
+states/full/position = Vector2(426, 312)
 states/hungry/node = SubResource("AnimationNodeAnimation_w1t36")
-states/hungry/position = Vector2(612, 65)
+states/hungry/position = Vector2(498, -97)
 states/idle/node = SubResource("AnimationNodeAnimation_kfnfr")
-states/idle/position = Vector2(339, 61)
+states/idle/position = Vector2(94, 121)
 states/pet/node = SubResource("AnimationNodeAnimation_b60wf")
-states/pet/position = Vector2(745, 83)
+states/pet/position = Vector2(757, -43)
 states/poop/node = SubResource("AnimationNodeAnimation_ykb0a")
-states/poop/position = Vector2(694, 218)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_g25h7")]
-graph_offset = Vector2(-109, -16)
+states/poop/position = Vector2(770, 221)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_g25h7"), "idle", "eat", SubResource("AnimationNodeStateMachineTransition_22a3u"), "eat", "full", SubResource("AnimationNodeStateMachineTransition_w1t36"), "idle", "hungry", SubResource("AnimationNodeStateMachineTransition_b60wf"), "idle", "pet", SubResource("AnimationNodeStateMachineTransition_ykb0a"), "idle", "poop", SubResource("AnimationNodeStateMachineTransition_v3nai"), "poop", "idle", SubResource("AnimationNodeStateMachineTransition_xy104"), "pet", "idle", SubResource("AnimationNodeStateMachineTransition_spxxs"), "hungry", "idle", SubResource("AnimationNodeStateMachineTransition_jw2cm"), "eat", "idle", SubResource("AnimationNodeStateMachineTransition_lb2co"), "full", "idle", SubResource("AnimationNodeStateMachineTransition_ih74i"), "idle", "full", SubResource("AnimationNodeStateMachineTransition_yp42a"), "full", "poop", SubResource("AnimationNodeStateMachineTransition_ctr5j"), "poop", "pet", SubResource("AnimationNodeStateMachineTransition_5nbmq"), "hungry", "pet", SubResource("AnimationNodeStateMachineTransition_tduwr"), "eat", "pet", SubResource("AnimationNodeStateMachineTransition_fnh4p"), "full", "pet", SubResource("AnimationNodeStateMachineTransition_dtjvk"), "hungry", "full", SubResource("AnimationNodeStateMachineTransition_fws0w"), "pet", "full", SubResource("AnimationNodeStateMachineTransition_6w8m4"), "poop", "full", SubResource("AnimationNodeStateMachineTransition_unenv")]
+graph_offset = Vector2(-200, -116)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lb2co"]
+radius = 0.41
+height = 1.4
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ih74i"]
+streams_count = 3
+stream_0/stream = ExtResource("22_xy104")
+stream_1/stream = ExtResource("23_spxxs")
+stream_2/stream = ExtResource("24_jw2cm")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ajme3"]
-radius = 0.35
-height = 1.2
+radius = 0.38
+height = 1.3
 
 [node name="PrefabCreature" type="Node3D"]
 script = ExtResource("1_kk8qq")
@@ -72,10 +169,9 @@ poop_scene = ExtResource("2_prdta")
 script = ExtResource("3_g25h7")
 
 [node name="CreatureStatusIndicator" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.578672, 0)
-offset = Vector2(0, 75)
-flip_h = true
-pixel_size = 0.002
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.80224, 0)
+offset = Vector2(0, -154)
+pixel_size = 0.0012
 billboard = 1
 no_depth_test = true
 fixed_size = true
@@ -90,7 +186,8 @@ cleanliness_state_indicators = Dictionary[int, Texture2D]({
 2: ExtResource("7_mwhrg")
 })
 social_state_indicators = Dictionary[int, Texture2D]({
-1: ExtResource("8_kk8qq")
+1: ExtResource("8_kk8qq"),
+2: ExtResource("8_kk8qq")
 })
 lifecycle_state_indicators = Dictionary[int, Texture2D]({
 5: ExtResource("10_xpx33")
@@ -100,12 +197,12 @@ lifecycle_state_indicators = Dictionary[int, Texture2D]({
 
 [node name="Skeleton3D" parent="Model/Plane/Armature_002" index="0"]
 bones/0/rotation = Quaternion(0.00302969, -0.00321422, -0.705923, 0.708275)
-bones/1/rotation = Quaternion(0.997234, -0.0736927, -0.00303638, 0.00920607)
-bones/2/rotation = Quaternion(0.0171877, -0.00522573, 0.342898, 0.939201)
-bones/3/rotation = Quaternion(0.00415324, -0.0050364, 0.0367742, 0.999302)
+bones/1/rotation = Quaternion(0.997173, -0.073706, -0.00267223, 0.0143672)
+bones/2/rotation = Quaternion(0.0126291, -0.00276893, 0.342942, 0.939268)
+bones/3/rotation = Quaternion(0.000858029, -0.00104086, 0.036775, 0.999323)
 bones/4/rotation = Quaternion(0.000959583, -7.03369e-06, 0.0240878, 0.999709)
-bones/5/rotation = Quaternion(-0.00536872, 0.000263896, -0.0217581, 0.999749)
-bones/6/rotation = Quaternion(-4.26408e-05, 0.000167487, 0.0157005, 0.999877)
+bones/5/rotation = Quaternion(-0.00536608, 0.000313148, -0.0125838, 0.999906)
+bones/6/rotation = Quaternion(-0.000856805, 0.00342052, 0.0411287, 0.999148)
 bones/7/position = Vector3(0.140633, 0.16367, -0.228982)
 bones/7/rotation = Quaternion(-0.339315, -0.326555, -0.640756, 0.606348)
 bones/8/rotation = Quaternion(-0.00455155, 7.44462e-08, 0.00664046, 0.999968)
@@ -120,7 +217,10 @@ bones/13/rotation = Quaternion(-0.203925, -0.203081, -0.678291, 0.676087)
 bones/14/rotation = Quaternion(-0.0019318, -6.72808e-08, 0.00125199, 0.999997)
 
 [node name="AnimationTree" type="AnimationTree" parent="Model"]
+unique_name_in_owner = true
+root_node = NodePath("%AnimationTree/..")
 tree_root = SubResource("AnimationNodeStateMachine_22a3u")
+advance_expression_base_node = NodePath("../../StateManager")
 anim_player = NodePath("../AnimationPlayer")
 
 [node name="HungerComponent" type="Node" parent="."]
@@ -149,15 +249,73 @@ hover_cursor = ExtResource("20_22a3u")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ClickableStaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.294818, 0)
-shape = SubResource("CapsuleShape3D_ajme3")
+shape = SubResource("CapsuleShape3D_lb2co")
 
-[node name="DynamicSignalConnector" parent="." instance=ExtResource("18_8vxwe")]
+[node name="PooSound" parent="." instance=ExtResource("18_8vxwe")]
 stream = ExtResource("18_kfnfr")
+volume_db = -6.0
 pitch_scale = 1.2
 bus = &"SFX"
+node_name = "GlobalSignalBus"
+signal_name = "poop_spawned"
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-script = ExtResource("19_8vxwe")
+[node name="EatSound" parent="." instance=ExtResource("18_8vxwe")]
+stream = ExtResource("20_spxxs")
+pitch_scale = 1.2
+bus = &"SFX"
+node_name = "GlobalSignalBus"
+signal_name = "creature_fed"
+
+[node name="PettedSound" parent="." instance=ExtResource("18_8vxwe")]
+stream = ExtResource("21_jw2cm")
+pitch_scale = 1.2
+bus = &"SFX"
+node_name = "GlobalSignalBus"
+signal_name = "creature_petted"
+
+[node name="CleanPoopSound" parent="." instance=ExtResource("18_8vxwe")]
+stream = ExtResource("20_g25h7")
+volume_db = -10.0
+pitch_scale = 1.2
+bus = &"SFX"
+node_name = "GlobalSignalBus"
+signal_name = "poop_cleaned"
+
+[node name="BecameLonelySound" parent="." instance=ExtResource("18_8vxwe")]
+stream = ExtResource("21_v3nai")
+pitch_scale = 1.2
+bus = &"SFX"
+node_name = "GlobalSignalBus"
+signal_name = "creature_became_lonely"
+
+[node name="BecameAbandonedSound" parent="." instance=ExtResource("18_8vxwe")]
+stream = ExtResource("22_spxxs")
+pitch_scale = 1.2
+bus = &"SFX"
+node_name = "GlobalSignalBus"
+signal_name = "creature_became_abandoned"
+
+[node name="BecameHungrySound" parent="." instance=ExtResource("18_8vxwe")]
+stream = SubResource("AudioStreamRandomizer_ih74i")
+pitch_scale = 1.2
+bus = &"SFX"
+node_name = "GlobalSignalBus"
+signal_name = "creature_became_hungry"
+
+[node name="BecameOverfedSound" parent="." instance=ExtResource("18_8vxwe")]
+stream = ExtResource("28_lb2co")
+volume_db = -6.0
+pitch_scale = 1.2
+bus = &"SFX"
+node_name = "GlobalSignalBus"
+signal_name = "creature_became_overfed"
+
+[node name="BecameStarvingSound" parent="." instance=ExtResource("18_8vxwe")]
+stream = ExtResource("25_lb2co")
+pitch_scale = 1.2
+bus = &"SFX"
+node_name = "GlobalSignalBus"
+signal_name = "creature_became_starving"
 
 [node name="DroppableStaticBody3D" type="StaticBody3D" parent="."]
 unique_name_in_owner = true

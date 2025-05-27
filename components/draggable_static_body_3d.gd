@@ -9,6 +9,7 @@ const DROP_COLLISION_LAYER = 1 << 8
 
 static var is_being_dragged: bool = false
 static var dragged_object: Node3D
+static var ignore_colliders: Array[CollisionObject3D] = []
 
 # bitwise layer 9
 
@@ -16,8 +17,6 @@ static var dragged_object: Node3D
 @export var duplicate_on_drag: bool = true
 
 var world_intersect_position: Vector3
-var ignore_colliders: Array[CollisionObject3D] = []
-
 
 func _ready() -> void:
 	pass

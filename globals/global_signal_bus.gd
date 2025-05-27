@@ -9,3 +9,4 @@ signal creature_became_hungry
 signal creature_became_starving
 signal creature_became_lonely
 signal creature_became_abandoned
+signal creature_became_overfed

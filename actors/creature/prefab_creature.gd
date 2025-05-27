@@ -1,8 +1,5 @@
 extends Node3D
 
-
-
-
 signal petted
 signal pooped
 signal ate
@@ -54,11 +51,12 @@ func _process(delta: float) -> void:
 		time_since_last_poop = 0
 	if cleanliness_component.is_unclean() and _get_current_world_poops_count() < 1:
 		spawn_poop()
-		
+
 
 func _get_current_world_poops_count() -> int:
 	var poops: Array[Node] = get_tree().get_nodes_in_group(poop_group)
 	return poops.size()
+
 
 func spawn_poop():
 	if not poop_scene or not poop_location_marker:

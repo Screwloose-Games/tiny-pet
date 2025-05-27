@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://eqy6e2c4fpeh"]
 
-[ext_resource type="Script" uid="uid://bno8s684opt3g" path="res://tests/dynamic_signal_connector.gd" id="1_vj7jg"]
+[ext_resource type="Script" uid="uid://dtlkv7ikcusa8" path="res://scripts/signal_connector.gd" id="1_vj7jg"]
 
 [node name="DynamicSignalConnector" type="AudioStreamPlayer3D"]
 script = ExtResource("1_vj7jg")

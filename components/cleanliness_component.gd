@@ -19,5 +19,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	cleanliness_state.tick(delta)
 
+
 func is_unclean():
 	return cleanliness_state.is_unclean()

@@ -114,8 +114,6 @@ func on_started_eating():
 	if hunger_component.hunger_state.fed_state == HungerState.FedState.OVERFED:
 		#animation_player.play("full")
 		state = CreatureState.HUNGER_FULL
-
-		pass
 	else:
 		#animation_player.play("eat")
 		state = CreatureState.EATING

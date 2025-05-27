@@ -60,22 +60,13 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         message: |
           This PR has been checked for audio files.
-          {% if steps.audio_files.outputs.files != '' %}
-          The following audio files were found:
-    # ```
-    # {{ steps.audio_files.outputs.files }}
-    # ```
-    # {% endif %}
-    # {% if steps.validate-audio-files.outputs.result == 'success' %}
-    # All audio files passed validation.
-    # {% else %}
-    # Some audio files failed validation.
-    # {% endif %}
-    # <br />
-    # <details>
-    # <summary>Validation Results</summary>
-    # <pre>{{ steps.validate-audio-files.outputs.result }}</pre>
-    # </details>
+          ${{ steps.audio_files.outputs.files != '' && format('The following audio files were found:\n```\n{0}\n```', steps.audio_files.outputs.files) || 'No audio files were found.' }}
+          ${{ steps.validate-audio_files.outputs.result == 'success' && 'All audio files passed validation.' || 'Some audio files failed validation.' }}
+          <br />
+          <details>
+          <summary>Validation Results</summary>
+          <pre>${{ steps.validate-audio_files.outputs.result }}</pre>
+          </details>
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPOSITORY: ${{ github.repository }}

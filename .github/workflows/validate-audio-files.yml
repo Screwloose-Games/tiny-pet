@@ -52,7 +52,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPOSITORY: ${{ github.repository }}
         GITHUB_ISSUE_NUMBER: ${{ github.event.pull_request.number }}
-      run: echo "results=$(python .github/scripts/validate-audio-files.py $(cat audio_files.txt))" >> $GITHUB_OUTPUT
+      run: python .github/scripts/validate-audio-files.py $(cat audio_files.txt)
 
     - name: Comment PR
       uses: thollander/actions-comment-pull-request@v3

@@ -45,6 +45,11 @@ jobs:
           echo "files=$(cat gd_script_files.txt | paste -sd ',' -)" >> $GITHUB_OUTPUT
       # Lint all GDScript files except those in the addons directory
       # This is a workaround for the fact that gdlint does not support ignoring directories
-      - name: Lint Godot Project ignoring addons
+
+      - name : Lint Godot Project
+        if: steps.gd_script_files.outputs.files != ''
         run: |
-          gdlint $(find . -maxdepth 1 \( -type d ! -name '.*' ! -name 'addons' -printf '%P\n' \) -o \( -type f -name '*.gd' -printf '%P\n' \))
+          gdlint $(cat gd_script_files.txt | grep -v '^addons/')
+      # - name: Lint Godot Project ignoring addons
+      #   run: |
+      #     gdlint $(find . -maxdepth 1 \( -type d ! -name '.*' ! -name 'addons' -printf '%P\n' \) -o \( -type f -name '*.gd' -printf '%P\n' \))

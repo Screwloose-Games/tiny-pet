@@ -6,7 +6,6 @@ signal was_overfed
 signal became_hungry
 signal became_starving
 
-
 enum FedState { OVERFED, FULL, HUNGRY, STARVING }
 
 # Current value

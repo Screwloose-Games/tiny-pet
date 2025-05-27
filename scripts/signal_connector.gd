@@ -9,7 +9,7 @@ signal triggered
 @export_enum(
 	"poop_spawned",
 	"poop_cleaned",
-	"creature_fed", 
+	"creature_fed",
 	"creature_died",
 	"creature_petted",
 	"creature_became_overfed",
@@ -17,23 +17,21 @@ signal triggered
 	"creature_became_starving",
 	"creature_became_lonely",
 	"creature_became_abandoned",
-) var signal_name: String:
+)
+var signal_name: String:
 	set(val):
 		signal_name = val
 
-
-
-
 var _autoload_instance: Node
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
 	if Engine.is_editor_hint():
-		
 		return
 	subscribe()
 	triggered.connect(_on_signal_triggered)
+
 
 func _on_signal_triggered():
 	play()
@@ -43,13 +41,15 @@ func _on_signal_triggered():
 func _process(_delta: float) -> void:
 	pass
 
+
 func _on_autoload_signal_emitted(a = null, b = null, c = null, d = null):
 	var received_args = [a, b, c, d]
 	#for i in expected_args.size():
-		#var expected_value = expected_args[i]
-		#if expected_value != received_args[i]:
-			#return
+	#var expected_value = expected_args[i]
+	#if expected_value != received_args[i]:
+	#return
 	triggered.emit()
+
 
 func subscribe():
 	# Validation check 1: Does the autoload exist?
@@ -72,4 +72,11 @@ func subscribe():
 	if error_code == OK:
 		print("Successfully subscribed to signal '", signal_name, "' on autoload '", node_name, "'")
 	else:
-		printerr("Failed to connect to signal '", signal_name, "' on autoload '", node_name, "'. Error code: ", error_code)
+		printerr(
+			"Failed to connect to signal '",
+			signal_name,
+			"' on autoload '",
+			node_name,
+			"'. Error code: ",
+			error_code
+		)

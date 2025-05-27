@@ -8,9 +8,11 @@ extends Node
 
 var zoom_distance: float = 4.0
 
+
 func _ready() -> void:
 	await camera.ready
 	camera.spring_length = zoom_distance
+
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

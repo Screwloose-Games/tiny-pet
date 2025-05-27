@@ -29,8 +29,10 @@ var poops: Array[Node]
 
 var save_location: String = ""
 
+
 func is_unclean():
 	return clean_state != CleanState.CLEAN
+
 
 func poop(poo: Poop):
 	poops.append(poo)

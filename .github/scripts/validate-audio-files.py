@@ -1,5 +1,6 @@
 # Run this with: python .github/scripts/validate-audio-files.py $(cat audio_files.txt)
 
+import json
 import os
 import sys
 import wave
@@ -68,6 +69,9 @@ class AudioFileValidator:
     def __init__(self, file_path):
         self.file_path = file_path
         self.errors = []
+
+    def validation_results(self):
+        return "\n".join(self.errors) if self.errors else "No errors found."
 
     def validate(self):
         if not os.path.isfile(self.file_path):
@@ -147,6 +151,20 @@ def main(audio_files):
             print(f"Validation succeeded for {validator.file_path}")
     for report in reports:
         print(report)
+    
+    out_path = os.environ["GITHUB_OUTPUT"]
+    if os.path.exists(out_path):
+        with open(out_path, "a") as fh:
+            reports_str = "\n\n".join([str(report) for report in reports])
+            validation_str = "\n".join([validator.validation_results() for validator in validators])
+            metadata = {
+                "audio_reports": reports_str,
+                "validation_results": validation_str
+            }
+            print("metadata<<EOF", file=fh)
+            print(json.dumps(metadata, indent=2), file=fh)
+            print("EOF", file=fh)
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

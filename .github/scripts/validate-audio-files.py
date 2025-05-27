@@ -35,7 +35,7 @@ class AudioFileReport:
             errors (list): List of validation errors encountered during processing."""
 
     report_template = """Audio File Report:
-    File Path: {file_path}
+    File Path: `{file_path}`
     File Size: {file_size:.2f} Megabytes
     Sample Rate: {sample_rate} Hz
     Bit Depth: {bit_depth} bits
@@ -53,6 +53,12 @@ class AudioFileReport:
         self.channels = self.file.getnchannels()
         self.duration = self.file.getnframes() / float(self.sample_rate)
         self.errors = []
+
+        validator = AudioFileValidator(self.file_path)
+        validator.validate()
+        for error in validator.errors:
+            self.errors.append(error)
+
     
     def __str__(self):
         return self.report_template.format(
@@ -156,10 +162,8 @@ def main(audio_files):
     if os.path.exists(out_path):
         with open(out_path, "a") as fh:
             reports_str = "\n\n".join([str(report) for report in reports])
-            validation_str = "\n".join([validator.validation_results() for validator in validators])
             metadata = {
                 "audio_reports": reports_str,
-                "validation_results": validation_str
             }
             print("metadata<<EOF", file=fh)
             print(json.dumps(metadata, indent=2), file=fh)

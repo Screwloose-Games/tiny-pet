@@ -27,6 +27,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_11kpb")
 
 [node name="DraggableStaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.194988, 0)
+collision_mask = 0
 script = ExtResource("2_7kju3")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DraggableStaticBody3D"]

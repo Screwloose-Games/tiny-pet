@@ -16,7 +16,7 @@ static var dragged_object: Node3D
 @export var duplicate_on_drag: bool = true
 
 var world_intersect_position: Vector3
-var ignore_colliders: Array[CollisionObject3D] = []
+static var ignore_colliders: Array[CollisionObject3D] = []
 
 
 func _ready() -> void:

@@ -169,8 +169,9 @@ poop_scene = ExtResource("2_prdta")
 script = ExtResource("3_g25h7")
 
 [node name="CreatureStatusIndicator" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.579, 0)
-pixel_size = 0.002
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.80224, 0)
+offset = Vector2(0, -154)
+pixel_size = 0.0012
 billboard = 1
 no_depth_test = true
 fixed_size = true
@@ -196,12 +197,12 @@ lifecycle_state_indicators = Dictionary[int, Texture2D]({
 
 [node name="Skeleton3D" parent="Model/Plane/Armature_002" index="0"]
 bones/0/rotation = Quaternion(0.00302969, -0.00321422, -0.705923, 0.708275)
-bones/1/rotation = Quaternion(0.997274, -0.0736714, -0.00353364, 0.00215685)
-bones/2/rotation = Quaternion(0.0234071, -0.0085778, 0.342823, 0.939069)
-bones/3/rotation = Quaternion(0.00864935, -0.0104881, 0.0367716, 0.999231)
+bones/1/rotation = Quaternion(0.997173, -0.073706, -0.00267223, 0.0143672)
+bones/2/rotation = Quaternion(0.0126291, -0.00276893, 0.342942, 0.939268)
+bones/3/rotation = Quaternion(0.000858029, -0.00104086, 0.036775, 0.999323)
 bones/4/rotation = Quaternion(0.000959583, -7.03369e-06, 0.0240878, 0.999709)
-bones/5/rotation = Quaternion(-0.00536863, 0.000265803, -0.0214031, 0.999757)
-bones/6/rotation = Quaternion(-9.14771e-05, 0.000362615, 0.017226, 0.999852)
+bones/5/rotation = Quaternion(-0.00536608, 0.000313148, -0.0125838, 0.999906)
+bones/6/rotation = Quaternion(-0.000856805, 0.00342052, 0.0411287, 0.999148)
 bones/7/position = Vector3(0.140633, 0.16367, -0.228982)
 bones/7/rotation = Quaternion(-0.339315, -0.326555, -0.640756, 0.606348)
 bones/8/rotation = Quaternion(-0.00455155, 7.44462e-08, 0.00664046, 0.999968)

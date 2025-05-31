@@ -98,8 +98,8 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_ISSUE_NUMBER: ${{ github.event.pull_request.number }}
 
-        
       - name: Set output for gdlint results
         id: gdlint_results
         run: |
+          echo "lint results"
           exit ${{ steps.lint.outputs.exit_code }}

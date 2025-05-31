@@ -107,3 +107,4 @@ jobs:
           echo "${{ steps.lint.outputs.lint_output }}" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           echo "exit_code=${{ steps.lint.outputs.exit_code }}" >> $GITHUB_OUTPUT
+          exit ${{ steps.lint.outputs.exit_code }}

@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://2gf0e3wtndon"]
+
+[ext_resource type="PackedScene" uid="uid://bon41jlnndn87" path="res://tests/test_soft_body/exported/mage.gltf" id="1_cnpxk"]
+
+[node name="mage" instance=ExtResource("1_cnpxk")]

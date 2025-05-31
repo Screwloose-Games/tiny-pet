@@ -9,6 +9,9 @@ on:
   #   paths:
   #   - '**/*.gd'
 
+permissions:
+  pull-requests: write
+
 jobs:
   gdlint:
     name: gdlint scripts

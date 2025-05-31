@@ -527,6 +527,9 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                 "error": f"Not a GLTF file: {gltf_file}",
                 "success": False
             }
+        
+        
+
 
         # Check for missing resources
         gltf: GLTF2 = GLTF2().load(gltf_file)
@@ -542,6 +545,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                     if not os.path.exists(image_path):
                         missing_resources.append(f"Image: {image.uri}")
 
+        buffer_paths = []
         # Check buffers
         if gltf.buffers:
             for buffer in gltf.buffers:
@@ -549,6 +553,18 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                     buffer_path = os.path.join(base_dir, buffer.uri)
                     if not os.path.exists(buffer_path):
                         missing_resources.append(f"Buffer: {buffer.uri}")
+                    else:
+                        buffer_paths.append(buffer_path)
+        
+        # if gltf, confirm it has a .bin with the same name
+        if gltf_file.lower().endswith('.gltf'):
+            expected_bin_file_path = os.path.splitext(gltf_file)[0] + ".bin"
+            # if there is a buffer in bufffer paths, check if it matches the expected bin file path
+            if not any(os.path.basename(buffer_path) == os.path.basename(expected_bin_file_path) for buffer_path in buffer_paths):
+                # Expected that the buffer file had the fame file name as the gltf file
+                print(f"Expected buffer file not found: {expected_bin_file_path}")
+                print(f"Buffer paths found: {buffer_paths}")
+                missing_resources.append(f"Expected buffer file: {expected_bin_file_path}, rename {buffer_paths[0]} to {expected_bin_file_path}")
 
         if missing_resources:
             print(f"Missing resources:\n" + "\n".join(f"- {r}" for r in missing_resources))

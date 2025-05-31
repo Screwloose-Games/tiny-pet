@@ -5,9 +5,12 @@ on:
   pull_request:
     paths:
     - '**/*.gd'
-  push:
-    paths:
-    - '**/*.gd'
+  # push:
+  #   paths:
+  #   - '**/*.gd'
+
+permissions:
+  pull-requests: write
 
 jobs:
   gdlint:
@@ -47,9 +50,56 @@ jobs:
       # This is a workaround for the fact that gdlint does not support ignoring directories
 
       - name : Lint Godot Project
+        id: lint
         if: steps.gd_script_files.outputs.files != ''
         run: |
-          gdlint $(cat gd_script_files.txt | grep -v '^addons/')
+          set +e
+          lint_output=$(gdlint $(cat gd_script_files.txt | grep -v '^addons/') 2>&1)
+          exit_code=$?
+          echo "$lint_output"
+          echo "lint_output<<EOF" >> $GITHUB_OUTPUT
+          echo "$lint_output" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
+          exit 0
+
+        # capture output.
+        # run: |
+        
+      
       # - name: Lint Godot Project ignoring addons
       #   run: |
       #     gdlint $(find . -maxdepth 1 \( -type d ! -name '.*' ! -name 'addons' -printf '%P\n' \) -o \( -type f -name '*.gd' -printf '%P\n' \))
+
+
+      - name: Comment PR with gdlint Output
+        uses: thollander/actions-comment-pull-request@v3
+        if: steps.lint.outputs.lint_output != ''
+        with:
+          comment-tag: gdlint-check
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          message: |
+            ## 🧪 GDScript Lint Check
+
+            This PR has been checked for `gdlint` issues.
+
+            ${{ steps.lint.outputs.exit_code == '0' && '✅ No issues found' || '❌ Issues found' }}
+
+            ### Files Checked
+            
+            ${{ steps.changed-files.outputs.all_changed_files }}
+            ### Lint Output
+            ```text
+            ${{ steps.lint.outputs.lint_output }}
+            ```
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_ISSUE_NUMBER: ${{ github.event.pull_request.number }}
+
+      - name: Set output for gdlint results
+        id: gdlint_results
+        run: |
+          echo "lint results"
+          exit ${{ steps.lint.outputs.exit_code }}

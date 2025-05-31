@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqvnvtonj1pg7"]
+
+[ext_resource type="PackedScene" uid="uid://dqf2v8yok7vux" path="res://tests/test_soft_body/Aprentice.fbx" id="1_14ass"]
+
+[node name="Aprentice" instance=ExtResource("1_14ass")]
+
+[node name="cape" parent="." index="1"]
+visible = false

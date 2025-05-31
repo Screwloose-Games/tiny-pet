@@ -83,16 +83,15 @@ jobs:
 
             This PR has been checked for `gdlint` issues.
 
+            ${{ steps.lint.outputs.exit_code == '0' && '✅ No issues found' || '❌ Issues found' }}
+
+            ### Files Checked
+            
+            ${{ steps.changed-files.outputs.all_changed_files }}
             ### Lint Output
             ```text
             ${{ steps.lint.outputs.lint_output }}
             ```
-            ### Exit Code
-            ${{ steps.lint.outputs.exit_code }}
-            ### Linting Summary
-            - **Files Checked**: ${{ steps.changed-files.outputs.all_changed_files }}
-            - **Files Linted**: ${{ steps.gd_script_files.outputs.files }}
-            - **Linting Status**: ${{ steps.lint.outputs.exit_code == '0' && '✅ No issues found' || '❌ Issues found' }}
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -103,8 +102,4 @@ jobs:
       - name: Set output for gdlint results
         id: gdlint_results
         run: |
-          echo "lint_output<<EOF" >> $GITHUB_OUTPUT
-          echo "${{ steps.lint.outputs.lint_output }}" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-          echo "exit_code=${{ steps.lint.outputs.exit_code }}" >> $GITHUB_OUTPUT
           exit ${{ steps.lint.outputs.exit_code }}

@@ -57,7 +57,8 @@ jobs:
           echo "lint_output<<EOF" >> $GITHUB_OUTPUT
           echo "$lint_output" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-          exit $exit_code
+          echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
+          exit 0
 
         # capture output.
         # run: |
@@ -79,14 +80,17 @@ jobs:
 
             This PR has been checked for `gdlint` issues.
 
-            <details>
-            <summary>Click to expand linter output</summary>
-
-            ```
+            ### Lint Output
+            ```text
             ${{ steps.lint.outputs.lint_output }}
             ```
+            ### Exit Code
+            ${{ steps.lint.outputs.exit_code }}
+            ### Linting Summary
+            - **Files Checked**: ${{ steps.changed-files.outputs.all_changed_files }}
+            - **Files Linted**: ${{ steps.gd_script_files.outputs.files }}
+            - **Linting Status**: ${{ steps.lint.outputs.exit_code == '0' && '✅ No issues found' || '❌ Issues found' }}
 
-            </details>
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}

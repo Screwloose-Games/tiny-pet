@@ -98,3 +98,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_ISSUE_NUMBER: ${{ github.event.pull_request.number }}
+
+        
+      - name: Set output for gdlint results
+        id: gdlint_results
+        run: |
+          echo "lint_output<<EOF" >> $GITHUB_OUTPUT
+          echo "${{ steps.lint.outputs.lint_output }}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "exit_code=${{ steps.lint.outputs.exit_code }}" >> $GITHUB_OUTPUT

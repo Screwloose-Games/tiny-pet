@@ -36,11 +36,14 @@ def create_3d_preview_url(gltf_filepth: str, gltf: GLTF2) -> str:
     assets: list[str] = []
     assets.append(gltf_filepth)
     if gltf_filepth.endswith(".gltf"):
-        bin_file = os.path.splitext(gltf_filepth)[0] + ".bin"
-        if os.path.exists(bin_file):
-            assets.append(bin_file)
-        else:
-            print(f"Warning: {bin_file} not found.")
+        # Add buffer file if it exists
+        for filepath in gltf.buffers:
+            if hasattr(filepath, 'uri') and filepath.uri:
+                bin_file = os.path.join(os.path.dirname(gltf_filepth), filepath.uri)
+                if os.path.exists(bin_file):
+                    assets.append(bin_file)
+                else:
+                    print(f"Warning: {bin_file} not found.")
         gltf_basepath = os.path.dirname(gltf_filepth)
         for image in gltf.images:
             if hasattr(image, 'uri') and image.uri:
@@ -750,3 +753,6 @@ if __name__ == "__main__":
     # Print summary
     success_count = sum(1 for r in results if r["success"])
     print(f"Processed {len(results)} files: {success_count} successful, {len(results) - success_count} failed")
+
+    # if there is a github file, output to the github file
+

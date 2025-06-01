@@ -66,14 +66,16 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_COMMIT_SHA: ${{ github.sha }}
         run: |
+          HOST_OUTPUT_DIR="$(dirname "$GITHUB_OUTPUT")"
+
           if [ -s gltf_files.txt ]; then
             files=$(tr '\n' ' ' < gltf_files.txt)
             echo "Processing files: $files"
             docker run --rm \
               -v "$(pwd):/workspace" \
-              -v "${GITHUB_OUTPUT}:/github_output" \
+              -v "${HOST_OUTPUT_DIR}:${HOST_OUTPUT_DIR}" \
               -w /workspace \
-              -e GITHUB_OUTPUT="/github_output" \
+              -e GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
               -e GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
               -e GITHUB_COMMIT_SHA="${GITHUB_COMMIT_SHA}" \
               ghcr.io/screwloose-games/gltf-validator:latest \

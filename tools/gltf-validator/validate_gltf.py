@@ -762,6 +762,7 @@ if __name__ == "__main__":
 
     # if there is a github file, output to the github file: results, comment
     out_path = os.environ.get("GITHUB_OUTPUT", None)
+    print(f"GITHUB_OUTPUT: {out_path}")
     if out_path:
         print(f"Writing results to {out_path}")
         with open(out_path, "a") as fh:

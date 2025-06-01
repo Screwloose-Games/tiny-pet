@@ -72,6 +72,7 @@ jobs:
             docker run --rm \
               -v "$(pwd):/workspace" \
               -w /workspace \
+              -e GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
               -e GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
               -e GITHUB_COMMIT_SHA="${GITHUB_COMMIT_SHA}" \
               ghcr.io/screwloose-games/gltf-validator:latest \

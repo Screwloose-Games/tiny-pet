@@ -766,10 +766,10 @@ if __name__ == "__main__":
         with open(out_path, "a") as fh:
             print("comment<<EOF", file=fh)
             print(comment, file=fh)
+            print("EOF", file=fh)
             print("results<<EOF", file=fh)
             print(json.dumps(results), file=fh)
-            # success is !any_failed
-            print(f"success<<EOF", file=fh)
+            print("EOF", file=fh)
+            print("success<<EOF", file=fh)
             print(json.dumps(str(all_succeeded)), file=fh)
             print("EOF", file=fh)
-

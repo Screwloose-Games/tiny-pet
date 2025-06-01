@@ -1,4 +1,4 @@
-name: "Godot 4.4.1 CI/CD"
+name: "Build Godot Game"
 
 env:
   GODOT_VERSION: 4.4.1

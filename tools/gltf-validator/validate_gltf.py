@@ -766,6 +766,6 @@ if __name__ == "__main__":
     if out_path:
         print(f"Writing results to {out_path}")
         with open(out_path, "a") as fh:
-            print(f"comment={comment}", file=fh)
+            print(f"comment<<EOF\n{comment}\nEOF", file=fh)
             print(f"results={json.dumps(results)}", file=fh)
             print(f"success={json.dumps(str(all_succeeded))}", file=fh)

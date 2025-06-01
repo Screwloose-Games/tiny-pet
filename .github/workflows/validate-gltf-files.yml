@@ -71,8 +71,9 @@ jobs:
             echo "Processing files: $files"
             docker run --rm \
               -v "$(pwd):/workspace" \
+              -v "${GITHUB_OUTPUT}:/github_output" \
               -w /workspace \
-              -e GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
+              -e GITHUB_OUTPUT="/github_output" \
               -e GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
               -e GITHUB_COMMIT_SHA="${GITHUB_COMMIT_SHA}" \
               ghcr.io/screwloose-games/gltf-validator:latest \

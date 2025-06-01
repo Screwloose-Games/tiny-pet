@@ -770,6 +770,6 @@ if __name__ == "__main__":
             print(json.dumps(results), file=fh)
             # success is !any_failed
             print(f"success<<EOF", file=fh)
-            print(json.dumps(all_succeeded), file=fh)
+            print(json.dumps(str(all_succeeded)), file=fh)
             print("EOF", file=fh)
 

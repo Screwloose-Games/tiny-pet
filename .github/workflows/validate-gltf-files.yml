@@ -1,4 +1,4 @@
-name: GLTF Validator
+name: Validate GLTF Files
 
 on:
   pull_request:
@@ -59,18 +59,23 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y xvfb
 
 
-      - name: Run GLTF validator
+      - name: GLTF validator
+        id: gltf-validator
         if: steps.changed-files.outputs.any_changed == 'true'
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_COMMIT_SHA: ${{ github.sha }}
         run: |
+          HOST_OUTPUT_DIR="$(dirname "$GITHUB_OUTPUT")"
+
           if [ -s gltf_files.txt ]; then
             files=$(tr '\n' ' ' < gltf_files.txt)
             echo "Processing files: $files"
             docker run --rm \
               -v "$(pwd):/workspace" \
+              -v "${HOST_OUTPUT_DIR}:${HOST_OUTPUT_DIR}" \
               -w /workspace \
+              -e GITHUB_OUTPUT="${GITHUB_OUTPUT}" \
               -e GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
               -e GITHUB_COMMIT_SHA="${GITHUB_COMMIT_SHA}" \
               ghcr.io/screwloose-games/gltf-validator:latest \
@@ -109,48 +114,12 @@ jobs:
           git add uploaded-assets
           git commit -m "Add uploaded assets" || echo "No changes to commit"
           git push origin HEAD:assets
-
-
-      # - name: Create or update PR comment
-      #   if: steps.changed-files.outputs.any_changed == 'true'
-      #   uses: actions/github-script@v7
-      #   with:
-      #     script: |
-      #       const fs = require('fs');
-      #       const path = require('path');
-      #       const resultsDir = 'gltf-validation-results';
-            
-      #       // Read the validation results
-      #       const MARKDOWN_FILE = "github_comment.md"
-      #       const content = fs.readFileSync(path.join(resultsDir, MARKDOWN_FILE), 'utf8');
-            
-      #       // Find existing comments
-      #       const { data: comments } = await github.rest.issues.listComments({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         issue_number: context.issue.number
-      #       });
-
-      #       const commentHeadline = "## GLTF Validation Results\n\n";
-
-      #       const comment = commentHeadline + content;
-            
-      #       const existingComment = comments.find(c => c.body.startsWith(commentHeadline));
-            
-      #       if (existingComment) {
-      #         // Update existing comment
-      #         await github.rest.issues.updateComment({
-      #           owner: context.repo.owner,
-      #           repo: context.repo.repo,
-      #           comment_id: existingComment.id,
-      #           body: comment
-      #         });
-      #       } else {
-      #         // Create new comment
-      #         await github.rest.issues.createComment({
-      #           owner: context.repo.owner,
-      #           repo: context.repo.repo,
-      #           issue_number: context.issue.number,
-      #           body: comment
-      #         });
-      #       } 
+      
+      - name: Set workflow status
+        run: |
+          if [ "${{ steps.gltf-validator.outputs.success }}" == "true" ]; then
+            echo "GLTF validation completed successfully."
+          else
+            echo "GLTF validation failed. Please check the results."
+            exit 1
+          fi

@@ -1,3 +1,4 @@
+import json
 import os
 import re
 import sys
@@ -36,11 +37,14 @@ def create_3d_preview_url(gltf_filepth: str, gltf: GLTF2) -> str:
     assets: list[str] = []
     assets.append(gltf_filepth)
     if gltf_filepth.endswith(".gltf"):
-        bin_file = os.path.splitext(gltf_filepth)[0] + ".bin"
-        if os.path.exists(bin_file):
-            assets.append(bin_file)
-        else:
-            print(f"Warning: {bin_file} not found.")
+        # Add buffer file if it exists
+        for filepath in gltf.buffers:
+            if hasattr(filepath, 'uri') and filepath.uri:
+                bin_file = os.path.join(os.path.dirname(gltf_filepth), filepath.uri)
+                if os.path.exists(bin_file):
+                    assets.append(bin_file)
+                else:
+                    print(f"Warning: {bin_file} not found.")
         gltf_basepath = os.path.dirname(gltf_filepth)
         for image in gltf.images:
             if hasattr(image, 'uri') and image.uri:
@@ -527,6 +531,9 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                 "error": f"Not a GLTF file: {gltf_file}",
                 "success": False
             }
+        
+        
+
 
         # Check for missing resources
         gltf: GLTF2 = GLTF2().load(gltf_file)
@@ -542,6 +549,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                     if not os.path.exists(image_path):
                         missing_resources.append(f"Image: {image.uri}")
 
+        buffer_paths = []
         # Check buffers
         if gltf.buffers:
             for buffer in gltf.buffers:
@@ -549,6 +557,18 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                     buffer_path = os.path.join(base_dir, buffer.uri)
                     if not os.path.exists(buffer_path):
                         missing_resources.append(f"Buffer: {buffer.uri}")
+                    else:
+                        buffer_paths.append(buffer_path)
+        
+        # if gltf, confirm it has a .bin with the same name
+        if gltf_file.lower().endswith('.gltf'):
+            expected_bin_file_path = os.path.splitext(gltf_file)[0] + ".bin"
+            # if there is a buffer in bufffer paths, check if it matches the expected bin file path
+            if not any(os.path.basename(buffer_path) == os.path.basename(expected_bin_file_path) for buffer_path in buffer_paths):
+                # Expected that the buffer file had the fame file name as the gltf file
+                print(f"Expected buffer file not found: {expected_bin_file_path}")
+                print(f"Buffer paths found: {buffer_paths}")
+                missing_resources.append(f"Expected buffer file: {expected_bin_file_path}, rename {gltf_file.lower()} to {os.path.basename(buffer_paths[0]).replace('.bin', '.gltf')}")
 
         if missing_resources:
             print(f"Missing resources:\n" + "\n".join(f"- {r}" for r in missing_resources))
@@ -733,4 +753,19 @@ if __name__ == "__main__":
     
     # Print summary
     success_count = sum(1 for r in results if r["success"])
+    all_succeeded = all(r["success"] for r in results)
+    if not all_succeeded:
+        print("Some files failed validation. Check the output directory for details.")
+    else:
+        print("All files passed validation successfully.")
     print(f"Processed {len(results)} files: {success_count} successful, {len(results) - success_count} failed")
+
+    # if there is a github file, output to the github file: results, comment
+    out_path = os.environ.get("GITHUB_OUTPUT", None)
+    print(f"GITHUB_OUTPUT: {out_path}")
+    if out_path:
+        print(f"Writing results to {out_path}")
+        with open(out_path, "a") as fh:
+            print(f"comment<<EOF\n{comment}\nEOF", file=fh)
+            print(f"results={json.dumps(results)}", file=fh)
+            print(f"success={json.dumps(all_succeeded)}", file=fh)

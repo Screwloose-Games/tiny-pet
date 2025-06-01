@@ -32,7 +32,6 @@ ease = 2
 background_mode = 2
 ambient_light_source = 3
 ambient_light_color = Color(1, 1, 1, 1)
-ssr_enabled = true
 ssr_fade_in = 0.270375
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mdq2w"]

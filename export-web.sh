@@ -49,7 +49,7 @@ fi
 
 # Export the project
 echo "Exporting Godot project using the '$EXPORT_PRESET' preset..."
-"$GODOT_EXECUTABLE" --export-debug --verbose --headless "$EXPORT_PRESET" "$EXPORT_OUTPUT"
+"$GODOT_EXECUTABLE" --export-release --verbose --headless "$EXPORT_PRESET" "$EXPORT_OUTPUT"
 
 # Check if export succeeded
 if [ $? -eq 0 ]; then

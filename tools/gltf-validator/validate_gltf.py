@@ -768,4 +768,4 @@ if __name__ == "__main__":
         with open(out_path, "a") as fh:
             print(f"comment<<EOF\n{comment}\nEOF", file=fh)
             print(f"results={json.dumps(results)}", file=fh)
-            print(f"success={json.dumps(str(all_succeeded))}", file=fh)
+            print(f"success={json.dumps(all_succeeded)}", file=fh)

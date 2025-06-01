@@ -1,3 +1,4 @@
+import json
 import os
 import re
 import sys
@@ -752,7 +753,23 @@ if __name__ == "__main__":
     
     # Print summary
     success_count = sum(1 for r in results if r["success"])
+    all_succeeded = all(r["success"] for r in results)
+    if not all_succeeded:
+        print("Some files failed validation. Check the output directory for details.")
+    else:
+        print("All files passed validation successfully.")
     print(f"Processed {len(results)} files: {success_count} successful, {len(results) - success_count} failed")
 
-    # if there is a github file, output to the github file
+    # if there is a github file, output to the github file: results, comment
+    out_path = os.environ.get("GITHUB_OUTPUT", None)
+    if out_path:
+        with open(out_path, "a") as fh:
+            print("comment<<EOF", file=fh)
+            print(comment, file=fh)
+            print("results<<EOF", file=fh)
+            print(json.dumps(results), file=fh)
+            # success is !any_failed
+            print(f"success<<EOF", file=fh)
+            print(json.dumps(all_succeeded), file=fh)
+            print("EOF", file=fh)
 

@@ -59,7 +59,8 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y xvfb
 
 
-      - name: Run GLTF validator
+      - name: GLTF validator
+        id: gltf-validator
         if: steps.changed-files.outputs.any_changed == 'true'
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -109,7 +110,15 @@ jobs:
           git add uploaded-assets
           git commit -m "Add uploaded assets" || echo "No changes to commit"
           git push origin HEAD:assets
-
+      
+      - name: Set workflow status
+        run: |
+          if [${{ steps.gltf-validator.outputs.success }}]; then
+            echo "GLTF validation completed successfully."
+          else
+            echo "GLTF validation failed. Please check the results."
+            exit 1
+          fi
 
       # - name: Create or update PR comment
       #   if: steps.changed-files.outputs.any_changed == 'true'

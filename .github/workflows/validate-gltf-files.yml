@@ -34,15 +34,17 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v46
         with:
+          json: true
+          write_output_files: true
           separator: "\n"
           files: |
             **.gltf
             **.glb
 
-      - name: Save changed files list
-        if: steps.changed-files.outputs.any_changed == 'true'
+      - name: Verify the contents of the .github/outputs/all_changed_files.json file
         run: |
-          echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -E '\.(gltf|glb)$' > gltf_files.txt
+          cat .github/outputs/all_changed_files.json
+          echo "All changed files: ${{ steps.changed-files.outputs.all_changed_files }}"
 
       - name: Build and cache Docker image
         uses: docker/build-push-action@v5
@@ -53,12 +55,13 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+
+
       - name: Create output directory
         run: mkdir -p gltf-validation-results
 
       - name: Install Xvfb and dependencies
         run: sudo apt-get update && sudo apt-get install -y xvfb
-
 
       - name: GLTF validator
         id: gltf-validator
@@ -69,13 +72,15 @@ jobs:
         run: |
           HOST_OUTPUT_DIR="$(dirname "$GITHUB_OUTPUT")"
 
-          if [ -s gltf_files.txt ]; then
-          echo "Processing files:"
-          args=()
-          while IFS= read -r file; do
-            echo "  $file"
-            args+=("$file")
-          done < gltf_files.txt
+          if [ -s .github/outputs/all_changed_files.json ]; then
+            echo "Processing files from JSON..."
+
+            # Parse JSON array into a Bash array
+            mapfile -t files < <(jq -r '.[]' .github/outputs/all_changed_files.json)
+
+            for f in "${files[@]}"; do
+              echo "  $f"
+            done
 
             docker run --rm \
               -v "$(pwd):/workspace" \
@@ -85,7 +90,7 @@ jobs:
               -e GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
               -e GITHUB_COMMIT_SHA="${GITHUB_COMMIT_SHA}" \
               ghcr.io/screwloose-games/gltf-validator:latest \
-              "/workspace/gltf-validation-results" "${args[@]}"
+              "/workspace/gltf-validation-results" "${files[@]}"
           else
             echo "No GLTF files to process"
           fi

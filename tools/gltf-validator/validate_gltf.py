@@ -2,7 +2,7 @@ import json
 import os
 import re
 import sys
-from urllib.parse import unquote
+from urllib.parse import unquote, quote
 import numpy as np
 from pygltflib import GLTF2
 import trimesh
@@ -35,17 +35,18 @@ def create_3d_preview_url(gltf_filepth: str, gltf: GLTF2) -> str:
     Create a 3D preview URL for the assets.
     """
     assets: list[str] = []
-    assets.append(gltf_filepth)
-    if gltf_filepth.endswith(".gltf"):
+    gltf_filepth_uri = quote(gltf_filepth)
+    assets.append(gltf_filepth_uri)
+    if gltf_filepth_uri.endswith(".gltf"):
         # Add buffer file if it exists
         for filepath in gltf.buffers:
             if hasattr(filepath, 'uri') and filepath.uri:
-                bin_file = os.path.join(os.path.dirname(gltf_filepth), filepath.uri)
+                bin_file = os.path.join(os.path.dirname(gltf_filepth_uri), filepath.uri)
                 if os.path.exists(bin_file):
                     assets.append(bin_file)
                 else:
                     print(f"Warning: {bin_file} not found.")
-        gltf_basepath = os.path.dirname(gltf_filepth)
+        gltf_basepath = os.path.dirname(gltf_filepth_uri)
         for image in gltf.images:
             if hasattr(image, 'uri') and image.uri:
                 assets.append(os.path.join(gltf_basepath, image.uri))

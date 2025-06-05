@@ -34,6 +34,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v46
         with:
+          separator: "\n"
           files: |
             **.gltf
             **.glb
@@ -41,7 +42,7 @@ jobs:
       - name: Save changed files list
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n' | grep -E '\.(gltf|glb)$' > gltf_files.txt
+          echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -E '\.(gltf|glb)$' > gltf_files.txt
 
       - name: Build and cache Docker image
         uses: docker/build-push-action@v5
@@ -69,8 +70,13 @@ jobs:
           HOST_OUTPUT_DIR="$(dirname "$GITHUB_OUTPUT")"
 
           if [ -s gltf_files.txt ]; then
-            files=$(tr '\n' ' ' < gltf_files.txt)
-            echo "Processing files: $files"
+          echo "Processing files:"
+          args=()
+          while IFS= read -r file; do
+            echo "  $file"
+            args+=("$file")
+          done < gltf_files.txt
+
             docker run --rm \
               -v "$(pwd):/workspace" \
               -v "${HOST_OUTPUT_DIR}:${HOST_OUTPUT_DIR}" \
@@ -79,7 +85,7 @@ jobs:
               -e GITHUB_REPOSITORY="${GITHUB_REPOSITORY}" \
               -e GITHUB_COMMIT_SHA="${GITHUB_COMMIT_SHA}" \
               ghcr.io/screwloose-games/gltf-validator:latest \
-              "/workspace/gltf-validation-results" $files
+              "/workspace/gltf-validation-results" "${args[@]}"
           else
             echo "No GLTF files to process"
           fi

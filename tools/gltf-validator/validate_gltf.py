@@ -606,10 +606,11 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
         grid_img = generate_grid_image(height=image_height, width=image_width, largest_dist=largest_dim)
         wireframe_render_flags = RenderFlags.RGBA + RenderFlags.ALL_WIREFRAME
 
+        logger.debug(f"Loading spec file for {gltf_file}")
         spec = read_spec_file(gltf_file + SPEC_EXTENSION)
         
         poly_count = get_poly_count(scene)
-        print(f"Evaluating model against spec for {gltf_file}")
+        logger.debug(f"Evaluating model against spec for {gltf_file}")
         validation_results = evaluate_model_against_spec(
             gltf=gltf,
             spec=spec,

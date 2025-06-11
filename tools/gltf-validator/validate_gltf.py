@@ -738,9 +738,7 @@ if __name__ == "__main__":
         sys.exit(1)
     
     output_dir = sys.argv[1]
-    gltf_files_json = sys.argv[2:]
-
-    gltf_files = json.loads(gltf_files_json)
+    gltf_files = sys.argv[2:]
 
     print(f"Output directory: {output_dir}")
     print(f"GLTF files: {gltf_files}")

@@ -168,6 +168,7 @@ def generate_orthographic_image(scene: trimesh.Scene, camera: pyrender.Orthograp
     return model_img
 
 def generate_grid_image(height: int = 1024, width: int = 1024, largest_dist:  float = 2.0) -> Image:
+    print(f"Generating grid image with height={height}, width={width}, largest_dist={largest_dist}")
     grid_img = Image.new("RGBA", (width, height), color=(255, 255, 255, 255))
     draw = ImageDraw.Draw(grid_img)
 
@@ -332,6 +333,7 @@ def evaluate_model_against_spec(
     Evaluates the model against the provided spec dictionary.
     Returns a dictionary with results for each spec item.
     """
+    print("Evaluating model against spec: ", spec)
     results = {}
 
     # Size checks

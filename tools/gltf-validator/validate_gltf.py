@@ -184,12 +184,14 @@ def generate_grid_image(height: int = 1024, width: int = 1024, largest_dist:  fl
 
     meter_size_px = int(px_per_unit * 1.0)
 
-    # Draw vertical grid lines: center and every dm to left/right
+    # Draw vertical grid lines: center and every dm to left/right'
+    logger.debug(f"Drawing vertical grid lines with dm_size_px={dm_size_px}, meter_size_px={meter_size_px}")
     center_x = width // 2
 
     is_space_between_thick_lines = dm_size_px > THICK_GRID_THICKNESS * 2
 
     for x in range(center_x, width, dm_size_px):
+        logger.debug(f"Drawing vertical line at x={x}")
         if (x - center_x) % (meter_size_px) == 0:
             # Thicker line each meter
 
@@ -197,6 +199,7 @@ def generate_grid_image(height: int = 1024, width: int = 1024, largest_dist:  fl
         elif is_space_between_thick_lines:
             draw.line([(x, 0), (x, height)], fill=(200, 200, 200, 255), width=THIN_GRID_THICKNESS)
     for x in range(center_x, -1, -dm_size_px):
+        logger.debug(f"Drawing vertical line at x={x}")
         if (x - center_x) % (meter_size_px) == 0:
             # Thicker line each meter
 
@@ -206,6 +209,7 @@ def generate_grid_image(height: int = 1024, width: int = 1024, largest_dist:  fl
 
     # Draw horizontal grid lines: start at bottom and go up every dm
     for y in range(height - 1, -1, -dm_size_px):
+        logger.debug(f"Drawing horizontal line at y={y}")
         if (height - y -1) % (meter_size_px) == 0:
             # Thicker line each meter
             draw.line([(0, y), (width, y)], fill=THICK_GRID_COLOR, width=THICK_GRID_THICKNESS)

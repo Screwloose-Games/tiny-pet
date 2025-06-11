@@ -177,12 +177,15 @@ def generate_grid_image(height: int = 1024, width: int = 1024, largest_dist:  fl
     draw = ImageDraw.Draw(grid_img)
 
     width_world = largest_dist
+    if width_world == 0:
+        width_world = 1e-6  # Prevent division by zero
     width_px = width 
     px_per_unit = width_px / width_world
     dm_size_px = int(px_per_unit * 0.1)
     dm_size_px = max(dm_size_px, 1)  # Ensure at least 1px
 
     meter_size_px = int(px_per_unit * 1.0)
+    meter_size_px = max(meter_size_px, 1)  # Ensure at least 1px
 
     # Draw vertical grid lines: center and every dm to left/right'
     logger.debug(f"Drawing vertical grid lines with dm_size_px={dm_size_px}, meter_size_px={meter_size_px}")

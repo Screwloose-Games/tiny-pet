@@ -516,6 +516,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
     """
     Process a single GLTF file and return results.
     """
+    print(f"Processing GLTF file: {gltf_file}")
     try:
         # First check if the file exists
         if not os.path.exists(gltf_file):
@@ -572,7 +573,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                 print(f"Expected buffer file not found: {expected_bin_file_path}")
                 print(f"Buffer paths found: {buffer_paths}")
                 missing_resources.append(f"Expected buffer file: {expected_bin_file_path}, rename {gltf_file.lower()} to {os.path.basename(buffer_paths[0]).replace('.bin', '.gltf')}")
-
+        print(f"Checking for missing resources in {gltf_file}")
         if missing_resources:
             print(f"Missing resources:\n" + "\n".join(f"- {r}" for r in missing_resources))
             return {
@@ -592,6 +593,7 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
             }
 
         scene_bounds_size: np.ndarray[np.float64] = scene.bounds[1] - scene.bounds[0]
+        print(f"Scene bounds size: {scene_bounds_size}")
         SCENE_BOUNDS_PADDING_PERCENTAGE = 0.1
         padded_scene_bounds_size = scene_bounds_size * (1 + SCENE_BOUNDS_PADDING_PERCENTAGE)  # add some padding to the bounds in all directions
 

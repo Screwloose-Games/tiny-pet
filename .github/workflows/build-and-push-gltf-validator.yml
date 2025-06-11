@@ -1,4 +1,4 @@
-name: Validate GLTF Files
+name: Build and Push Validate GLTF Container
 
 on:
   workflow_dispatch

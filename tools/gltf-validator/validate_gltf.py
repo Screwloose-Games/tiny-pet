@@ -13,6 +13,10 @@ from pyrender.constants import RenderFlags
 from trimesh.transformations import euler_matrix, translation_matrix
 import yaml
 from spec_image_tools import draw_facing_direction
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
 GITHUB_COMMIT_SHA = os.getenv("GITHUB_COMMIT_SHA")
@@ -734,7 +738,10 @@ if __name__ == "__main__":
         sys.exit(1)
     
     output_dir = sys.argv[1]
-    gltf_files = sys.argv[2:]
+    gltf_files_json = sys.argv[2:]
+
+    gltf_files = json.loads(gltf_files_json)
+
     print(f"Output directory: {output_dir}")
     print(f"GLTF files: {gltf_files}")
     

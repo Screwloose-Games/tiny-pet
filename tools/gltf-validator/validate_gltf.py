@@ -583,7 +583,8 @@ def process_gltf_file(gltf_file: str, output_dir: str) -> dict:
                 # Expected that the buffer file had the fame file name as the gltf file
                 print(f"Expected buffer file not found: {expected_bin_file_path}")
                 print(f"Buffer paths found: {buffer_paths}")
-                missing_resources.append(f"Expected buffer file: {expected_bin_file_path}, rename {gltf_file.lower()} to {os.path.basename(buffer_paths[0]).replace('.bin', '.gltf')}")
+                # missing_resources.append(f"Expected buffer file: {expected_bin_file_path}, rename {gltf_file.lower()} to {os.path.basename(buffer_paths[0]).replace('.bin', '.gltf')}")
+                logger.warning(f"Expected buffer file: {expected_bin_file_path}, rename {gltf_file.lower()} to {os.path.basename(buffer_paths[0]).replace('.bin', '.gltf')}")
         print(f"Checking for missing resources in {gltf_file}")
         if missing_resources:
             print(f"Missing resources:\n" + "\n".join(f"- {r}" for r in missing_resources))
